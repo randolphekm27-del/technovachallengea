@@ -7,7 +7,7 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
     <script>
       tailwind.config = {
         theme: {
@@ -28,45 +28,60 @@
       }
     </script>
     <style>
+      :root {
+        --nova-violet: #7C3AED;
+      }
       html {
         scroll-behavior: smooth;
+        background-color: #FFFFFF;
       }
       body {
         background-color: #FFFFFF;
         color: #0B0F19;
         -webkit-font-smoothing: antialiased;
+        -moz-osx-font-smoothing: grayscale;
         overflow-x: hidden;
       }
       ::selection {
-        background-color: #7C3AED;
+        background-color: var(--nova-violet);
         color: white;
       }
       .glass {
-        background: rgba(255, 255, 255, 0.7);
-        backdrop-filter: blur(12px);
-        -webkit-backdrop-filter: blur(12px);
-        border: 1px solid rgba(11, 15, 25, 0.04);
+        background: rgba(255, 255, 255, 0.8);
+        backdrop-filter: saturate(180%) blur(20px);
+        -webkit-backdrop-filter: saturate(180%) blur(20px);
       }
       .nova-3d-button {
-        box-shadow: 0 8px 24px -6px rgba(124, 58, 237, 0.4);
-        transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+        box-shadow: 0 10px 30px -10px rgba(124, 58, 237, 0.5);
+        transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.3s ease;
       }
       .nova-3d-button:hover {
-        transform: translateY(-2px);
-        box-shadow: 0 12px 32px -8px rgba(124, 58, 237, 0.5);
+        transform: translateY(-4px) scale(1.02);
+        box-shadow: 0 15px 40px -10px rgba(124, 58, 237, 0.6);
+      }
+      .nova-3d-button:active {
+        transform: translateY(1px);
+      }
+      .editorial-title {
+        letter-spacing: -0.05em;
+        line-height: 0.85;
       }
       .soft-border {
-        border: 0.5px solid rgba(11, 15, 25, 0.08);
+        border: 1px solid rgba(11, 15, 25, 0.06);
       }
       ::-webkit-scrollbar {
-        width: 6px;
+        width: 8px;
       }
       ::-webkit-scrollbar-track {
-        background: #f1f1f1;
+        background: #FFFFFF;
       }
       ::-webkit-scrollbar-thumb {
-        background: #7C3AED;
+        background: #E5E7EB;
         border-radius: 10px;
+        border: 2px solid #FFFFFF;
+      }
+      ::-webkit-scrollbar-thumb:hover {
+        background: var(--nova-violet);
       }
     </style>
     <script type="importmap">
@@ -77,6 +92,7 @@
         "react-dom": "https://esm.sh/react-dom@18.2.0",
         "react-dom/": "https://esm.sh/react-dom@18.2.0/",
         "react-dom/client": "https://esm.sh/react-dom@18.2.0/client",
+        "react/jsx-runtime": "https://esm.sh/react@18.2.0/jsx-runtime",
         "react-router-dom": "https://esm.sh/react-router-dom@6.22.3?deps=react@18.2.0,react-dom@18.2.0",
         "framer-motion": "https://esm.sh/framer-motion@11.0.3?deps=react@18.2.0,react-dom@18.2.0",
         "lucide-react": "https://esm.sh/lucide-react@0.344.0?deps=react@18.2.0"
