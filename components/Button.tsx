@@ -17,15 +17,15 @@ const Button: React.FC<ButtonProps> = ({
   size = 'md'
 }) => {
   const sizeClasses = {
-    sm: 'px-6 py-2 text-xs',
-    md: 'px-8 py-3.5 text-sm',
-    lg: 'px-14 py-5 text-base font-black',
+    sm: 'px-6 py-2.5 text-xs',
+    md: 'px-10 py-4 text-sm',
+    lg: 'px-16 py-6 text-base font-black',
   };
 
-  const baseClasses = "relative inline-flex items-center justify-center rounded-full transition-all duration-200 uppercase tracking-widest outline-none";
+  const baseClasses = "relative inline-flex items-center justify-center rounded-full transition-all duration-300 uppercase tracking-[0.2em] outline-none";
   
   const variantClasses = variant === 'primary' 
-    ? "bg-nova-violet text-white nova-3d-button active:shadow-none"
+    ? "bg-nova-violet text-white nova-3d-button"
     : "border-2 border-nova-black text-nova-black hover:bg-nova-black hover:text-white";
 
   return (
