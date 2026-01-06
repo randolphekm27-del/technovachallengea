@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { motion } from 'framer-motion';
 
@@ -19,20 +18,19 @@ const Button: React.FC<ButtonProps> = ({
 }) => {
   const sizeClasses = {
     sm: 'px-6 py-2 text-xs',
-    md: 'px-8 py-3 text-sm',
-    lg: 'px-12 py-5 text-base font-bold',
+    md: 'px-8 py-3.5 text-sm',
+    lg: 'px-14 py-5 text-base font-black',
   };
 
-  const baseClasses = "relative inline-flex items-center justify-center rounded-full transition-all duration-200 uppercase tracking-widest";
+  const baseClasses = "relative inline-flex items-center justify-center rounded-full transition-all duration-200 uppercase tracking-widest outline-none";
   
   const variantClasses = variant === 'primary' 
-    ? "bg-nova-violet text-white nova-3d-button hover:bg-nova-violet-dark active:translate-y-0.5"
+    ? "bg-nova-violet text-white nova-3d-button active:shadow-none"
     : "border-2 border-nova-black text-nova-black hover:bg-nova-black hover:text-white";
 
   return (
     <motion.button
-      whileHover={{ scale: 1.02 }}
-      whileTap={{ scale: 0.98 }}
+      whileTap={{ scale: 0.95 }}
       onClick={onClick}
       className={`${baseClasses} ${sizeClasses[size]} ${variantClasses} ${className}`}
     >

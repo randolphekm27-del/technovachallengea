@@ -1,165 +1,112 @@
-import React, { useRef } from 'react';
-import { motion, useScroll, useTransform } from 'framer-motion';
-import { Zap, Target, Award, ArrowUpRight, Cpu, Layers, Fingerprint } from 'lucide-react';
+import React from 'react';
+import { motion } from 'framer-motion';
+import { ArrowUpRight, Cpu, Fingerprint, Layers } from 'lucide-react';
 import Button from '../components/Button';
 import GlassCard from '../components/GlassCard';
 
-const ParallaxImage = ({ src, alt, speed = 0.1, className = "" }: { src: string, alt: string, speed?: number, className?: string }) => {
-  const containerRef = useRef<HTMLDivElement>(null);
-  const { scrollYProgress } = useScroll({
-    target: containerRef,
-    offset: ["start end", "end start"]
-  });
-  const y = useTransform(scrollYProgress, [0, 1], ["0%", `${speed * 100}%`]);
-
-  return (
-    <div ref={containerRef} className={`overflow-hidden rounded-[2.5rem] soft-border ${className}`}>
-      <motion.img 
-        style={{ y, scale: 1.1 }} 
-        src={src} 
-        alt={alt} 
-        className="w-full h-full object-cover transition-transform duration-1000 ease-out"
-      />
-    </div>
-  );
-};
-
 const Home: React.FC = () => {
   return (
-    <div className="bg-nova-white overflow-x-hidden">
-      
-      {/* 1. HERO STATEMENT - MUSEUM STYLE */}
-      <section className="relative min-h-screen flex items-center px-6 pt-32 pb-20">
+    <div className="bg-white">
+      {/* Section 1 — Hero Statement */}
+      <section className="relative min-h-screen flex items-center justify-center px-6 pt-20 overflow-hidden">
         <div className="container mx-auto">
           <motion.div
-            initial={{ opacity: 0, y: 50 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 1.5, ease: [0.16, 1, 0.3, 1] }}
-            className="max-w-6xl"
-          >
-            <h1 className="editorial-title text-[clamp(4rem,15vw,14rem)] font-black text-nova-black tracking-tighter mb-8">
-              L'INNOVATION<br />EST UNE PAGE<br />
-              <span className="text-nova-violet">BLANCHE.</span>
-            </h1>
-            
-            <div className="flex flex-col md:flex-row md:items-end justify-between gap-12 mt-16">
-              <p className="text-2xl md:text-3xl text-gray-400 font-light max-w-2xl leading-tight">
-                Laissez le futur s’écrire par vos mains. <br />
-                <span className="text-nova-black font-normal">Tech Nova Challenge 2025</span> — Le rendez-vous de l'élite technologique au Bénin.
-              </p>
-              <div className="flex flex-wrap items-center gap-6">
-                <Button size="lg">Participer</Button>
-                <button className="flex items-center gap-2 group text-nova-black font-bold text-lg uppercase tracking-widest border-b-2 border-transparent hover:border-nova-violet transition-all pb-1">
-                  Découvrir <ArrowUpRight className="group-hover:translate-x-1 group-hover:-translate-y-1 transition-transform" />
-                </button>
-              </div>
-            </div>
-          </motion.div>
-        </div>
-      </section>
-
-      {/* 2. LE MANIFESTE - DARK EDITORIAL */}
-      <section className="py-64 bg-nova-black text-nova-white px-6">
-        <div className="container mx-auto max-w-6xl">
-          <motion.div
-            initial={{ opacity: 0, y: 60 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, margin: "-100px" }}
+            initial={{ opacity: 0, scale: 0.98 }}
+            animate={{ opacity: 1, scale: 1 }}
             transition={{ duration: 1.2, ease: [0.16, 1, 0.3, 1] }}
-            className="space-y-16"
+            className="text-center"
           >
-            <div className="flex items-center gap-4">
-              <div className="h-px w-12 bg-nova-violet"></div>
-              <span className="text-nova-violet font-bold tracking-[0.4em] uppercase text-xs">Manifeste</span>
-            </div>
-            <h2 className="text-4xl md:text-8xl font-bold leading-[0.9] tracking-tight max-w-5xl">
-              Nous cherchons les bâtisseurs qui voient dans chaque <span className="italic font-light text-gray-500 underline decoration-nova-violet decoration-2 underline-offset-8">ligne de code</span> une solution.
+            <h1 className="editorial-title text-[clamp(3.5rem,15vw,13rem)] text-nova-black mb-6">
+              L'innovation est une <span className="text-nova-violet">page blanche.</span>
+            </h1>
+            <motion.p 
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.4, duration: 1 }}
+              className="text-xl md:text-3xl text-gray-400 font-light mb-12 tracking-tight"
+            >
+              Laissez le futur s’écrire par vos mains.
+            </motion.p>
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.6, duration: 1 }}
+            >
+              <Button size="lg">Participer</Button>
+            </motion.div>
+          </motion.div>
+        </div>
+        
+        {/* Subtle background element */}
+        <div className="absolute -bottom-40 -right-40 w-96 h-96 bg-nova-violet/5 rounded-full blur-[120px] pointer-events-none"></div>
+      </section>
+
+      {/* Section 2 — Manifeste (What is Tech Nova) */}
+      <section className="py-64 bg-nova-black text-white px-6">
+        <div className="container mx-auto max-w-5xl">
+          <motion.div
+            initial={{ opacity: 0 }}
+            whileInView={{ opacity: 1 }}
+            viewport={{ once: true, margin: "-100px" }}
+            className="space-y-12"
+          >
+            <span className="text-nova-violet font-bold tracking-[0.4em] uppercase text-xs">Le Manifeste</span>
+            <h2 className="text-4xl md:text-7xl font-light leading-tight tracking-tight">
+              Tech Nova Challenge n'est pas qu'une compétition. C'est le <span className="text-nova-violet font-bold italic">catalyseur</span> d'une génération qui refuse de voir son talent rester silencieux.
             </h2>
-            <div className="grid md:grid-cols-2 gap-20 pt-20">
-              <p className="text-xl md:text-2xl text-gray-400 font-light leading-relaxed">
-                Le Bénin ne manque pas de talents, il manque de tremplins. Tech Nova est ce pont entre l'idée brute et l'impact national.
+            <div className="flex justify-end pt-12">
+              <p className="max-w-md text-gray-400 text-lg md:text-xl font-light leading-relaxed">
+                Nous identifions, formons et propulsons les architectes numériques du Bénin. Dans un monde saturé, l'excellence est la seule monnaie de valeur.
               </p>
-              <div className="flex items-end justify-start md:justify-end">
-                <div className="text-nova-violet font-black text-9xl opacity-10 leading-none">2025</div>
-              </div>
             </div>
           </motion.div>
         </div>
       </section>
 
-      {/* 3. LES PILIERS - GRID */}
-      <section className="py-40 px-6 bg-white">
+      {/* Section 3 — Why Participate (Piliers) */}
+      <section className="py-40 px-6">
         <div className="container mx-auto">
-          <div className="flex flex-col md:flex-row justify-between items-end mb-32 gap-8">
-            <div className="max-w-2xl">
-              <span className="text-nova-violet font-bold tracking-widest uppercase text-xs mb-4 block">Excellence</span>
-              <h2 className="text-6xl md:text-8xl font-black tracking-tighter mb-6">Piliers d'Impact</h2>
-            </div>
+          <div className="mb-24 text-center">
+            <h2 className="editorial-title text-5xl md:text-8xl text-nova-black">Pourquoi nous ?</h2>
           </div>
           <div className="grid md:grid-cols-3 gap-8">
             <GlassCard delay={0.1}>
-              <div className="w-16 h-16 bg-nova-violet/10 rounded-2xl flex items-center justify-center text-nova-violet mb-10"><Cpu size={32} strokeWidth={1.5} /></div>
-              <h3 className="text-3xl font-bold mb-6 tracking-tight text-nova-black">Technologie Pure</h3>
-              <p className="text-gray-500 text-lg leading-relaxed font-light">De l'IA générative aux systèmes décentralisés, maîtrisez les outils qui redéfinissent le possible.</p>
+              <Cpu className="text-nova-violet w-12 h-12 mb-8" />
+              <h3 className="text-2xl font-bold mb-4">Pure Tech</h3>
+              <p className="text-gray-500 font-light text-lg">Un focus strict sur la robustesse technique et l'innovation réelle. Pas de fioritures, juste du code.</p>
             </GlassCard>
             <GlassCard delay={0.2}>
-              <div className="w-16 h-16 bg-nova-violet/10 rounded-2xl flex items-center justify-center text-nova-violet mb-10"><Fingerprint size={32} strokeWidth={1.5} /></div>
-              <h3 className="text-3xl font-bold mb-6 tracking-tight text-nova-black">Identité Locale</h3>
-              <p className="text-gray-500 text-lg leading-relaxed font-light">Des solutions pensées par des Béninois, pour des défis africains. L'authenticité est notre force.</p>
+              <Fingerprint className="text-nova-violet w-12 h-12 mb-8" />
+              <h3 className="text-2xl font-bold mb-4">Légitimité</h3>
+              <p className="text-gray-500 font-light text-lg">Un jury composé d'experts internationaux et de leaders de l'écosystème béninois.</p>
             </GlassCard>
             <GlassCard delay={0.3}>
-              <div className="w-16 h-16 bg-nova-violet/10 rounded-2xl flex items-center justify-center text-nova-violet mb-10"><Layers size={32} strokeWidth={1.5} /></div>
-              <h3 className="text-3xl font-bold mb-6 tracking-tight text-nova-black">Excellence UX</h3>
-              <p className="text-gray-500 text-lg leading-relaxed font-light">Parce que l'innovation n'est utile que si elle est accessible. Le design est au cœur de notre démarche.</p>
+              <Layers className="text-nova-violet w-12 h-12 mb-8" />
+              <h3 className="text-2xl font-bold mb-4">Propulsion</h3>
+              <p className="text-gray-500 font-light text-lg">Plus qu'un prix, un accès direct à des investisseurs et un mentorat de classe mondiale.</p>
             </GlassCard>
           </div>
         </div>
       </section>
 
-      {/* 4. VISION IMMERSIVE */}
-      <section className="relative h-screen flex items-center justify-center overflow-hidden">
-        <div className="absolute inset-0 z-0">
-          <ParallaxImage 
-            src="https://images.unsplash.com/photo-1451187580459-43490279c0fa?auto=format&fit=crop&q=80&w=2000" 
-            alt="Space Tech"
-            speed={0.15}
-            className="w-full h-full rounded-none"
-          />
-          <div className="absolute inset-0 bg-nova-black/60"></div>
-        </div>
-        <motion.div 
-          initial={{ opacity: 0, scale: 0.95 }}
-          whileInView={{ opacity: 1, scale: 1 }}
-          transition={{ duration: 1.5, ease: [0.16, 1, 0.3, 1] }}
-          className="relative z-10 text-center px-6"
-        >
-          <h2 className="text-nova-white text-6xl md:text-[10rem] font-black tracking-tighter mb-12 leading-[0.85]">
-            DÉPASSEZ<br />VOS LIMITES.
-          </h2>
-          <Button variant="outline" size="lg" className="border-white text-white hover:bg-white hover:text-nova-black scale-110">
-            Rejoindre l'élite
-          </Button>
-        </motion.div>
-      </section>
-
-      {/* 5. FINAL CTA - PURE WHITE */}
-      <section className="py-80 px-6 text-center bg-nova-white">
+      {/* Section 5 — Call To Action */}
+      <section className="py-80 bg-white text-center px-6">
         <motion.div
-          initial={{ opacity: 0, y: 40 }}
+          initial={{ opacity: 0, y: 50 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
-          transition={{ duration: 1.2, ease: [0.16, 1, 0.3, 1] }}
-          className="max-w-6xl mx-auto"
+          transition={{ duration: 1 }}
+          className="max-w-4xl mx-auto"
         >
-          <h2 className="editorial-title text-[clamp(4rem,14vw,12rem)] font-black tracking-tighter mb-20 leading-none text-nova-black">
-            LE FUTUR<br />EST <span className="text-nova-violet">ICI.</span>
+          <h2 className="editorial-title text-5xl md:text-[8rem] text-nova-black mb-16 leading-none">
+            Oserez-vous <br />
+            <span className="text-nova-violet">écrire l'histoire ?</span>
           </h2>
-          <Button size="lg" className="scale-125 mb-16">Déposer ma candidature</Button>
-          
-          <div className="flex justify-center items-center gap-6 text-gray-400 font-bold uppercase tracking-[0.3em] text-[10px]">
-            <span>Ouverture Mai 2025</span>
-            <div className="w-2 h-2 rounded-full bg-nova-violet"></div>
-            <span>Bénin National</span>
+          <div className="flex justify-center">
+            <Button size="lg" className="scale-125">Déposer ma candidature</Button>
+          </div>
+          <div className="mt-24 text-gray-300 font-bold uppercase tracking-[0.5em] text-[10px]">
+            Tech Nova Challenge — Édition 2025
           </div>
         </motion.div>
       </section>
