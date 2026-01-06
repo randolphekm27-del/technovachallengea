@@ -6,8 +6,13 @@ import GlassCard from '../components/GlassCard';
 import Button from '../components/Button';
 
 // Un composant pour des titres qui se décalent au scroll
-// Fix: Use React.ReactNode for children to ensure compatibility with JSX text nodes and fix "multiple children" errors in some TypeScript configurations
-const ParallaxText = ({ children, baseVelocity = 100 }: { children: React.ReactNode; baseVelocity?: number }) => {
+// Fix: Use React.FC with an explicit props interface to ensure compatibility with JSX and fix "property children missing" errors in some TypeScript environments
+interface ParallaxTextProps {
+  children: React.ReactNode;
+  baseVelocity?: number;
+}
+
+const ParallaxText: React.FC<ParallaxTextProps> = ({ children, baseVelocity = 100 }) => {
   const { scrollYProgress } = useScroll();
   const x = useTransform(scrollYProgress, [0, 1], [0, baseVelocity]);
 
