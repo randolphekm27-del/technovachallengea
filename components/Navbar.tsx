@@ -42,7 +42,8 @@ const Navbar: React.FC = () => {
             {[
               { name: 'Home', path: '/' },
               { name: 'About', path: '/about' },
-              { name: 'Process', path: '/process' }
+              { name: 'Process', path: '/process' },
+              { name: 'Archive', path: '/archive' }
             ].map((link) => (
               <Link 
                 key={link.path}
@@ -85,7 +86,7 @@ const Navbar: React.FC = () => {
             exit={{ opacity: 0, backdropFilter: 'blur(0px)' }}
             className="fixed inset-0 z-[90] bg-white/80 md:hidden flex flex-col items-center justify-center gap-8"
           >
-            {['/', '/about', '/process'].map((path) => (
+            {['/', '/about', '/process', '/archive'].map((path) => (
               <Link 
                 key={path}
                 to={path}

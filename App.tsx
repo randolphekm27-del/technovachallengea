@@ -6,6 +6,7 @@ import Home from './pages/Home';
 import About from './pages/About';
 import Process from './pages/Process';
 import Participate from './pages/Participate';
+import Archive from './pages/Archive';
 
 const App: React.FC = () => {
   const { pathname } = useLocation();
@@ -22,6 +23,7 @@ const App: React.FC = () => {
           <Route path="/" element={<Home />} />
           <Route path="/about" element={<About />} />
           <Route path="/process" element={<Process />} />
+          <Route path="/archive" element={<Archive />} />
           <Route path="/participate" element={<Participate />} />
         </Routes>
       </main>

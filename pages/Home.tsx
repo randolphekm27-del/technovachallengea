@@ -1,7 +1,8 @@
+
 import React, { useRef } from 'react';
-import { motion, useScroll, useTransform, useSpring, useInView } from 'framer-motion';
+import { motion, useScroll, useTransform, useSpring } from 'framer-motion';
 import { useNavigate } from 'react-router-dom';
-import { ChevronRight, Users, Lightbulb, Code, Target, Zap, Shield, Globe } from 'lucide-react';
+import { Users, Lightbulb, Code, Target, Zap, Shield, Globe } from 'lucide-react';
 import Button from '../components/Button';
 import GlassCard from '../components/GlassCard';
 
@@ -20,7 +21,6 @@ const Home: React.FC = () => {
     restDelta: 0.001
   });
 
-  // Parallax elements
   const heroTextY = useTransform(smoothProgress, [0, 0.2], [0, 100]);
   const heroOpacity = useTransform(smoothProgress, [0, 0.15], [1, 0]);
 
@@ -86,7 +86,7 @@ const Home: React.FC = () => {
         </div>
       </section>
 
-      {/* SECTION 3 — À QUI S'ADRESSE LE CHALLENGE */}
+      {/* SECTION 3 — AUDIENCE */}
       <section className="relative py-40 bg-nova-black px-6 overflow-hidden">
         <div className="container mx-auto">
           <div className="mb-24">
@@ -111,7 +111,7 @@ const Home: React.FC = () => {
         </div>
       </section>
 
-      {/* SECTION 4 — POURQUOI CE CONCOURS EXISTE */}
+      {/* SECTION 4 — POURQUOI */}
       <section className="relative py-48 bg-white px-6">
         <div className="container mx-auto max-w-4xl text-center">
           <motion.div
@@ -131,7 +131,7 @@ const Home: React.FC = () => {
         </div>
       </section>
 
-      {/* SECTION 5 — DÉROULEMENT SIMPLIFIÉ */}
+      {/* SECTION 5 — DÉROULEMENT (ANIMATED LOOPS) */}
       <section className="relative py-40 bg-white px-6 border-t border-gray-50">
         <div className="container mx-auto">
           <div className="flex justify-between items-end mb-24">
@@ -153,12 +153,34 @@ const Home: React.FC = () => {
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ delay: i * 0.1 }}
-                className="relative"
+                className="relative group"
               >
-                <div className="text-6xl font-black text-gray-50 mb-6">{item.step}</div>
+                <motion.div 
+                  animate={{ y: [0, -10, 0] }}
+                  transition={{ 
+                    duration: 4, 
+                    repeat: Infinity, 
+                    ease: "easeInOut",
+                    delay: i * 0.5
+                  }}
+                  className="text-6xl font-black text-gray-50 mb-6 group-hover:text-nova-violet/10 transition-colors"
+                >
+                  {item.step}
+                </motion.div>
                 <div className="flex items-center gap-4 text-nova-black">
-                   <div className="p-2 bg-nova-violet/5 rounded-lg text-nova-violet">{React.cloneElement(item.icon as React.ReactElement, { size: 20 })}</div>
-                   <span className="font-bold tracking-widest text-xs uppercase">{item.label}</span>
+                   <motion.div 
+                    animate={{ scale: [1, 1.1, 1] }}
+                    transition={{ 
+                      duration: 3, 
+                      repeat: Infinity, 
+                      ease: "easeInOut",
+                      delay: i * 0.3
+                    }}
+                    className="p-2 bg-nova-violet/5 rounded-lg text-nova-violet"
+                   >
+                     {React.cloneElement(item.icon as React.ReactElement, { size: 20 })}
+                   </motion.div>
+                   <span className="font-bold tracking-widest text-xs uppercase group-hover:text-nova-violet transition-colors">{item.label}</span>
                 </div>
                 {i < 3 && <div className="hidden md:block absolute top-1/2 -right-6 w-12 h-px bg-gray-100" />}
               </motion.div>
@@ -167,7 +189,7 @@ const Home: React.FC = () => {
         </div>
       </section>
 
-      {/* SECTION 6 — IMPACT & VISION */}
+      {/* SECTION 6 — IMPACT */}
       <section className="relative py-64 bg-nova-black overflow-hidden px-6">
         <motion.div 
           style={{ x: useTransform(smoothProgress, [0.6, 1], [0, -200]) }}
@@ -187,7 +209,7 @@ const Home: React.FC = () => {
         </div>
       </section>
 
-      {/* SECTION 7 — CALL TO ACTION FINAL */}
+      {/* SECTION 7 — CTA FINAL */}
       <section className="relative py-64 bg-white px-6 text-center">
         <div className="container mx-auto max-w-4xl">
           <motion.div
