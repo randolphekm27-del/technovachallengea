@@ -1,11 +1,13 @@
 import React, { useRef } from 'react';
 import { motion, useScroll, useTransform, useSpring, useInView } from 'framer-motion';
+import { useNavigate } from 'react-router-dom';
 import { ChevronRight, Users, Lightbulb, Code, Target, Zap, Shield, Globe } from 'lucide-react';
 import Button from '../components/Button';
 import GlassCard from '../components/GlassCard';
 
 const Home: React.FC = () => {
   const containerRef = useRef<HTMLDivElement>(null);
+  const navigate = useNavigate();
   
   const { scrollYProgress } = useScroll({
     target: containerRef,
@@ -198,7 +200,7 @@ const Home: React.FC = () => {
               PRÊT À ÉCRIRE<br />
               <span className="text-nova-violet">L'HISTOIRE ?</span>
             </h2>
-            <Button size="lg" className="scale-110 md:scale-125">Participer</Button>
+            <Button size="lg" className="scale-110 md:scale-125" onClick={() => navigate('/participate')}>Participer</Button>
             <p className="mt-20 text-[10px] font-bold tracking-[0.4em] text-gray-300 uppercase">
               Clôture des inscriptions : 15 octobre 2025
             </p>
