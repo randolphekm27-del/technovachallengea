@@ -1,45 +1,78 @@
 
 import React, { useRef } from 'react';
-import { motion, useScroll, useTransform, useSpring } from 'framer-motion';
-import { Trophy, Users, Star, Calendar } from 'lucide-react';
+import { motion, useScroll, useTransform, useSpring, useInView } from 'framer-motion';
+import { Trophy, Users, Star, Calendar, ArrowUpRight, History } from 'lucide-react';
 import GlassCard from '../components/GlassCard';
-// Fix: Added missing Button import
 import Button from '../components/Button';
 
-// Fix: Use a proper interface and React.FC to avoid 'key' property assignment errors in JSX
-interface GalleryItemProps {
-  src: string;
-  alt: string;
-  speed: number;
-}
+// Un composant pour des titres qui se décalent au scroll
+// Fix: Use React.ReactNode for children to ensure compatibility with JSX text nodes and fix "multiple children" errors in some TypeScript configurations
+const ParallaxText = ({ children, baseVelocity = 100 }: { children: React.ReactNode; baseVelocity?: number }) => {
+  const { scrollYProgress } = useScroll();
+  const x = useTransform(scrollYProgress, [0, 1], [0, baseVelocity]);
 
-const GalleryItem: React.FC<GalleryItemProps> = ({ src, alt, speed }) => {
+  return (
+    <div className="overflow-hidden whitespace-nowrap flex flex-nowrap">
+      <motion.span style={{ x }} className="block text-[15vw] font-black uppercase tracking-tighter leading-none opacity-5 select-none">
+        {children} {children} {children}
+      </motion.span>
+    </div>
+  );
+};
+
+// Élément de galerie cinématique avec effet de loupe et parallaxe
+const CinematicGalleryItem = ({ src, alt, year, delay }: { src: string, alt: string, year: string, delay: number }) => {
   const ref = useRef(null);
+  const isInView = useInView(ref, { once: true, margin: "-10%" });
   const { scrollYProgress } = useScroll({
     target: ref,
     offset: ["start end", "end start"]
   });
 
-  const y = useTransform(scrollYProgress, [0, 1], [0, speed * 100]);
-  const scale = useTransform(scrollYProgress, [0, 0.5, 1], [0.95, 1, 0.95]);
+  const y = useTransform(scrollYProgress, [0, 1], [50, -50]);
+  const scale = useTransform(scrollYProgress, [0, 0.5, 1], [1.2, 1, 1.2]);
 
   return (
-    <motion.div 
-      ref={ref} 
-      style={{ y, scale }}
-      className="relative aspect-[4/5] overflow-hidden rounded-[2rem] bg-gray-100 group shadow-2xl"
+    <motion.div
+      ref={ref}
+      initial={{ opacity: 0, y: 100 }}
+      animate={isInView ? { opacity: 1, y: 0 } : {}}
+      transition={{ duration: 1.2, delay, ease: [0.16, 1, 0.3, 1] }}
+      className="relative group overflow-hidden rounded-[2.5rem] bg-nova-black"
     >
-      <div className="absolute inset-0 bg-nova-black/20 group-hover:bg-transparent transition-colors duration-700 z-10" />
-      <img 
-        src={src} 
-        alt={alt} 
-        className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" 
-      />
-      <div className="absolute bottom-8 left-8 z-20 opacity-0 group-hover:opacity-100 transition-opacity">
-        <span className="text-[10px] font-black tracking-widest text-white uppercase bg-nova-violet px-4 py-2 rounded-full">
-          {alt}
-        </span>
+      <div className="aspect-[3/4] overflow-hidden">
+        <motion.img
+          style={{ scale }}
+          src={src}
+          alt={alt}
+          className="w-full h-full object-cover opacity-60 group-hover:opacity-100 transition-opacity duration-1000"
+        />
       </div>
+      
+      {/* Overlay dégradé */}
+      <div className="absolute inset-0 bg-gradient-to-t from-nova-black via-transparent to-transparent opacity-80" />
+      
+      <div className="absolute bottom-10 left-10 right-10 z-20">
+        <div className="flex justify-between items-end">
+          <div>
+            <span className="text-nova-violet font-black text-[10px] tracking-[0.4em] uppercase mb-2 block">{year}</span>
+            <h3 className="text-white text-2xl font-black uppercase tracking-tighter leading-none">{alt}</h3>
+          </div>
+          <motion.div 
+            whileHover={{ rotate: 45 }}
+            className="w-12 h-12 rounded-full border border-white/20 flex items-center justify-center text-white backdrop-blur-md"
+          >
+            <ArrowUpRight size={20} />
+          </motion.div>
+        </div>
+      </div>
+
+      <motion.div 
+        style={{ y }}
+        className="absolute top-10 right-10 text-white/10 text-8xl font-black select-none pointer-events-none"
+      >
+        #0{delay * 10 + 1}
+      </motion.div>
     </motion.div>
   );
 };
@@ -52,102 +85,180 @@ const Archive: React.FC = () => {
   });
 
   const smoothProgress = useSpring(scrollYProgress, { stiffness: 100, damping: 30 });
-  const titleX = useTransform(smoothProgress, [0, 0.5], [0, -200]);
+  const heroOpacity = useTransform(smoothProgress, [0, 0.1], [1, 0]);
+  const heroScale = useTransform(smoothProgress, [0, 0.1], [1, 0.9]);
 
-  const images = [
-    { src: "https://images.unsplash.com/photo-1517245386807-bb43f82c33c4?auto=format&fit=crop&q=80&w=800", alt: "Pitch Session", speed: -0.5 },
-    { src: "https://images.unsplash.com/photo-1522202176988-66273c2fd55f?auto=format&fit=crop&q=80&w=800", alt: "Mentorship", speed: 0.8 },
-    { src: "https://images.unsplash.com/photo-1552664730-d307ca884978?auto=format&fit=crop&q=80&w=800", alt: "Team Work", speed: -0.2 },
-    { src: "https://images.unsplash.com/photo-1531482615713-2afd69097998?auto=format&fit=crop&q=80&w=800", alt: "Grand Final", speed: 0.5 },
-    { src: "https://images.unsplash.com/photo-1504384308090-c894fdcc538d?auto=format&fit=crop&q=80&w=800", alt: "Innovation Lab", speed: -0.7 },
-    { src: "https://images.unsplash.com/photo-1521737604893-d14cc237f11d?auto=format&fit=crop&q=80&w=800", alt: "Winner Award", speed: 0.3 }
+  const galleryImages = [
+    { src: "https://images.unsplash.com/photo-1551434678-e076c223a692?auto=format&fit=crop&q=80&w=800", alt: "Lab d'innovation", year: "Édition 2025" },
+    { src: "https://images.unsplash.com/photo-1556761175-b413da4baf72?auto=format&fit=crop&q=80&w=800", alt: "Collaboration intense", year: "Édition 2025" },
+    { src: "https://images.unsplash.com/photo-1540317580384-e5d43616b9aa?auto=format&fit=crop&q=80&w=800", alt: "La Grande Finale", year: "Édition 2025" },
+    { src: "https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4?auto=format&fit=crop&q=80&w=800", alt: "Studio Pitching", year: "Édition 2025" },
+    { src: "https://images.unsplash.com/photo-1558403194-611308249627?auto=format&fit=crop&q=80&w=800", alt: "Network Night", year: "Édition 2025" },
+    { src: "https://images.unsplash.com/photo-1521737604893-d14cc237f11d?auto=format&fit=crop&q=80&w=800", alt: "Cérémonie", year: "Édition 2025" }
   ];
 
   return (
-    <div ref={containerRef} className="relative bg-white pt-40 pb-40 overflow-hidden">
+    <div ref={containerRef} className="relative bg-white selection:bg-nova-violet selection:text-white">
       
-      {/* SECTION TITRE — PARALLAXE HORIZONTALE */}
-      <section className="relative h-[60vh] flex items-center mb-40">
-        <motion.div style={{ x: titleX }} className="flex gap-20 whitespace-nowrap">
-          <h1 className="editorial-title text-[15vw] font-black text-nova-black opacity-5">ARCHIVES 2024</h1>
-          <h1 className="editorial-title text-[15vw] font-black text-nova-violet">ARCHIVES 2024</h1>
-          <h1 className="editorial-title text-[15vw] font-black text-nova-black opacity-5">ARCHIVES 2024</h1>
+      {/* 1. HERO ARCHIVE — MONUMENTAL */}
+      <section className="relative h-screen flex flex-col items-center justify-center px-6 overflow-hidden">
+        <motion.div 
+          style={{ opacity: heroOpacity, scale: heroScale }}
+          className="relative z-10 w-full max-w-7xl mx-auto text-center"
+        >
+          <motion.div
+            initial={{ opacity: 0, scale: 0.5 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ duration: 1.5, ease: [0.16, 1, 0.3, 1] }}
+            className="mb-12 inline-flex items-center gap-4 px-6 py-3 rounded-full border border-nova-black/5 glass"
+          >
+            <History size={16} className="text-nova-violet" />
+            <span className="text-[10px] font-black tracking-[0.4em] uppercase text-nova-black">Rétrospective Historique</span>
+          </motion.div>
+          
+          <h1 className="editorial-title text-[clamp(3rem,16vw,18rem)] font-black text-nova-black leading-[0.75]">
+            L'HÉRITAGE <br />
+            <span className="text-nova-violet">NOVA.</span>
+          </h1>
+          
+          <p className="mt-12 text-sm md:text-xl text-gray-400 font-light max-w-2xl mx-auto tracking-tight leading-relaxed">
+            Revivez les moments qui ont défini l'innovation nationale. <br />
+            Là où les rêves sont devenus des infrastructures.
+          </p>
         </motion.div>
+
+        {/* Arrière-plan animé */}
+        <div className="absolute inset-0 -z-10 flex items-center justify-center opacity-[0.03]">
+          <div className="w-[150vw] h-[150vw] border-[1px] border-nova-black rounded-full animate-pulse" />
+          <div className="absolute w-[100vw] h-[100vw] border-[1px] border-nova-black rounded-full" />
+          <div className="absolute w-[50vw] h-[50vw] border-[1px] border-nova-black rounded-full" />
+        </div>
       </section>
 
-      {/* RÉTROSPECTIVE 2024 */}
-      <section className="container mx-auto px-6 mb-64">
-        <div className="grid lg:grid-cols-2 gap-24 items-center">
-          <div>
-            <span className="text-nova-violet font-bold tracking-[0.5em] uppercase text-[10px] block mb-8">Édition Précédente</span>
-            <h2 className="text-6xl font-black tracking-tighter uppercase leading-[0.9] mb-12">
-              L'ANNÉE DE LA<br/><span className="text-nova-violet italic font-light">RENAISSANCE.</span>
-            </h2>
-            <div className="space-y-8 text-xl text-gray-400 font-light leading-relaxed">
-              <p>En 2024, le Tech Nova Challenge a rassemblé plus de 450 projets venant des 12 départements du Bénin.</p>
-              <p>Une édition marquée par l'émergence de solutions IA dédiées à l'agriculture et à la santé communautaire.</p>
-            </div>
-            <div className="grid grid-cols-2 gap-12 mt-16">
-              {[
-                { icon: <Users />, label: "Candidats", val: "450+" },
-                { icon: <Star />, label: "Finalistes", val: "15" },
-                { icon: <Calendar />, label: "Sessions", val: "42" },
-                { icon: <Trophy />, label: "Prix", val: "$25k" }
-              ].map((stat, i) => (
-                <div key={i} className="flex flex-col gap-2">
-                  <div className="text-nova-violet opacity-50">{stat.icon}</div>
-                  <div className="text-3xl font-black text-nova-black">{stat.val}</div>
-                  <div className="text-[10px] font-bold tracking-widest text-gray-300 uppercase">{stat.label}</div>
-                </div>
-              ))}
-            </div>
-          </div>
-          <div className="relative">
-            <GlassCard className="relative z-10 bg-nova-black/5 p-16">
-              <Trophy size={64} className="text-nova-violet mb-8" />
-              <h3 className="text-3xl font-black mb-4 uppercase">Le Grand Vainqueur</h3>
-              <p className="text-xl font-bold text-nova-violet mb-6">Projet "AgroVision"</p>
-              <p className="text-gray-500 font-light leading-relaxed mb-8">
-                Une solution de détection précoce des maladies du manioc utilisant la vision par ordinateur, développée par une équipe de Parakou.
+      {/* 2. TEXTE DÉFILANT — DYNAMISME ÉDITORIAL */}
+      <div className="py-20 border-y border-gray-50 bg-white z-20 relative">
+        <ParallaxText baseVelocity={-20}>NOVA 2025 EDITION</ParallaxText>
+        <ParallaxText baseVelocity={20}>LA RENAISSANCE TECHNOLOGIQUE</ParallaxText>
+      </div>
+
+      {/* 3. LE RÉCIT — STORYTELLING VISUEL */}
+      <section className="py-64 px-6 bg-white overflow-hidden">
+        <div className="container mx-auto">
+          <div className="grid lg:grid-cols-12 gap-24 items-start">
+            <div className="lg:col-span-5 sticky top-40">
+              <span className="text-nova-violet font-black tracking-[0.5em] uppercase text-[10px] block mb-12">Le Chapitre I</span>
+              <h2 className="text-5xl md:text-8xl font-black uppercase tracking-tighter leading-[0.85] mb-12">
+                UNE ANNÉE <br /><span className="text-nova-violet italic font-light">MAGNÉTIQUE.</span>
+              </h2>
+              <p className="text-xl text-gray-500 font-light leading-relaxed mb-12">
+                En 2025, nous avons posé la première pierre d'un édifice qui ne s'arrêtera jamais de croître. Plus qu'un concours, c'était un cri de ralliement pour la jeunesse tech du Bénin.
               </p>
-              <div className="h-px w-full bg-gray-100 mb-8" />
-              <div className="flex items-center gap-4">
-                <div className="w-12 h-12 bg-gray-200 rounded-full" />
-                <div>
-                  <div className="font-bold text-sm">Équipe Kpodékon</div>
-                  <div className="text-xs text-gray-400">Fondateurs</div>
+              
+              <div className="space-y-12">
+                {[
+                  { label: "Projets Soumis", val: "450+" },
+                  { label: "Bourses Distribuées", val: "15M CFA" },
+                  { label: "Impact Direct", val: "12 Villes" }
+                ].map((stat, i) => (
+                  <div key={i} className="flex items-center gap-8 border-b border-gray-100 pb-8 last:border-0 group cursor-default">
+                    <span className="text-nova-violet font-black text-4xl group-hover:scale-110 transition-transform">{stat.val}</span>
+                    <span className="text-[10px] font-bold tracking-[0.3em] uppercase text-gray-400">{stat.label}</span>
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            <div className="lg:col-span-7 space-y-32">
+              <GlassCard className="bg-nova-black text-white p-20 border-0 overflow-hidden relative group">
+                <Trophy size={80} className="text-nova-violet mb-12 group-hover:rotate-12 transition-transform duration-500" />
+                <h3 className="text-4xl font-black uppercase mb-8 tracking-tighter">Le Lauréat Suprême</h3>
+                <div className="space-y-6 text-gray-400 text-lg font-light">
+                  <p className="text-white font-bold text-2xl italic mb-4">AgroVision AI</p>
+                  <p>Une prouesse de vision par ordinateur pour la sécurité alimentaire nationale.</p>
+                  <p>Développé par l'équipe Kpodékon (INSTI Lokossa), ce projet a redéfini les standards de l'innovation locale en 2025.</p>
+                </div>
+                <div className="mt-16 pt-16 border-t border-white/10 flex items-center justify-between">
+                   <div className="flex -space-x-4">
+                      <div className="w-12 h-12 rounded-full border-2 border-nova-black bg-gray-700" />
+                      <div className="w-12 h-12 rounded-full border-2 border-nova-black bg-gray-600" />
+                   </div>
+                   <span className="text-[10px] font-black uppercase tracking-widest text-nova-violet">DÉCOUVRIR LE PROJET</span>
+                </div>
+                {/* Décoration arrière-plan */}
+                <div className="absolute -bottom-20 -right-20 w-80 h-80 bg-nova-violet/20 blur-[120px] rounded-full" />
+              </GlassCard>
+
+              <div className="grid grid-cols-2 gap-8">
+                <div className="aspect-square rounded-[3rem] bg-gray-50 flex flex-col items-center justify-center p-12 text-center group hover:bg-nova-violet transition-colors duration-700">
+                  <Users size={48} className="text-nova-violet group-hover:text-white mb-6 transition-colors" />
+                  <span className="text-nova-black group-hover:text-white font-black text-2xl uppercase tracking-tighter">1200+</span>
+                  <span className="text-gray-400 group-hover:text-white/60 text-[10px] uppercase font-bold tracking-widest mt-2">Visiteurs Finale</span>
+                </div>
+                <div className="aspect-square rounded-[3rem] bg-nova-black flex flex-col items-center justify-center p-12 text-center">
+                  <Star size={48} className="text-nova-violet mb-6" />
+                  <span className="text-white font-black text-2xl uppercase tracking-tighter">4.9/5</span>
+                  <span className="text-gray-500 text-[10px] uppercase font-bold tracking-widest mt-2">Satisfaction Partner</span>
                 </div>
               </div>
-            </GlassCard>
-            <div className="absolute -top-10 -right-10 w-64 h-64 bg-nova-violet/5 blur-[100px] rounded-full" />
+            </div>
           </div>
         </div>
       </section>
 
-      {/* GALERIE PARALLAXE */}
-      <section className="container mx-auto px-6">
-        <div className="mb-24 text-center">
-          <span className="text-nova-violet font-bold tracking-[0.5em] uppercase text-[10px] block mb-4">Galerie</span>
-          <h2 className="text-5xl font-black tracking-tighter uppercase">Instants de génie</h2>
-        </div>
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 md:gap-16">
-          {images.map((img, i) => (
-            <GalleryItem key={i} {...img} />
-          ))}
+      {/* 4. LA GALERIE CINÉMATIQUE — GRILLE ASYMÉTRIQUE */}
+      <section className="py-40 px-6 bg-nova-black overflow-hidden">
+        <div className="container mx-auto">
+          <div className="mb-32 flex flex-col md:flex-row justify-between items-end gap-12">
+            <div className="max-w-2xl">
+              <span className="text-nova-violet font-black tracking-[0.5em] uppercase text-[10px] block mb-8">Archives Visuelles</span>
+              <h2 className="text-5xl md:text-8xl text-white font-black uppercase tracking-tighter leading-[0.85]">
+                LA MÉMOIRE DU <br /><span className="text-nova-violet italic font-light">MOUVEMENT.</span>
+              </h2>
+            </div>
+            <p className="text-gray-500 max-w-sm font-light">
+              Des pixels chargés d'émotion, capturant l'instant précis où l'idée devient tangible.
+            </p>
+          </div>
+          
+          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8 lg:gap-12">
+            {galleryImages.map((img, i) => (
+              <div key={i} className={i % 2 !== 0 ? 'md:mt-24' : ''}>
+                <CinematicGalleryItem {...img} delay={i * 0.1} />
+              </div>
+            ))}
+          </div>
         </div>
       </section>
 
-      {/* CTA VERS PARTICIPATION */}
-      <section className="mt-64 py-32 bg-nova-black text-center relative overflow-hidden">
-        <div className="absolute inset-0 bg-nova-violet/5" />
-        <div className="relative z-10 container mx-auto px-6">
-          <h2 className="text-4xl md:text-6xl text-white font-black uppercase mb-12 tracking-tighter">
-            C'est votre tour de<br/><span className="text-nova-violet">marquer l'histoire.</span>
+      {/* 5. PASSAGE DE FLAMBEAU — FINAL CTA */}
+      <section className="relative py-80 bg-white overflow-hidden px-6 text-center">
+        <motion.div 
+          initial={{ opacity: 0, y: 50 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 1 }}
+          className="container mx-auto relative z-10"
+        >
+          <span className="text-nova-violet font-black tracking-[0.5em] uppercase text-[10px] block mb-12">Continuer l'histoire</span>
+          <h2 className="editorial-title text-[clamp(2.5rem,10vw,12rem)] text-nova-black mb-20 leading-[0.8]">
+            VOTRE TOUR<br />
+            <span className="text-nova-violet italic font-light">EST VENU.</span>
           </h2>
-          <Button size="lg" onClick={() => window.location.href = '#/participate'}>
-            Rejoindre l'édition 2025
-          </Button>
-        </div>
+          
+          <div className="flex flex-col md:flex-row items-center justify-center gap-8">
+            <Button size="lg" onClick={() => window.location.hash = '/participate'}>Participer en 2025</Button>
+            <button className="text-[10px] font-black uppercase tracking-[0.3em] text-gray-400 hover:text-nova-black transition-colors">
+              Voir le palmarès complet
+            </button>
+          </div>
+
+          <p className="mt-32 text-[10px] font-black tracking-[0.5em] text-gray-200 uppercase">
+            Tech Nova Challenge — Powered by Innovation
+          </p>
+        </motion.div>
+
+        {/* Effet visuel final */}
+        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[100vw] h-[100vw] bg-nova-violet/5 blur-[150px] rounded-full -z-10" />
       </section>
 
     </div>
