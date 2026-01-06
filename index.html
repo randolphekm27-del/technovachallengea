@@ -85,6 +85,19 @@
       ::-webkit-scrollbar-thumb:hover {
         background: var(--nova-violet);
       }
+      /* Noise texture overlay for premium feel */
+      .noise-overlay::before {
+        content: "";
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100vw;
+        height: 100vh;
+        background: url('https://grainy-gradients.vercel.app/noise.svg');
+        opacity: 0.05;
+        pointer-events: none;
+        z-index: 9999;
+      }
     </style>
     <script type="importmap">
     {
@@ -102,7 +115,7 @@
     }
     </script>
   </head>
-  <body>
+  <body class="noise-overlay">
     <div id="root"></div>
     <script type="module" src="index.tsx"></script>
   </body>

@@ -1,47 +1,105 @@
 
-import React from 'react';
-import { Link, useLocation } from 'react-router-dom';
-import { motion } from 'framer-motion';
+import React, { useState, useEffect } from 'react';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
+import { motion, AnimatePresence } from 'framer-motion';
+import { Menu, X } from 'lucide-react';
 import Button from './Button';
 
 const Navbar: React.FC = () => {
   const location = useLocation();
+  const navigate = useNavigate();
+  const [scrolled, setScrolled] = useState(false);
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+
+  useEffect(() => {
+    const handleScroll = () => setScrolled(window.scrollY > 50);
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
 
   const isActive = (path: string) => location.pathname === path;
 
   return (
-    <nav className="fixed top-0 left-0 w-full z-50 glass border-b border-gray-100">
-      <div className="container mx-auto px-6 h-20 flex items-center justify-between">
-        <Link to="/" className="text-xl font-extrabold tracking-tighter text-nova-black">
-          TECH NOVA <span className="text-nova-violet">CHALLENGE</span>
-        </Link>
+    <>
+      <nav className={`fixed top-0 left-0 w-full z-[100] transition-all duration-700 pointer-events-none flex justify-center pt-6`}>
+        <motion.div 
+          initial={{ y: -100, opacity: 0 }}
+          animate={{ y: 0, opacity: 1 }}
+          className={`
+            pointer-events-auto flex items-center justify-between px-6 md:px-8 py-3 
+            ${scrolled ? 'w-[90%] md:w-auto glass rounded-full shadow-2xl' : 'w-full max-w-7xl rounded-none'} 
+            transition-all duration-700 ease-in-out
+          `}
+        >
+          {/* Logo */}
+          <Link to="/" className="text-sm md:text-base font-black tracking-tighter text-nova-black flex items-center gap-2">
+            <span className="w-6 h-6 bg-nova-violet rounded-full flex-shrink-0" />
+            <span className="hidden sm:inline">TECH NOVA <span className="text-nova-violet">2025</span></span>
+          </Link>
 
-        <div className="hidden md:flex items-center gap-10">
-          <Link 
-            to="/" 
-            className={`text-sm font-medium transition-colors ${isActive('/') ? 'text-nova-violet' : 'text-nova-black hover:text-nova-violet'}`}
-          >
-            Accueil
-          </Link>
-          <Link 
-            to="/about" 
-            className={`text-sm font-medium transition-colors ${isActive('/about') ? 'text-nova-violet' : 'text-nova-black hover:text-nova-violet'}`}
-          >
-            À Propos
-          </Link>
-          <Link 
-            to="/process" 
-            className={`text-sm font-medium transition-colors ${isActive('/process') ? 'text-nova-violet' : 'text-nova-black hover:text-nova-violet'}`}
-          >
-            Le Parcours
-          </Link>
-        </div>
+          {/* Desktop Links */}
+          <div className="hidden md:flex items-center gap-8 mx-12">
+            {[
+              { name: 'Home', path: '/' },
+              { name: 'About', path: '/about' },
+              { name: 'Process', path: '/process' }
+            ].map((link) => (
+              <Link 
+                key={link.path}
+                to={link.path} 
+                className={`text-[10px] uppercase tracking-[0.3em] font-bold transition-all duration-300 relative group ${isActive(link.path) ? 'text-nova-violet' : 'text-nova-black/40 hover:text-nova-black'}`}
+              >
+                {link.name}
+                {isActive(link.path) && (
+                  <motion.span layoutId="activeNav" className="absolute -bottom-1 left-0 w-full h-[2px] bg-nova-violet" />
+                )}
+              </Link>
+            ))}
+          </div>
 
-        <div>
-          <Button size="sm">Participer</Button>
-        </div>
-      </div>
-    </nav>
+          {/* Right Side */}
+          <div className="flex items-center gap-4">
+            <Button 
+              size="sm" 
+              onClick={() => navigate('/participate')}
+              className="hidden md:inline-flex text-[10px] py-3 px-8"
+            >
+              Participer
+            </Button>
+            <button 
+              onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+              className="md:hidden p-2 text-nova-black"
+            >
+              {mobileMenuOpen ? <X size={20} /> : <Menu size={20} />}
+            </button>
+          </div>
+        </motion.div>
+      </nav>
+
+      {/* Mobile Menu Overlay */}
+      <AnimatePresence>
+        {mobileMenuOpen && (
+          <motion.div 
+            initial={{ opacity: 0, backdropFilter: 'blur(0px)' }}
+            animate={{ opacity: 1, backdropFilter: 'blur(10px)' }}
+            exit={{ opacity: 0, backdropFilter: 'blur(0px)' }}
+            className="fixed inset-0 z-[90] bg-white/80 md:hidden flex flex-col items-center justify-center gap-8"
+          >
+            {['/', '/about', '/process'].map((path) => (
+              <Link 
+                key={path}
+                to={path}
+                onClick={() => setMobileMenuOpen(false)}
+                className="text-4xl font-black uppercase tracking-tighter hover:text-nova-violet transition-colors"
+              >
+                {path === '/' ? 'Home' : path.substring(1)}
+              </Link>
+            ))}
+            <Button size="lg" onClick={() => { setMobileMenuOpen(false); navigate('/participate'); }} className="mt-8">Participer</Button>
+          </motion.div>
+        )}
+      </AnimatePresence>
+    </>
   );
 };
 

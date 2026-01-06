@@ -5,6 +5,7 @@ import Navbar from './components/Navbar';
 import Home from './pages/Home';
 import About from './pages/About';
 import Process from './pages/Process';
+import Participate from './pages/Participate';
 
 const App: React.FC = () => {
   const { pathname } = useLocation();
@@ -21,6 +22,7 @@ const App: React.FC = () => {
           <Route path="/" element={<Home />} />
           <Route path="/about" element={<About />} />
           <Route path="/process" element={<Process />} />
+          <Route path="/participate" element={<Participate />} />
         </Routes>
       </main>
       <footer className="py-12 border-t border-gray-100 mt-20">
