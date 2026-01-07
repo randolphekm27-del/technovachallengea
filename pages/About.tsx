@@ -1,208 +1,269 @@
 
 import React, { useRef } from 'react';
 import { motion, useScroll, useTransform } from 'framer-motion';
-import { Rocket, Target, Users2, ShieldCheck, Globe2, Lightbulb, Cpu, Award } from 'lucide-react';
+import { Globe, Target, Lightbulb, Users2, ShieldCheck, Heart, Zap, Sprout, BookOpen, GraduationCap } from 'lucide-react';
 import GlassCard from '../components/GlassCard';
 
-const AnimatedShape = ({ delay = 0, className = "" }) => (
-  <motion.div
-    initial={{ opacity: 0, scale: 0.8 }}
-    whileInView={{ opacity: 0.4, scale: 1 }}
-    animate={{ 
-      rotate: [0, 90, 0],
-      y: [0, 30, 0],
-      borderRadius: ["30% 70% 70% 30% / 30% 30% 70% 70%", "50% 50% 20% 80% / 25% 80% 20% 75%", "30% 70% 70% 30% / 30% 30% 70% 70%"] 
-    }}
-    transition={{ 
-      duration: 15, 
-      repeat: Infinity, 
-      delay,
-      opacity: { duration: 2 } 
-    }}
-    className={`absolute bg-nova-violet/10 blur-3xl -z-10 ${className}`}
-  />
+const ParallaxImage = ({ src, alt, caption }: { src: string, alt: string, caption?: string }) => {
+  const ref = useRef(null);
+  const { scrollYProgress } = useScroll({
+    target: ref,
+    offset: ["start end", "end start"]
+  });
+  const y = useTransform(scrollYProgress, [0, 1], ["-20%", "20%"]);
+
+  return (
+    <div className="my-32">
+      <div ref={ref} className="relative w-full h-[70vh] md:h-[90vh] overflow-hidden rounded-[3rem] shadow-2xl">
+        <motion.img 
+          style={{ y }}
+          src={src} 
+          alt={alt} 
+          className="absolute inset-0 w-full h-[140%] object-cover"
+        />
+        <div className="absolute inset-0 bg-nova-black/10" />
+      </div>
+      {caption && (
+        <p className="mt-6 text-[10px] font-black uppercase tracking-[0.4em] text-gray-300 text-center">
+          {caption}
+        </p>
+      )}
+    </div>
+  );
+};
+
+// Fix: Define SectionTitleProps interface and use React.FC to correctly handle the children prop and satisfy TypeScript.
+interface SectionTitleProps {
+  children: React.ReactNode;
+  subtitle?: string;
+  className?: string;
+}
+
+const SectionTitle: React.FC<SectionTitleProps> = ({ children, subtitle, className = "text-nova-black" }) => (
+  <div className="mb-16">
+    {subtitle && (
+      <span className="text-nova-violet font-black tracking-[0.5em] uppercase text-[10px] block mb-4">
+        {subtitle}
+      </span>
+    )}
+    <h2 className={`text-4xl md:text-6xl font-black uppercase tracking-tighter leading-none ${className}`}>
+      {children}
+    </h2>
+  </div>
+);
+
+// Fix: Define ArticleTextProps interface and use React.FC to correctly handle the children prop and satisfy TypeScript.
+interface ArticleTextProps {
+  children: React.ReactNode;
+  className?: string;
+}
+
+const ArticleText: React.FC<ArticleTextProps> = ({ children, className = "" }) => (
+  <div className={`text-lg md:text-xl text-gray-600 leading-relaxed font-light space-y-8 ${className}`}>
+    {children}
+  </div>
 );
 
 const About: React.FC = () => {
-  const containerRef = useRef<HTMLDivElement>(null);
-  const { scrollYProgress } = useScroll({
-    target: containerRef,
-    offset: ["start start", "end end"]
-  });
-
-  const progressY = useTransform(scrollYProgress, [0, 1], ["0%", "100%"]);
-
   return (
-    <div ref={containerRef} className="relative pt-40 pb-32 bg-white overflow-hidden selection:bg-nova-violet selection:text-white">
-      
-      {/* BACKGROUND ELEMENTS */}
-      <div className="fixed top-0 left-0 w-1 h-full bg-gray-50 z-50">
-        <motion.div style={{ height: progressY }} className="w-full bg-nova-violet" />
-      </div>
-      <AnimatedShape className="w-[500px] h-[500px] -top-20 -left-20" />
-      <AnimatedShape className="w-[400px] h-[400px] top-1/2 -right-20" delay={2} />
-
-      <div className="container mx-auto px-6 max-w-6xl">
+    <div className="pt-40 pb-32 bg-white selection:bg-nova-violet selection:text-white">
+      <div className="container mx-auto px-6 max-w-4xl">
         
-        {/* HEADER SECTION */}
+        {/* --- HEADER --- */}
         <header className="mb-40">
           <motion.div
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 1, ease: [0.16, 1, 0.3, 1] }}
+            transition={{ duration: 1.2, ease: [0.16, 1, 0.3, 1] }}
           >
-            <motion.span 
-              initial={{ x: -10, opacity: 0 }}
-              animate={{ x: 0, opacity: 1 }}
-              transition={{ delay: 0.5 }}
-              className="text-nova-violet font-black tracking-[0.5em] uppercase text-[10px] mb-8 block"
-            >
-              L'Essence de Nova
-            </motion.span>
-            <h1 className="editorial-title text-[clamp(2.5rem,10vw,10rem)] leading-[0.85] text-nova-black mb-16">
-              LE CATALYSEUR DE <br />
-              <motion.span 
-                initial={{ opacity: 0, x: 20 }}
-                animate={{ opacity: 1, x: 0 }}
-                transition={{ delay: 0.8, duration: 1.2 }}
-                className="text-nova-violet italic font-light"
-              >
-                L'EXCELLENCE.
-              </motion.span>
+            <span className="text-nova-violet font-black tracking-[0.5em] uppercase text-[10px] block mb-8">
+              L'essence du projet
+            </span>
+            <h1 className="editorial-title text-[clamp(3rem,10vw,12rem)] leading-[0.8] text-nova-black mb-16">
+              REBÂTIR LE <br />
+              <span className="text-nova-violet italic font-light">POSSIBLE.</span>
             </h1>
-            <div className="grid md:grid-cols-12 gap-12 items-start">
-              <div className="md:col-span-7">
-                <p className="text-2xl md:text-4xl font-light text-gray-400 leading-tight">
-                  Le <span className="text-nova-black font-black">Tech Nova Challenge</span> est le premier concours technologique de référence au Bénin, conçu pour révéler le potentiel innovant des jeunes talents.
-                </p>
-              </div>
-              <div className="md:col-span-5 pt-4">
-                <p className="text-gray-500 leading-relaxed border-l border-gray-100 pl-8">
-                  Une initiative née de la nécessité de bâtir un avenir technologique durable, ancrée dans les réalités béninoises pour répondre aux défis du développement local.
-                </p>
-              </div>
-            </div>
+            <p className="text-2xl md:text-4xl font-light text-gray-400 leading-tight max-w-3xl">
+              Le Tech Nova Challenge est bien plus qu'une compétition : c'est le signal d'un Bénin qui crée et innove.
+            </p>
           </motion.div>
         </header>
 
-        {/* SECTION 1: ORIGINES ET HISTOIRE */}
-        <section className="mb-64">
-          <div className="grid md:grid-cols-2 gap-24 items-center">
-            <motion.div 
-              initial={{ opacity: 0, x: -30 }}
-              whileInView={{ opacity: 1, x: 0 }}
-              viewport={{ once: true }}
-              className="relative"
-            >
-              <motion.div 
-                style={{ y: useTransform(scrollYProgress, [0.1, 0.3], [0, -50]) }}
-                className="absolute -top-12 -left-12 text-[15rem] font-black text-gray-50 -z-10 select-none"
-              >
-                2025
-              </motion.div>
-              <h2 className="text-4xl font-black uppercase tracking-tighter mb-8">La Genèse</h2>
-              <div className="space-y-6 text-gray-500 font-light text-lg leading-relaxed">
-                <p>
-                  Tout commence en <span className="text-nova-violet font-bold">2025</span>. Un tournant décisif s'opère dans l'écosystème béninois. Autour de <span className="text-nova-black font-bold">l'INSTI de Lokossa</span> et avec le soutien de la <span className="text-nova-black font-bold">FEUNSTIM</span> et <span className="text-nova-black font-bold">Odacesoft</span>, l'innovation trouve son arène.
-                </p>
-                <p>
-                  La première finale, tenue le 30 juillet 2025, a vu des binômes visionnaires pitcher des solutions allant de l'IA à la gestion urbaine. Un accompagnement holistique, incluant des coachings intensifs au CAEB Lokossa, a posé les bases de notre méthode.
-                </p>
-              </div>
-            </motion.div>
-            <div className="grid grid-cols-2 gap-4">
-              <motion.div 
-                whileHover={{ rotate: -5, scale: 1.05 }}
-                className="aspect-square bg-gray-50 rounded-3xl flex items-center justify-center overflow-hidden relative group"
-              >
-                <div className="absolute inset-0 bg-nova-violet/5 flex items-center justify-center">
-                   <Cpu size={48} className="text-nova-violet opacity-20" />
-                </div>
-              </motion.div>
-              <motion.div 
-                whileHover={{ rotate: 5, scale: 1.05 }}
-                className="aspect-square bg-nova-violet rounded-3xl flex items-center justify-center mt-12"
-              >
-                 <Award size={48} className="text-white" />
-              </motion.div>
-            </div>
-          </div>
-        </section>
-
-        {/* SECTION 2: MISSION ET ODD */}
-        <section className="mb-64">
-          <div className="text-center mb-24">
-            <span className="text-nova-violet font-black tracking-[0.5em] uppercase text-[10px] mb-4 block">Notre Impact</span>
-            <h2 className="text-5xl md:text-7xl font-black tracking-tighter uppercase">Transformer les Idées<br/>en Solutions <span className="text-nova-violet italic font-light">Réelles.</span></h2>
-          </div>
-          <div className="grid md:grid-cols-3 gap-8">
-            <GlassCard className="text-center group">
-              <motion.div 
-                animate={{ rotate: [0, 10, -10, 0] }}
-                transition={{ duration: 5, repeat: Infinity }}
-                className="w-16 h-16 bg-nova-violet/5 rounded-2xl flex items-center justify-center mx-auto mb-8 group-hover:bg-nova-violet group-hover:text-white transition-colors duration-500"
-              >
-                <Target size={32} />
-              </motion.div>
-              <h3 className="text-xl font-bold mb-4 uppercase">Mission ODD</h3>
-              <p className="text-gray-400 font-light leading-relaxed">
-                Aligner l'innovation tech sur les Objectifs de Développement Durable pour un impact social et économique tangible.
-              </p>
-            </GlassCard>
-            <GlassCard className="text-center group" delay={0.1}>
-              <motion.div 
-                animate={{ scale: [1, 1.1, 1] }}
-                transition={{ duration: 4, repeat: Infinity }}
-                className="w-16 h-16 bg-nova-violet/5 rounded-2xl flex items-center justify-center mx-auto mb-8 group-hover:bg-nova-violet group-hover:text-white transition-colors duration-500"
-              >
-                <Globe2 size={32} />
-              </motion.div>
-              <h3 className="text-xl font-bold mb-4 uppercase">Ancrage Local</h3>
-              <p className="text-gray-400 font-light leading-relaxed">
-                Favoriser des solutions adaptées aux réalités ouest-africaines, loin des modèles importés inadaptés.
-              </p>
-            </GlassCard>
-            <GlassCard className="text-center group" delay={0.2}>
-              <motion.div 
-                animate={{ y: [0, -5, 0] }}
-                transition={{ duration: 3, repeat: Infinity }}
-                className="w-16 h-16 bg-nova-violet/5 rounded-2xl flex items-center justify-center mx-auto mb-8 group-hover:bg-nova-violet group-hover:text-white transition-colors duration-500"
-              >
-                <Users2 size={32} />
-              </motion.div>
-              <h3 className="text-xl font-bold mb-4 uppercase">Collaboration</h3>
-              <p className="text-gray-400 font-light leading-relaxed">
-                Stimuler l'esprit entrepreneurial via des binômes obligatoires, créant un réseau soudé d'innovateurs.
-              </p>
-            </GlassCard>
-          </div>
-        </section>
-
-        {/* SECTION 4: PARTENAIRES ET SOUTIENS */}
-        <section className="mb-64">
-          <div className="flex flex-col md:flex-row justify-between items-end mb-24 gap-8">
-            <div className="max-w-xl">
-              <span className="text-nova-violet font-black tracking-[0.5em] uppercase text-[10px] mb-4 block">Écosystème</span>
-              <h2 className="text-5xl font-black tracking-tighter uppercase leading-[0.9]">Une Infrastructure de <span className="text-nova-violet italic font-light">Confiance.</span></h2>
-            </div>
-            <p className="text-gray-400 max-w-sm font-light">
-              Nous collaborons avec les leaders du secteur pour offrir un environnement propice à l'éclosion des talents.
+        {/* --- SECTION 1 : UNE PLATEFORME D'EXPRESSION --- */}
+        <section className="mb-48">
+          <ArticleText>
+            <p>
+              <span className="text-5xl font-black text-nova-violet float-left mr-4 mt-2 leading-none">L</span>e Tech Nova Challenge (TNC) est un concours d’innovation technologique dédié à la jeunesse béninoise, conçu comme une véritable plateforme d’expression, de formation et de valorisation des talents issus principalement des filières techniques et scientifiques. 
             </p>
-          </div>
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-12 items-center opacity-30">
-            {["FEUNSTIM", "ODACESOFT", "INSTI LOKOSSA", "INGCO BÉNIN"].map((partner, i) => (
-              <motion.div 
-                key={i}
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                transition={{ delay: i * 0.1 }}
-                whileHover={{ scale: 1.1, opacity: 1 }}
-                className={`text-center font-black text-2xl tracking-tighter grayscale hover:grayscale-0 transition-all cursor-default ${partner === 'INGCO BÉNIN' ? 'text-nova-violet' : ''}`}
-              >
-                {partner}
-              </motion.div>
+            <p>
+              Il offre un cadre structuré où les étudiants et jeunes professionnels identifient des problématiques concrètes de leur environnement — emploi, éducation, sécurité, cadre de vie, services numériques — pour concevoir des solutions technologiques adaptées. Ici, les idées ne restent pas des concepts abstraits : elles sont prototypées et présentées devant un jury et un public.
+            </p>
+            <p className="font-medium text-nova-black italic text-2xl md:text-3xl leading-tight border-l-4 border-nova-violet pl-8 py-4">
+              Plus qu’une simple compétition, le TNC se veut un espace d’éveil et de mobilisation du génie créatif de la jeunesse béninoise.
+            </p>
+          </ArticleText>
+        </section>
+
+        {/* --- IMAGE 1 --- */}
+        <ParallaxImage 
+          src="https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?auto=format&fit=crop&q=80&w=1600" 
+          alt="Technologie et Innovation"
+          caption="Un laboratoire d'innovations appliquées"
+        />
+
+        {/* --- SECTION 2 : L'IDÉE FONDATRICE --- */}
+        <section className="mb-48">
+          <SectionTitle subtitle="Genèse">Un Laboratoire Appliqué</SectionTitle>
+          <ArticleText>
+            <p>
+              L’idée fondatrice du TNC part du constat que le pays regorge de jeunes techniquement compétents, mais que ces derniers manquent souvent de cadres structurés pour expérimenter, confronter leurs idées à la reality et se faire repérer par des partenaires ou employeurs.
+            </p>
+            <p>
+              Le concours est donc pensé comme un laboratoire d’innovations appliquées : il accompagne les jeunes dans tout un parcours, de l’appel à candidatures à la grande finale, en passant par la pré‑sélection, le coaching, la mise en situation de pitch et la confrontation aux critères professionnels. L’idée est de transformer des projets théoriques en solutions concrètes, utiles et réalisables, capables d’apporter une valeur ajoutée palpable au Bénin et, plus largement, à l’Afrique.
+            </p>
+          </ArticleText>
+        </section>
+
+        {/* --- SECTION 3 : VISION & HUB (GLASS CARDS) --- */}
+        <section className="mb-48 grid md:grid-cols-2 gap-12">
+          <GlassCard className="bg-nova-black border-0 p-12 flex flex-col justify-between group">
+            <div>
+              <Globe className="text-nova-violet mb-8 group-hover:scale-110 transition-transform" size={48} />
+              <h3 className="text-2xl font-black uppercase text-white mb-6">La Vision</h3>
+              <p className="text-gray-400 font-light leading-relaxed">
+                Devenir, à moyen et long terme, une référence nationale puis sous‑régionale en matière d’innovation technologique portée par les jeunes. Contribuer à bâtir un écosystème où les solutions conçues localement participent directement au développement économique, social et numérique du pays.
+              </p>
+            </div>
+          </GlassCard>
+          <GlassCard className="p-12 flex flex-col justify-between group">
+            <div>
+              <Zap className="text-nova-violet mb-8 group-hover:translate-y-[-5px] transition-transform" size={48} />
+              <h3 className="text-2xl font-black uppercase text-nova-black mb-6">Le Hub</h3>
+              <p className="text-gray-500 font-light leading-relaxed">
+                Le concours se projette comme un hub d’innovation reconnu, un rendez‑vous incontournable où l’on découvre chaque année de nouvelles générations de porteurs de projets, de développeurs, de designers et de techniciens capables de répondre, par la technologie, aux grands défis de la société.
+              </p>
+            </div>
+          </GlassCard>
+        </section>
+
+        {/* --- SECTION 4 : MISSION & OBJECTIFS --- */}
+        <section className="mb-48">
+          <SectionTitle subtitle="Notre Rôle">Mission & Objectifs</SectionTitle>
+          <ArticleText>
+            <p>
+              La mission du TNC se décline autour de plusieurs axes complémentaires. D’abord, identifier et révéler les talents à travers un appel à projets ouvert et structuré. Ensuite, accompagner ces talents grâce à des activités de renforcement de capacités — coaching sur la communication, le pitch, la structuration de projet — afin de professionnaliser progressivement leur démarche.
+            </p>
+            <p>
+              Les objectifs stratégiques découlent directement de cette mission. Il s’agit notamment de promouvoir une culture de l’innovation chez les jeunes, de stimuler l’esprit d’initiative et d’entrepreneuriat, et de renforcer les compétences pratiques en conception et prototypage.
+            </p>
+          </ArticleText>
+          
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mt-16">
+            {[
+              { icon: <Target />, text: "Identifier et révéler les talents précoces." },
+              { icon: <Users2 />, text: "Favoriser le travail collaboratif en binômes." },
+              { icon: <Lightbulb />, text: "Stimuler l'esprit d'initiative disruptif." },
+              { icon: <ShieldCheck />, text: "Changer le regard porté sur la jeunesse." }
+            ].map((obj, i) => (
+              <div key={i} className="flex items-center gap-6 p-8 bg-gray-50 rounded-3xl hover:bg-nova-violet/5 transition-colors group">
+                <div className="text-nova-violet group-hover:scale-110 transition-transform">{obj.icon}</div>
+                <span className="text-sm font-black uppercase tracking-tight text-nova-black">{obj.text}</span>
+              </div>
             ))}
           </div>
+        </section>
+
+        {/* --- IMAGE 2 --- */}
+        <ParallaxImage 
+          src="https://images.unsplash.com/photo-1522071820081-009f0129c71c?auto=format&fit=crop&q=80&w=1600" 
+          alt="Collaboration et Co-working"
+          caption="Un cercle vertueux de reconnaissance et d'émulation"
+        />
+
+        {/* --- SECTION 5 : VALEURS --- */}
+        <section className="mb-48 py-24 bg-nova-black -mx-6 px-6 md:rounded-[4rem] text-white">
+          <div className="max-w-3xl mx-auto">
+            {/* Correction : ajout de la classe text-white pour que le titre soit visible sur le fond noir */}
+            <SectionTitle subtitle="ADN" className="text-white">Des Valeurs Fortes</SectionTitle>
+            <ArticleText className="text-gray-400">
+              <p>
+                Le concours s’appuie sur un ensemble de valeurs fortes qui structurent son identité. L’excellence y occupe une place centrale : les exigences sont élevées tant pour la qualité technique des solutions que pour la rigueur du processus.
+              </p>
+              <p>
+                L’équité et la transparence guident la sélection, garantissant que chaque binôme est jugé sur la pertinence de son idée et l’engagement de l’équipe. L’innovation n'est pas seulement un résultat, c'est un état d’esprit fait de curiosité et d’audace. Enfin, la responsabilité sociale est une valeur cardinale, car chaque projet vise l’amélioration concrète des conditions de vie.
+              </p>
+            </ArticleText>
+            
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-8 mt-16">
+              <div className="text-center">
+                <div className="text-nova-violet font-black text-3xl mb-2">Excellence</div>
+                <div className="text-[10px] uppercase tracking-widest text-gray-500">Rigueur absolue</div>
+              </div>
+              <div className="text-center">
+                <div className="text-nova-violet font-black text-3xl mb-2">Équité</div>
+                <div className="text-[10px] uppercase tracking-widest text-gray-500">Transparence</div>
+              </div>
+              <div className="text-center">
+                <div className="text-nova-violet font-black text-3xl mb-2">Audace</div>
+                <div className="text-[10px] uppercase tracking-widest text-gray-500">Innovation</div>
+              </div>
+              <div className="text-center">
+                <div className="text-nova-violet font-black text-3xl mb-2">Impact</div>
+                <div className="text-[10px] uppercase tracking-widest text-gray-500">Responsabilité</div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        {/* --- SECTION 6 : APPRENTISSAGE CONTINU --- */}
+        <section className="mb-48">
+          <SectionTitle subtitle="Évolution">Un Apprentissage Continu</SectionTitle>
+          <ArticleText>
+            <p>
+              Dans sa logique de fonctionnement, le Tech Nova Challenge ne se limite pas à un évènement ponctuel : il est pensé comme un processus d’apprentissage continu. Chaque édition permet de capitaliser sur les forces et faiblesses de la précédente, d’affiner les modalités et d’élargir le réseau de partenaires et de mentors.
+            </p>
+            <p>
+              Cette dynamique d’amélioration continue fait du TNC un chantier permanent où organisateurs, encadreurs et participants montent en compétence ensemble, en construisant progressivement un écosystème plus mature de l’innovation technologique au Bénin.
+            </p>
+          </ArticleText>
+          <div className="mt-16 flex justify-center">
+            <Sprout size={64} className="text-nova-violet opacity-20 animate-pulse" />
+          </div>
+        </section>
+
+        {/* --- SECTION 7 : LA PASSERELLE --- */}
+        <section className="mb-20">
+          <GlassCard className="p-16 border-nova-violet/20 bg-gradient-to-br from-white to-nova-violet/5">
+            <SectionTitle subtitle="Futur">Une Passerelle Stratégique</SectionTitle>
+            <ArticleText>
+              <p>
+                Le TNC joue pleinement un rôle de passerelle entre le monde académique et le monde professionnel. En mobilisant principalement des étudiants et jeunes diplômés, le concours crée un pont concret entre ce qui est appris dans les salles de classe et les attentes du marché du travail ou de l’entrepreneuriat technologique.
+              </p>
+              <p>
+                Les moments de pitch, les échanges avec le jury, les interactions avec les sponsors inspirent les jeunes à ajuster leur manière de concevoir un projet, pour le transformer en une solution réellement exploitable.
+              </p>
+              <p className="text-nova-black font-black uppercase text-2xl tracking-tighter mt-12 leading-none">
+                Le TNC prépare les talents qui écriront la prochaine page de l’histoire technologique du Bénin.
+              </p>
+            </ArticleText>
+            
+            <div className="mt-16 flex flex-col md:flex-row gap-8 items-center justify-between border-t border-gray-100 pt-12">
+              <div className="flex gap-4">
+                <div className="w-12 h-12 rounded-full bg-nova-violet/10 flex items-center justify-center text-nova-violet">
+                   <BookOpen size={20} />
+                </div>
+                <div className="w-12 h-12 rounded-full bg-nova-violet/10 flex items-center justify-center text-nova-violet">
+                   <GraduationCap size={20} />
+                </div>
+              </div>
+              <button 
+                onClick={() => window.location.hash = '/participate'}
+                className="text-[10px] font-black uppercase tracking-[0.4em] text-nova-violet hover:text-nova-black transition-colors"
+              >
+                Rejoindre le mouvement →
+              </button>
+            </div>
+          </GlassCard>
         </section>
 
       </div>

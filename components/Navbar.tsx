@@ -19,6 +19,14 @@ const Navbar: React.FC = () => {
 
   const isActive = (path: string) => location.pathname === path;
 
+  const navLinks = [
+    { name: 'Accueil', path: '/' },
+    { name: 'À propos', path: '/about' },
+    { name: 'Les Étapes', path: '/stages' },
+    { name: 'Règlement', path: '/rules' },
+    { name: 'Archives', path: '/archive' }
+  ];
+
   return (
     <>
       <nav className={`fixed top-0 left-0 w-full z-[100] transition-all duration-700 pointer-events-none flex justify-center pt-6`}>
@@ -38,17 +46,12 @@ const Navbar: React.FC = () => {
           </Link>
 
           {/* Desktop Links */}
-          <div className="hidden md:flex items-center gap-8 mx-12">
-            {[
-              { name: 'Home', path: '/' },
-              { name: 'About', path: '/about' },
-              { name: 'Process', path: '/process' },
-              { name: 'Archive', path: '/archive' }
-            ].map((link) => (
+          <div className="hidden md:flex items-center gap-6 mx-8">
+            {navLinks.map((link) => (
               <Link 
                 key={link.path}
                 to={link.path} 
-                className={`text-[10px] uppercase tracking-[0.3em] font-bold transition-all duration-300 relative group ${isActive(link.path) ? 'text-nova-violet' : 'text-nova-black/40 hover:text-nova-black'}`}
+                className={`text-[9px] uppercase tracking-[0.2em] font-black transition-all duration-300 relative group ${isActive(link.path) ? 'text-nova-violet' : 'text-nova-black/40 hover:text-nova-black'}`}
               >
                 {link.name}
                 {isActive(link.path) && (
@@ -63,7 +66,7 @@ const Navbar: React.FC = () => {
             <Button 
               size="sm" 
               onClick={() => navigate('/participate')}
-              className="hidden md:inline-flex text-[10px] py-3 px-8"
+              className="hidden md:inline-flex text-[9px] py-2 px-6"
             >
               Participer
             </Button>
@@ -86,14 +89,14 @@ const Navbar: React.FC = () => {
             exit={{ opacity: 0, backdropFilter: 'blur(0px)' }}
             className="fixed inset-0 z-[90] bg-white/80 md:hidden flex flex-col items-center justify-center gap-8"
           >
-            {['/', '/about', '/process', '/archive'].map((path) => (
+            {navLinks.map((link) => (
               <Link 
-                key={path}
-                to={path}
+                key={link.path}
+                to={link.path}
                 onClick={() => setMobileMenuOpen(false)}
-                className="text-4xl font-black uppercase tracking-tighter hover:text-nova-violet transition-colors"
+                className="text-2xl font-black uppercase tracking-tighter hover:text-nova-violet transition-colors"
               >
-                {path === '/' ? 'Home' : path.substring(1)}
+                {link.name}
               </Link>
             ))}
             <Button size="lg" onClick={() => { setMobileMenuOpen(false); navigate('/participate'); }} className="mt-8">Participer</Button>

@@ -4,7 +4,8 @@ import { Routes, Route, useLocation } from 'react-router-dom';
 import Navbar from './components/Navbar';
 import Home from './pages/Home';
 import About from './pages/About';
-import Process from './pages/Process';
+import Stages from './pages/Stages';
+import Rules from './pages/Rules';
 import Participate from './pages/Participate';
 import Archive from './pages/Archive';
 
@@ -22,7 +23,8 @@ const App: React.FC = () => {
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/about" element={<About />} />
-          <Route path="/process" element={<Process />} />
+          <Route path="/stages" element={<Stages />} />
+          <Route path="/rules" element={<Rules />} />
           <Route path="/archive" element={<Archive />} />
           <Route path="/participate" element={<Participate />} />
         </Routes>
@@ -38,7 +40,6 @@ const App: React.FC = () => {
           <div className="flex gap-8 text-sm font-medium">
             <a href="#" className="hover:text-nova-violet transition-colors">Twitter</a>
             <a href="#" className="hover:text-nova-violet transition-colors">LinkedIn</a>
-            <a href="#" className="hover:text-nova-violet transition-colors">Instagram</a>
           </div>
         </div>
       </footer>
