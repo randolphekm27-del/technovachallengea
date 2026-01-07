@@ -1,6 +1,5 @@
-
 import React, { useRef } from 'react';
-import { motion, useScroll, useTransform } from 'framer-motion';
+import { motion } from 'framer-motion';
 import { useNavigate } from 'react-router-dom';
 import { 
   Trophy, Globe, Zap, Users, MessageSquare, 
@@ -23,37 +22,94 @@ const Home: React.FC = () => {
         <div className="absolute top-1/4 left-10 w-64 h-64 bg-nova-violet/5 blur-[100px] rounded-full pointer-events-none" />
         <div className="absolute bottom-1/4 right-10 w-96 h-96 bg-nova-violet/5 blur-[120px] rounded-full pointer-events-none" />
 
-        <div className="container mx-auto px-6 relative z-10 text-center">
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
-          >
+        <div className="container mx-auto px-6 relative z-10">
+          <div className="grid lg:grid-cols-2 gap-16 items-center">
             <motion.div
-              initial={{ opacity: 0, scale: 0.9 }}
-              animate={{ opacity: 1, scale: 1 }}
-              transition={{ delay: 0.2 }}
-              className="inline-block mb-8"
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
+              className="text-left"
             >
-              <span className="text-nova-violet font-black tracking-[0.4em] uppercase text-[9px] border border-nova-violet/20 px-4 py-2 rounded-full">
-                Bénin • Innovation • Excellence
-              </span>
+              <motion.div
+                initial={{ opacity: 0, scale: 0.9 }}
+                animate={{ opacity: 1, scale: 1 }}
+                transition={{ delay: 0.2 }}
+                className="inline-block mb-8"
+              >
+                <span className="text-nova-violet font-black tracking-[0.4em] uppercase text-[9px] border border-nova-violet/20 px-4 py-2 rounded-full">
+                  Bénin • Innovation • Excellence
+                </span>
+              </motion.div>
+
+              <h1 className="editorial-title text-[clamp(2rem,5.5vw,4.5rem)] font-black text-nova-black leading-tight mb-8 tracking-tighter">
+                TECH NOVA CHALLENGE – <br />
+                <span className="text-nova-violet italic font-light">L'INNOVATION AU CŒUR DU FUTUR DU BÉNIN.</span>
+              </h1>
+
+              <p className="text-lg md:text-xl text-gray-500 font-light mb-14 leading-relaxed max-w-xl">
+                Une compétition nationale qui stimule la créativité, l'entrepreneuriat et l'excellence chez les jeunes talents techniques et scientifiques.
+              </p>
+
+              <div className="flex flex-col sm:flex-row items-start gap-6">
+                <Button size="md" onClick={() => navigate('/edition-2026')}>Je découvre l'édition 2026</Button>
+                <Button size="md" variant="outline" onClick={() => navigate('/laureats-2025')}>Voir les lauréats 2025</Button>
+              </div>
             </motion.div>
 
-            <h1 className="editorial-title text-[clamp(2rem,5.5vw,4.5rem)] font-black text-nova-black leading-tight mb-8 max-w-5xl mx-auto tracking-tighter">
-              TECH NOVA CHALLENGE – <br />
-              <span className="text-nova-violet italic font-light">L’INNOVATION AU CŒUR DU FUTUR DU BÉNIN.</span>
-            </h1>
+            {/* IMAGE DANS FORME GÉOMÉTRIQUE MODERNE */}
+            <motion.div
+              initial={{ opacity: 0, x: 40 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ duration: 0.8, delay: 0.4, ease: [0.16, 1, 0.3, 1] }}
+              className="relative flex justify-center lg:justify-end"
+            >
+              <div className="relative w-full max-w-lg">
+                {/* Forme géométrique polygonale - Hexagone déstructuré */}
+                <div className="relative">
+                  {/* Conteneur de l'image avec clip-path polygon */}
+                  <div className="relative z-10 overflow-hidden 
+                    w-full aspect-square max-w-[500px] 
+                    bg-gradient-to-br from-nova-violet/5 to-transparent
+                    [clip-path:polygon(50%_0%,90%_20%,100%_60%,75%_100%,25%_100%,0%_60%,10%_20%)]
+                    shadow-[0_20px_60px_-10px_rgba(124,58,237,0.1)]
+                    hover:shadow-[0_30px_80px_-15px_rgba(124,58,237,0.2)]
+                    transition-all duration-700
+                    group">
+                    
+                    {/* Image de fond */}
+                    <div 
+                      className="absolute inset-0 bg-[url('https://drive.google.com/uc?export=view&id=1klJ7UIeO3dckZ5jEc3_y3hp7irWuVkdT')] 
+                        bg-cover bg-center bg-no-repeat
+                        group-hover:scale-105
+                        transition-transform duration-700 ease-out"
+                    />
+                    
+                    {/* Overlay de dégradé pour améliorer la lisibilité */}
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/5 via-transparent to-transparent" />
+                  </div>
 
-            <p className="text-lg md:text-xl text-gray-500 font-light max-w-2xl mx-auto mb-14 leading-relaxed">
-              Une compétition nationale qui stimule la créativité, l’entrepreneuriat et l’excellence chez les jeunes talents techniques et scientifiques.
-            </p>
+                  {/* Effets visuels flottants */}
+                  <div className="absolute -top-4 -right-4 w-24 h-24 bg-nova-violet/10 
+                    [clip-path:polygon(50%_0%,100%_50%,50%_100%,0%_50%)]
+                    animate-pulse-slow" />
+                  
+                  <div className="absolute -bottom-6 -left-6 w-32 h-32 bg-nova-violet/5 
+                    [clip-path:polygon(25%_0%,75%_0%,100%_50%,75%_100%,25%_100%,0%_50%)]
+                    animate-pulse-slow delay-300" />
+                  
+                  <div className="absolute top-1/2 -right-8 w-16 h-16 bg-nova-violet/15 
+                    [clip-path:polygon(50%_0%,100%_38%,82%_100%,18%_100%,0%_38%)]
+                    animate-pulse-slow delay-500" />
+                </div>
 
-            <div className="flex flex-col sm:flex-row items-center justify-center gap-6">
-              <Button size="md" onClick={() => navigate('/edition-2026')}>Je découvre l’édition 2026</Button>
-              <Button size="md" variant="outline" onClick={() => navigate('/laureats-2025')}>Voir les lauréats 2025</Button>
-            </div>
-          </motion.div>
+                {/* Légère ombre portée pour effet de flottement */}
+                <div className="absolute -z-10 inset-0 translate-y-6 translate-x-6 
+                  w-full aspect-square max-w-[500px]
+                  [clip-path:polygon(50%_0%,90%_20%,100%_60%,75%_100%,25%_100%,0%_60%,10%_20%)]
+                  bg-gradient-to-br from-nova-violet/20 to-transparent blur-xl" />
+              </div>
+            </motion.div>
+          </div>
         </div>
       </section>
 
@@ -64,11 +120,11 @@ const Home: React.FC = () => {
             <div>
               <span className="text-nova-violet font-bold tracking-[0.5em] uppercase text-[10px] block mb-8">Définition</span>
               <h2 className="text-4xl md:text-5xl font-black uppercase tracking-tighter mb-10 leading-none text-nova-black">
-                Qu’est-ce que le <br /><span className="text-nova-violet">Tech Nova Challenge ?</span>
+                Qu'est-ce que le <br /><span className="text-nova-violet">Tech Nova Challenge ?</span>
               </h2>
               <p className="text-xl text-gray-500 font-light leading-relaxed mb-12">
-                Le Tech Nova Challenge est la première compétition d’innovation technologique au Bénin destinée aux étudiants âgés de 15 à 25 ans. 
-                Elle a pour objectif de valoriser les projets techniques novateurs, d’accompagner les jeunes innovateurs et de créer un écosystème favorable à l’entrepreneuriat technologique.
+                Le Tech Nova Challenge est la première compétition d'innovation technologique au Bénin destinée aux étudiants âgés de 15 à 25 ans. 
+                Elle a pour objectif de valoriser les projets techniques novateurs, d'accompagner les jeunes innovateurs et de créer un écosystème favorable à l'entrepreneuriat technologique.
               </p>
               <button 
                 onClick={() => navigate('/about')}
@@ -101,11 +157,11 @@ const Home: React.FC = () => {
           <div className="text-center mb-24">
             <span className="text-nova-violet font-bold tracking-[0.5em] uppercase text-[10px] block mb-8">Prochaine Saison</span>
             <h2 className="text-4xl md:text-6xl font-black uppercase mb-10">
-              Édition 2026 – L’impact des <br />
+              Édition 2026 – L'impact des <br />
               <span className="text-nova-violet italic font-light">Technologies Émergentes.</span>
             </h2>
             <p className="text-xl text-gray-400 max-w-3xl mx-auto font-light leading-relaxed">
-              Pour sa deuxième édition, le Tech Nova Challenge explore les opportunités et les défis des technologies émergentes (IA, IoT, énergie verte, numérique…) dans la création d’entreprises innovantes au Bénin.
+              Pour sa deuxième édition, le Tech Nova Challenge explore les opportunités et les défis des technologies émergentes (IA, IoT, énergie verte, numérique…) dans la création d'entreprises innovantes au Bénin.
             </p>
           </div>
 
@@ -126,7 +182,7 @@ const Home: React.FC = () => {
           </div>
 
           <div className="text-center">
-            <Button size="lg" onClick={() => navigate('/participate')}>Je m’inscris à l’édition 2026</Button>
+            <Button size="lg" onClick={() => navigate('/participate')}>Je m'inscris à l'édition 2026</Button>
           </div>
         </div>
         <div className="absolute top-0 right-0 w-[50vw] h-[50vw] bg-nova-violet/10 blur-[150px] rounded-full -translate-y-1/2 translate-x-1/2" />
@@ -149,9 +205,9 @@ const Home: React.FC = () => {
 
           <div className="grid lg:grid-cols-3 gap-8">
             {[
-              { rank: "1er Prix", names: "Béoula BOKO & Siméon NTCHA", project: "Motopompe diesel intelligente", desc: "Pour l’irrigation en zone rurale.", prize: "150 000 FCFA + Accompagnement" },
-              { rank: "2e Prix", names: "ISSAKA Awa & FOLARIN Mourchid", project: "Innovation thermique", desc: "Pour l’agroalimentaire béninois.", prize: "100 000 FCFA" },
-              { rank: "3e Prix", names: "ROUFAI Aissatou & ZANVO Horeb", project: "Application ELEVATE", desc: "Réseau social d’orientation.", prize: "50 000 FCFA" }
+              { rank: "1er Prix", names: "Béoula BOKO & Siméon NTCHA", project: "Motopompe diesel intelligente", desc: "Pour l'irrigation en zone rurale.", prize: "150 000 FCFA + Accompagnement" },
+              { rank: "2e Prix", names: "ISSAKA Awa & FOLARIN Mourchid", project: "Innovation thermique", desc: "Pour l'agroalimentaire béninois.", prize: "100 000 FCFA" },
+              { rank: "3e Prix", names: "ROUFAI Aissatou & ZANVO Horeb", project: "Application ELEVATE", desc: "Réseau social d'orientation.", prize: "50 000 FCFA" }
             ].map((w, i) => (
               <GlassCard key={i} className={`p-12 hover:shadow-2xl transition-all ${i === 0 ? 'ring-2 ring-nova-violet ring-offset-8' : ''}`}>
                 <div className="text-nova-violet mb-8"><Trophy size={40} /></div>
@@ -209,7 +265,7 @@ const Home: React.FC = () => {
             <GlassCard className="p-12 bg-gradient-to-br from-white to-gray-50">
               <MessageSquare className="text-nova-violet mb-8" size={32} />
               <p className="text-xl font-light italic mb-12 leading-relaxed text-nova-black">
-                « Soutenir cette initiative, c’est investir dans l’avenir technologique du Bénin. »
+                « Soutenir cette initiative, c'est investir dans l'avenir technologique du Bénin. »
               </p>
               <div>
                 <div className="text-nova-violet font-black uppercase tracking-widest text-sm">Mahomed SALIFOU</div>
@@ -236,7 +292,7 @@ const Home: React.FC = () => {
               placeholder="Entrez votre e-mail" 
               className="flex-grow bg-white/5 border border-white/10 rounded-full px-10 py-5 outline-none focus:ring-2 ring-nova-violet transition-all text-white"
             />
-            <Button size="md">S’abonner</Button>
+            <Button size="md">S'abonner</Button>
           </div>
 
           <div className="flex justify-center gap-12 text-gray-400 mb-16">
