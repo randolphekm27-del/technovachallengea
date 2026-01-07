@@ -54,7 +54,7 @@ const Home: React.FC = () => {
                </h1>
 
               <p className="text-xl text-gray-400 font-light max-w-xl mb-14 leading-relaxed">
-                Une plateforme d'excellence dédiée aux talents de demain. Transformez vos idées en solutions concrètes pour bâtir l'avenir de notre nation.
+                Une compétition nationale qui stimule la créativité, l’entrepreneuriat et l’excellence chez les jeunes talents techniques et scientifiques.
               </p>
 
               <div className="flex flex-wrap items-center gap-8">
