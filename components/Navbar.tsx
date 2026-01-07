@@ -19,6 +19,9 @@ const Navbar: React.FC = () => {
 
   const isActive = (path: string) => location.pathname === path;
 
+  // Pages ayant un header plein écran sombre
+  const isDarkHeroPage = ['/about', '/edition-2026', '/laureats-2025', '/partenaires', '/contact'].includes(location.pathname);
+
   const navLinks = [
     { name: 'Accueil', path: '/' },
     { name: 'À propos', path: '/about' },
@@ -27,8 +30,21 @@ const Navbar: React.FC = () => {
     { name: 'Partenaires', path: '/partenaires' },
   ];
 
-  // Raw Google Drive link for the logo
   const logoSrc = "https://lh3.googleusercontent.com/d/1unzmI9yrKSgdAupyyrxAHRKCcB1ak_Z7";
+
+  // Déterminer la couleur du texte en fonction du défilement et du type de page
+  const getTextColorClass = () => {
+    if (scrolled) return 'text-nova-black';
+    if (isDarkHeroPage) return 'text-white';
+    return 'text-nova-black';
+  };
+
+  const getLinkColorClass = (path: string) => {
+    if (isActive(path)) return 'text-nova-violet';
+    if (scrolled) return 'text-nova-black/50 hover:text-nova-black';
+    if (isDarkHeroPage) return 'text-white/70 hover:text-white';
+    return 'text-nova-black/50 hover:text-nova-black';
+  };
 
   return (
     <>
@@ -42,16 +58,12 @@ const Navbar: React.FC = () => {
             transition-all duration-700 ease-in-out
           `}
         >
-          {/* Logo - Image replaced text */}
+          {/* Logo */}
           <Link to="/" className="flex items-center">
             <img 
               src={logoSrc} 
               alt="Tech Nova Challenge Logo" 
-              className="h-10 md:h-12 w-auto object-contain border border-gray-100 rounded-lg p-1 bg-white/50"
-              onError={(e) => {
-                // Fallback UI in case of loading error
-                (e.target as HTMLImageElement).style.display = 'none';
-              }}
+              className={`h-10 md:h-12 w-auto object-contain rounded-lg p-1 transition-all duration-500 ${scrolled ? 'bg-white/50 border border-gray-100' : isDarkHeroPage ? 'bg-white border-white' : 'bg-white/50 border border-gray-100'}`}
             />
           </Link>
 
@@ -61,7 +73,7 @@ const Navbar: React.FC = () => {
               <Link
                 key={link.path}
                 to={link.path}
-                className={`text-[9px] uppercase tracking-[0.25em] font-black transition-all duration-300 relative py-2 ${isActive(link.path) ? 'text-nova-violet' : 'text-nova-black/50 hover:text-nova-black'}`}
+                className={`text-[9px] uppercase tracking-[0.25em] font-black transition-all duration-300 relative py-2 ${getLinkColorClass(link.path)}`}
               >
                 {link.name}
                 {isActive(link.path) && (
@@ -75,15 +87,15 @@ const Navbar: React.FC = () => {
           <div className="flex items-center gap-4">
             <Button 
               size="sm" 
-              variant="primary"
+              variant={scrolled ? "primary" : isDarkHeroPage ? "outline" : "primary"}
               onClick={() => navigate('/participate')}
-              className="hidden md:inline-flex text-[9px] py-2 px-6"
+              className={`hidden md:inline-flex text-[9px] py-2 px-6 transition-all duration-500 ${!scrolled && isDarkHeroPage ? 'border-white text-white hover:bg-white hover:text-nova-black' : ''}`}
             >
               Participer
             </Button>
             <button 
               onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-              className="md:hidden p-2 text-nova-black"
+              className={`md:hidden p-2 transition-colors duration-500 ${scrolled ? 'text-nova-black' : isDarkHeroPage ? 'text-white' : 'text-nova-black'}`}
             >
               {mobileMenuOpen ? <X size={20} /> : <Menu size={20} />}
             </button>

@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { motion } from 'framer-motion';
 
@@ -15,11 +14,11 @@ const GlassCard: React.FC<GlassCardProps> = ({ children, className = '', delay =
       whileInView={{ opacity: 1, y: 0 }}
       whileHover={{ y: -5, scale: 1.01, rotate: 0.5 }}
       viewport={{ once: true, margin: "-50px" }}
+      // Fix: Removed 'hover' property from transition object as it is not a valid property in Framer Motion's Transition type definition.
       transition={{ 
         duration: 0.8, 
         delay, 
-        ease: [0.16, 1, 0.3, 1],
-        hover: { duration: 0.3 }
+        ease: [0.16, 1, 0.3, 1]
       }}
       className={`glass rounded-[2.5rem] p-10 soft-border shadow-sm hover:shadow-2xl transition-all duration-500 ${className}`}
     >
