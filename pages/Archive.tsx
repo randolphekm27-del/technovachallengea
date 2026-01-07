@@ -1,12 +1,12 @@
 
 import React, { useRef } from 'react';
 import { motion, useScroll, useTransform, useSpring, useInView } from 'framer-motion';
+import { useNavigate } from 'react-router-dom';
 import { Trophy, Users, Star, Calendar, ArrowUpRight, History } from 'lucide-react';
 import GlassCard from '../components/GlassCard';
 import Button from '../components/Button';
 
 // Un composant pour des titres qui se décalent au scroll
-// Fix: Use React.FC with an explicit props interface to ensure compatibility with JSX and fix "property children missing" errors in some TypeScript environments
 interface ParallaxTextProps {
   children: React.ReactNode;
   baseVelocity?: number;
@@ -83,6 +83,8 @@ const CinematicGalleryItem = ({ src, alt, year, delay }: { src: string, alt: str
 };
 
 const Archive: React.FC = () => {
+  // Initialize navigate for routing
+  const navigate = useNavigate();
   const containerRef = useRef<HTMLDivElement>(null);
   const { scrollYProgress } = useScroll({
     target: containerRef,
@@ -105,7 +107,7 @@ const Archive: React.FC = () => {
   return (
     <div ref={containerRef} className="relative bg-white selection:bg-nova-violet selection:text-white">
       
-      {/* 1. HERO ARCHIVE — MONUMENTAL */}
+      {/* 1. HERO ARCHIVE */}
       <section className="relative h-screen flex flex-col items-center justify-center px-6 overflow-hidden">
         <motion.div 
           style={{ opacity: heroOpacity, scale: heroScale }}
@@ -132,7 +134,6 @@ const Archive: React.FC = () => {
           </p>
         </motion.div>
 
-        {/* Arrière-plan animé */}
         <div className="absolute inset-0 -z-10 flex items-center justify-center opacity-[0.03]">
           <div className="w-[150vw] h-[150vw] border-[1px] border-nova-black rounded-full animate-pulse" />
           <div className="absolute w-[100vw] h-[100vw] border-[1px] border-nova-black rounded-full" />
@@ -140,14 +141,14 @@ const Archive: React.FC = () => {
         </div>
       </section>
 
-      {/* 2. TEXTE DÉFILANT — DYNAMISME ÉDITORIAL */}
+      {/* 2. TEXTE DÉFILANT */}
       <div className="py-20 border-y border-gray-50 bg-white z-20 relative">
         <ParallaxText baseVelocity={-20}>NOVA 2025 EDITION</ParallaxText>
         <ParallaxText baseVelocity={20}>LA RENAISSANCE TECHNOLOGIQUE</ParallaxText>
       </div>
 
-      {/* 3. LE RÉCIT — STORYTELLING VISUEL */}
-      <section className="py-64 px-6 bg-white overflow-hidden">
+      {/* 3. LE RÉCIT */}
+      <section id="winners-story" className="py-64 px-6 bg-white overflow-hidden">
         <div className="container mx-auto">
           <div className="grid lg:grid-cols-12 gap-24 items-start">
             <div className="lg:col-span-5 sticky top-40">
@@ -189,7 +190,6 @@ const Archive: React.FC = () => {
                    </div>
                    <span className="text-[10px] font-black uppercase tracking-widest text-nova-violet">DÉCOUVRIR LE PROJET</span>
                 </div>
-                {/* Décoration arrière-plan */}
                 <div className="absolute -bottom-20 -right-20 w-80 h-80 bg-nova-violet/20 blur-[120px] rounded-full" />
               </GlassCard>
 
@@ -210,8 +210,8 @@ const Archive: React.FC = () => {
         </div>
       </section>
 
-      {/* 4. LA GALERIE CINÉMATIQUE — GRILLE ASYMÉTRIQUE */}
-      <section className="py-40 px-6 bg-nova-black overflow-hidden">
+      {/* 4. LA GALERIE CINÉMATIQUE */}
+      <section id="gallery" className="py-40 px-6 bg-nova-black overflow-hidden">
         <div className="container mx-auto">
           <div className="mb-32 flex flex-col md:flex-row justify-between items-end gap-12">
             <div className="max-w-2xl">
@@ -235,7 +235,7 @@ const Archive: React.FC = () => {
         </div>
       </section>
 
-      {/* 5. PASSAGE DE FLAMBEAU — FINAL CTA */}
+      {/* 5. PASSAGE DE FLAMBEAU */}
       <section className="relative py-80 bg-white overflow-hidden px-6 text-center">
         <motion.div 
           initial={{ opacity: 0, y: 50 }}
@@ -251,7 +251,7 @@ const Archive: React.FC = () => {
           </h2>
           
           <div className="flex flex-col md:flex-row items-center justify-center gap-8">
-            <Button size="lg" onClick={() => window.location.hash = '/participate'}>Participer en 2025</Button>
+            <Button size="lg" onClick={() => navigate('/participate')}>Participer en 2026</Button>
             <button className="text-[10px] font-black uppercase tracking-[0.3em] text-gray-400 hover:text-nova-black transition-colors">
               Voir le palmarès complet
             </button>
@@ -261,8 +261,6 @@ const Archive: React.FC = () => {
             Tech Nova Challenge — Powered by Innovation
           </p>
         </motion.div>
-
-        {/* Effet visuel final */}
         <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[100vw] h-[100vw] bg-nova-violet/5 blur-[150px] rounded-full -z-10" />
       </section>
 
