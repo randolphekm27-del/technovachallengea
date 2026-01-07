@@ -27,6 +27,9 @@ const Navbar: React.FC = () => {
     { name: 'Partenaires', path: '/partenaires' },
   ];
 
+  // Raw Google Drive link for the logo
+  const logoSrc = "https://lh3.googleusercontent.com/d/1unzmI9yrKSgdAupyyrxAHRKCcB1ak_Z7";
+
   return (
     <>
       <nav className="fixed top-0 left-0 w-full z-[100] transition-all duration-700 pointer-events-none flex justify-center pt-6">
@@ -39,10 +42,17 @@ const Navbar: React.FC = () => {
             transition-all duration-700 ease-in-out
           `}
         >
-          {/* Logo */}
-          <Link to="/" className="text-sm md:text-base font-black tracking-tighter text-nova-black flex items-center gap-2">
-            <div className="w-6 h-6 bg-nova-violet rounded-full flex-shrink-0" />
-            <span className="hidden sm:inline uppercase">TECH NOVA <span className="text-nova-violet italic font-light">CHALLENGE</span></span>
+          {/* Logo - Image replaced text */}
+          <Link to="/" className="flex items-center">
+            <img 
+              src={logoSrc} 
+              alt="Tech Nova Challenge Logo" 
+              className="h-10 md:h-12 w-auto object-contain border border-gray-100 rounded-lg p-1 bg-white/50"
+              onError={(e) => {
+                // Fallback UI in case of loading error
+                (e.target as HTMLImageElement).style.display = 'none';
+              }}
+            />
           </Link>
 
           {/* Desktop Links */}
@@ -90,6 +100,9 @@ const Navbar: React.FC = () => {
             exit={{ opacity: 0, x: '100%' }}
             className="fixed inset-0 z-[90] bg-white md:hidden flex flex-col pt-32 px-8"
           >
+            <Link to="/" onClick={() => setMobileMenuOpen(false)} className="mb-12">
+              <img src={logoSrc} alt="Logo" className="h-16 w-auto border border-gray-100 rounded-xl p-2" />
+            </Link>
             {navLinks.map((link) => (
               <Link
                 key={link.path}
