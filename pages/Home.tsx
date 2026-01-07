@@ -49,9 +49,9 @@ const Home: React.FC = () => {
               </motion.div>
 
               <h1 className="editorial-title text-[clamp(2.5rem,5.5vw,5rem)] font-black text-nova-black leading-[0.95] mb-10 tracking-tighter">
-                TECH NOVA <br />
-                <span className="text-nova-violet italic font-light">L’INNOVATION AU CŒUR DU BÉNIN.</span>
-              </h1>
+  TECH NOVA <span className="text-nova-violet">CHALLENGE</span> <br />
+  <span className="text-nova-violet italic font-light">L'INNOVATION AU CŒUR DU BÉNIN.</span>
+               </h1>
 
               <p className="text-xl text-gray-400 font-light max-w-xl mb-14 leading-relaxed">
                 Une plateforme d'excellence dédiée aux talents de demain. Transformez vos idées en solutions concrètes pour bâtir l'avenir de notre nation.
