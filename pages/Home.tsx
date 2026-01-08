@@ -11,23 +11,52 @@ import {
 import Button from '../components/Button';
 import GlassCard from '../components/GlassCard';
 
-// Composant pour l'animation de flottement des icônes
-const FloatingIcon = ({ children, delay = 0 }: { children: React.ReactNode, delay?: number }) => (
-  <motion.div
-    animate={{ 
-      y: [0, -8, 0],
-      rotate: [0, 2, 0]
-    }}
-    transition={{ 
-      duration: 5, 
-      repeat: Infinity, 
-      ease: "easeInOut",
-      delay 
-    }}
-  >
-    {children}
-  </motion.div>
-);
+// Nouveau composant de parrainage asymétrique
+const PatronageCard = ({ label, name, sub, img, delay }: { label: string, name: string, sub: string, img: string, delay: number }) => {
+  return (
+    <div className="relative pt-16 pb-8 px-4 md:px-0">
+      <motion.div
+        initial={{ opacity: 0, x: -20 }}
+        whileInView={{ opacity: 1, x: 0 }}
+        viewport={{ once: true }}
+        transition={{ duration: 0.8, delay }}
+        className="relative flex items-center group cursor-default"
+      >
+        {/* Couche Inférieure: Carte de Texte (Glassmorphism) */}
+        <motion.div
+          whileHover={{ scale: 0.95 }}
+          transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
+          className="relative z-10 ml-16 md:ml-24 w-full bg-white/80 backdrop-blur-[12px] rounded-[2rem] md:rounded-[2.5rem] p-8 md:p-12 border-[0.5px] border-[#6A00FF] shadow-sm"
+        >
+          <div className="flex flex-col">
+            <span className="text-[#6A00FF] font-black uppercase tracking-[0.4em] text-[9px] md:text-[10px] mb-4">
+              {label}
+            </span>
+            <h3 className="text-nova-black font-black text-xl md:text-3xl uppercase tracking-tighter leading-none mb-2">
+              {name}
+            </h3>
+            <span className="text-gray-400 font-medium text-[9px] md:text-[11px] uppercase tracking-[0.2em] opacity-80">
+              {sub}
+            </span>
+          </div>
+        </motion.div>
+
+        {/* Couche Supérieure: Image PNG (Pop-out effect) */}
+        <motion.div
+          whileHover={{ scale: 1.1, y: -10 }}
+          transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
+          className="absolute left-0 top-0 z-20 w-32 h-44 md:w-56 md:h-72 -mt-12 -ml-4 md:-ml-8 pointer-events-none"
+        >
+          <img
+            src={img}
+            alt={name}
+            className="w-full h-full object-contain filter drop-shadow-[0_25px_35px_rgba(0,0,0,0.35)]"
+          />
+        </motion.div>
+      </motion.div>
+    </div>
+  );
+};
 
 const Home: React.FC = () => {
   const navigate = useNavigate();
@@ -146,70 +175,58 @@ const Home: React.FC = () => {
         </div>
       </section>
 
-      {/* SESSION 3 : ANCRAGE INSTITUTIONNEL (MIS À JOUR AVEC IMAGES) */}
-      <section className="py-48 px-6 bg-gray-50 border-y border-gray-100">
+      {/* SESSION 3 : ANCRAGE INSTITUTIONNEL (REFAIT AVEC COMPOSANT ASYMÉTRIQUE) */}
+      <section className="py-48 px-6 bg-gray-50 border-y border-gray-100 overflow-visible">
         <div className="container mx-auto max-w-6xl">
-          <div className="grid lg:grid-cols-12 gap-24 items-start">
+          <div className="grid lg:grid-cols-12 gap-16 md:gap-24 items-start">
             <motion.div 
               initial={{ opacity: 0, x: -30 }}
               whileInView={{ opacity: 1, x: 0 }}
               viewport={{ once: true }}
-              className="lg:col-span-6"
+              className="lg:col-span-5"
             >
               <span className="text-nova-violet font-bold tracking-[0.5em] uppercase text-[10px] block mb-10">Ancrage Institutionnel</span>
               <h2 className="text-4xl md:text-6xl font-black uppercase tracking-tighter text-nova-black leading-none mb-12">
-                UN SOUTIEN <br /><span className="text-nova-violet">DE HAUT NIVEAU.</span>
+                UN SOUTIEN <br /><span className="text-[#6A00FF]">DE HAUT NIVEAU.</span>
               </h2>
               <div className="space-y-12 text-lg text-gray-500 font-light leading-relaxed">
                 <p>
-                  Son organisation est placée sous le patronage officiel de la direction de l'École Nationale Supérieure d'Enseignement Technique (**ENSET**), représentée par le **Professeur Titulaire Gustave DJEDATIN**, et de l'Institut National Supérieur de Technologie Industrielle (**INSTI**), représenté par la **Professeur Titulaire Clotilde GUIDI TOGNON**, respectivement parrain et marraine de l'édition inaugurale.
+                  Son organisation est placée sous le patronage officiel des directions de l'École Nationale Supérieure d'Enseignement Technique (**ENSET**) et de l'Institut National Supérieur de Technologie Industrielle (**INSTI**).
                 </p>
                 <div className="p-10 bg-white rounded-[2.5rem] border border-nova-violet/10 flex items-center gap-8 group hover:shadow-xl transition-all">
-                  <div className="w-16 h-16 bg-nova-violet/5 rounded-2xl flex items-center justify-center text-nova-violet">
+                  <div className="w-16 h-16 bg-nova-violet/5 rounded-2xl flex items-center justify-center text-[#6A00FF]">
                     <HeartHandshake size={32} />
                   </div>
                   <div>
-                    <span className="text-[10px] font-black uppercase tracking-widest text-nova-violet">Partenaire Officiel</span>
-                    <div className="text-2xl font-black text-nova-black mt-1">WISANE (INGCO)</div>
+                    <span className="text-[10px] font-black uppercase tracking-widest text-[#6A00FF]">Partenaire Officiel</span>
+                    <div className="text-2xl font-black text-nova-black mt-1 uppercase">WISANE (INGCO)</div>
                   </div>
                 </div>
               </div>
             </motion.div>
 
-            <div className="lg:col-span-6 space-y-8">
-              {[
-                { 
-                  label: "Parrainage", 
-                  name: "Prof. Gustave DJEDATIN", 
-                  sub: "Directeur de l'ENSET",
-                  img: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&q=80&w=400" 
-                },
-                { 
-                  label: "Marrainage", 
-                  name: "Prof. Clotilde GUIDI TOGNON", 
-                  sub: "Directrice de l'INSTI",
-                  img: "https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?auto=format&fit=crop&q=80&w=400" 
-                }
-              ].map((item, i) => (
-                <GlassCard key={i} delay={i * 0.1} className="p-8 border-nova-violet/10 bg-white">
-                  <div className="flex items-center gap-8">
-                    <div className="w-24 h-24 rounded-2xl overflow-hidden grayscale group-hover:grayscale-0 transition-all duration-700 flex-shrink-0">
-                      <img src={item.img} alt={item.name} className="w-full h-full object-cover" />
-                    </div>
-                    <div>
-                      <div className="text-nova-violet font-black uppercase text-[10px] tracking-widest mb-2">{item.label}</div>
-                      <div className="text-nova-black font-black text-xl uppercase leading-tight">{item.name}</div>
-                      <div className="text-gray-400 text-[11px] mt-2 uppercase font-medium tracking-tight">{item.sub}</div>
-                    </div>
-                  </div>
-                </GlassCard>
-              ))}
+            <div className="lg:col-span-7 space-y-16 md:space-y-20 pt-12 lg:pt-0">
+               <PatronageCard 
+                 label="PARRAINAGE"
+                 name="Prof. Gustave DJEDATIN"
+                 sub="DIRECTEUR DE L'ENSET"
+                 img="https://lh3.googleusercontent.com/d/1yDq595M_rA74uUatJj6k-uN_p_fQ7G9F"
+                 delay={0.2}
+               />
+               
+               <PatronageCard 
+                 label="MARRAINAGE"
+                 name="Prof. Clotilde GUIDI TOGNON"
+                 sub="DIRECTRICE DE L'INSTI"
+                 img="https://lh3.googleusercontent.com/d/1vQG_H8-p-q-m_p-q-m_p-q-m_p-q-m_p"
+                 delay={0.4}
+               />
             </div>
           </div>
         </div>
       </section>
 
-      {/* SESSION 4 : CIBLE & ACCESSIBILITÉ (RÉÉCRIT) */}
+      {/* SESSION 4 : CIBLE & ACCESSIBILITÉ */}
       <section className="py-48 px-6 bg-white overflow-hidden">
         <div className="container mx-auto max-w-5xl">
           <header className="text-center mb-32">
@@ -281,7 +298,7 @@ const Home: React.FC = () => {
         </div>
       </section>
 
-      {/* SESSION 5 : ACCOMPAGNEMENT (TITRE ENRICHI) */}
+      {/* SESSION 5 : ACCOMPAGNEMENT */}
       <section className="py-48 px-6 bg-gray-50 border-y border-gray-100">
         <div className="container mx-auto max-w-6xl">
           <div className="grid lg:grid-cols-12 gap-24 items-center">

@@ -3,7 +3,7 @@ import React from 'react';
 import { motion } from 'framer-motion';
 import { 
   Trophy, Award, CheckCircle2, ArrowDown, 
-  Quote, Microscope, Play, Building2, ExternalLink
+  Quote, Microscope, Building2, User
 } from 'lucide-react';
 import GlassCard from '../components/GlassCard';
 import Button from '../components/Button';
@@ -27,6 +27,7 @@ const Winners2025: React.FC = () => {
       names: "BOKO Béoula & NTCHA Siméon",
       school: "ENSET Lokossa – Fabrication Mécanique 1ère année",
       project: "Motopompe Diesel Intelligente pour l'Irrigation Rurale",
+      src: "https://images.unsplash.com/photo-1581092918056-0c4c3acd3789?auto=format&fit=crop&q=80&w=800",
       desc: "Une motopompe diesel repensée avec un système de contrôle automatique de débit et de consommation, spécialement conçue pour les petits agriculteurs des zones rurales. Elle permet une irrigation autonome, réduit les coûts de carburant de 30% et augmente l'efficacité d'arrosage.",
       impacts: [
         "Réduction des coûts d'irrigation",
@@ -42,6 +43,7 @@ const Winners2025: React.FC = () => {
       names: "ISSAKA Awa & FOLARIN Mourchid",
       school: "INSTI Lokossa – Froid & Climatisation / Informatique & Télécommunications",
       project: "Système de Conservation Thermique pour l'Agroalimentaire",
+      src: "https://images.unsplash.com/photo-1573164713988-8665fc963095?auto=format&fit=crop&q=80&w=800",
       desc: "Une innovation thermique qui améliore la conservation et la transformation des produits agricoles locaux. Le système utilise des matériaux à changement de phase pour maintenir une température stable, réduisant ainsi les pertes post-récolte.",
       impacts: [
         "Réduction du gaspillage alimentaire",
@@ -57,6 +59,7 @@ const Winners2025: React.FC = () => {
       names: "ROUFAI Aïssatou & ZANVO Prince Horeb",
       school: "ENSET Lokossa – Froid & Climatisation 1ère année",
       project: "ELEVATE – Plateforme d'Orientation",
+      src: "https://images.unsplash.com/photo-1519389950473-47ba0277781c?auto=format&fit=crop&q=80&w=800",
       desc: "Une application mobile qui centralise les parcours éducatifs, les opportunités de bourses, les conseils professionnels et les programmes de mentorat pour les jeunes Béninois de 16 à 25 ans.",
       impacts: [
         "Réduction du décrochage scolaire",
@@ -126,7 +129,7 @@ const Winners2025: React.FC = () => {
       </section>
 
       {/* SECTION 2: CHIFFRES CLÉS */}
-      <section className="py-24 md:py-40 px-6 bg-white border-b border-gray-50">
+      <section className="py-24 md:py-40 px-6 bg-white border-b border-gray-100">
         <div className="container mx-auto max-w-6xl">
           <div className="grid lg:grid-cols-2 gap-16 md:gap-24 items-center">
             <motion.div
@@ -171,15 +174,15 @@ const Winners2025: React.FC = () => {
       <section className="py-24 md:py-48 px-4 md:px-6 bg-gray-50/50 relative">
         <div className="container mx-auto max-w-6xl relative z-10">
           <header className="text-center mb-16 md:mb-32">
-            <span className="text-nova-violet font-black tracking-[0.5em] uppercase text-[10px] block mb-6 md:mb-8">Le Podium de l'Excellence</span>
-            <h2 className="text-3xl md:text-7xl font-black uppercase tracking-tighter text-nova-black">🏆 PROJETS PRIMÉS</h2>
+            <span className="text-nova-violet font-black tracking-[0.5em] uppercase text-[10px] block mb-6 md:mb-8 text-center">Le Podium de l'Excellence</span>
+            <h2 className="text-3xl md:text-7xl font-black uppercase tracking-tighter text-nova-black text-center">🏆 PROJETS PRIMÉS</h2>
           </header>
 
-          <div className="space-y-12 md:space-y-16">
+          <div className="space-y-12 md:space-y-20">
             {winners.map((w, i) => (
               <GlassCard key={i} className={`p-6 md:p-20 relative overflow-hidden ${i === 0 ? 'ring-1 md:ring-2 ring-nova-violet ring-offset-4 md:ring-offset-8 shadow-2xl' : ''}`}>
                 
-                {/* Badge Grand Lauréat : Position relative sur mobile pour éviter le chevauchement */}
+                {/* Badge Grand Lauréat : Amélioration mobile */}
                 {i === 0 && (
                   <div className="inline-block md:absolute md:top-10 md:right-10 px-6 py-2 bg-nova-violet text-white text-[10px] font-black uppercase tracking-widest rounded-full mb-8 md:mb-0 shadow-lg z-20">
                     Grand Lauréat
@@ -189,9 +192,9 @@ const Winners2025: React.FC = () => {
                 <div className="grid lg:grid-cols-12 gap-8 md:gap-16 items-start relative z-10">
                   <div className="lg:col-span-7">
                     
-                    {/* Header : Flex-col sur mobile pour aérer */}
+                    {/* Header : Flex-col sur mobile pour éviter les collisions */}
                     <div className="flex flex-col sm:flex-row sm:items-center gap-4 sm:gap-6 mb-8 md:mb-10">
-                       <span className="text-nova-violet font-black tracking-[0.3em] uppercase text-[10px] md:text-xs">{w.rank}</span>
+                       <span className="text-nova-violet font-black tracking-[0.3em] uppercase text-[10px] md:text-xs whitespace-nowrap">{w.rank}</span>
                        <div className="hidden sm:block h-px flex-grow bg-gray-200" />
                        <span className="text-2xl md:text-3xl font-black text-nova-black">{w.amount}</span>
                     </div>
@@ -223,12 +226,18 @@ const Winners2025: React.FC = () => {
                     </div>
                   </div>
 
-                  <div className="lg:col-span-5 hidden md:block">
-                    <div className="aspect-square bg-white rounded-[3rem] flex items-center justify-center p-16 shadow-inner relative overflow-hidden group">
-                       <Microscope className="text-nova-violet/5 absolute -right-20 -bottom-20 rotate-12 group-hover:scale-110 transition-transform duration-700" size={300} />
-                       <div className="text-center">
-                          <Trophy className="mx-auto text-nova-violet mb-8" size={80} />
-                          <div className="text-[10px] font-black uppercase tracking-[0.4em] text-gray-300">Nova Certified Innovation</div>
+                  {/* PORTRAIT DU LAURÉAT */}
+                  <div className="lg:col-span-5 w-full">
+                    <div className="relative aspect-[4/5] md:aspect-square bg-white rounded-[3rem] overflow-hidden group shadow-2xl">
+                       <img 
+                        src={w.src} 
+                        alt={w.names}
+                        className="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-105"
+                       />
+                       <div className="absolute inset-0 bg-gradient-to-t from-nova-black/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+                       <div className="absolute bottom-8 left-8 right-8 text-white opacity-0 group-hover:opacity-100 transition-opacity duration-500">
+                          <div className="text-[10px] font-black uppercase tracking-widest text-nova-violet mb-2">Impact Direct</div>
+                          <div className="text-sm font-light italic">"{w.quote.substring(0, 60)}..."</div>
                        </div>
                     </div>
                   </div>
@@ -242,7 +251,7 @@ const Winners2025: React.FC = () => {
       {/* SECTION 4: AUTRES FINALISTES */}
       <section className="py-24 md:py-48 px-6 bg-white">
         <div className="container mx-auto max-w-6xl">
-          <h2 className="text-2xl md:text-4xl font-black uppercase tracking-tighter mb-12 md:mb-20 text-nova-black">🌟 SEPT PROJETS REMARQUABLES</h2>
+          <h2 className="text-2xl md:text-4xl font-black uppercase tracking-tighter mb-12 md:mb-20 text-nova-black">🌟 PROJETS REMARQUABLES</h2>
           <div className="overflow-x-auto -mx-6 px-6">
             <table className="w-full text-left min-w-[600px]">
               <thead>
