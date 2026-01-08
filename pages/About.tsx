@@ -70,8 +70,8 @@ const About: React.FC = () => {
             </div>
             
             <h2 className="text-4xl md:text-6xl font-black text-nova-black uppercase tracking-tighter leading-none mb-10">
-  LE TECH NOVA CHALLENGE <br />
-  <span className="text-nova-violet italic font-light">UNE AVENTURE POUR FAIRE VIVRE VOS IDÉES.</span>
+  DANS LES LIGNES QUI SUIVENT <br />
+  <span className="text-nova-violet italic font-light">NOUS VOUS EXPLIQUONS LE CONTEXTE MEME DU CONCOURS TNC</span>
 </h2>
             
             <div className="prose prose-2xl max-w-none text-gray-500 font-light leading-[1.8] space-y-10">
