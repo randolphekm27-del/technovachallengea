@@ -272,7 +272,7 @@ const Home: React.FC = () => {
                  label="MARRAINAGE"
                  name="Prof. Clotilde GUIDI TOGNON"
                  sub="DIRECTRICE DE L'INSTI"
-                 img="https://i.postimg.cc/kG96RSRJ/DIRECTRICE-INSTI.jpg"
+                 img="https://i.postimg.cc/d0Pq0Yyq/DIRECTRICE-INSTI.jpg"
                  delay={0.4}
                />
             </div>
