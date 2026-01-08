@@ -19,7 +19,6 @@ const GlassCard: React.FC<GlassCardProps> = ({ children, className = '', delay =
         delay, 
         ease: [0.16, 1, 0.3, 1]
       }}
-      // On garde l'effet de lévitation subtil mais on le réduit sur mobile via Tailwind group-hover
       className={`glass rounded-[2rem] md:rounded-[2.5rem] p-6 md:p-10 soft-border shadow-sm relative overflow-hidden group hover:shadow-[0_20px_40px_rgba(124,58,237,0.1)] md:hover:-translate-y-2 transition-all duration-500 ${className}`}
     >
       {/* Micro-animation de lueur en arrière-plan */}

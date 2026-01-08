@@ -26,13 +26,14 @@ const Navbar: React.FC = () => {
   }, [mobileMenuOpen]);
 
   const isActive = (path: string) => location.pathname === path;
-  const isDarkHeroPage = ['/', '/about', '/edition-2026', '/laureats-2025', '/partenaires', '/contact'].includes(location.pathname);
+  const isDarkHeroPage = ['/', '/about', '/edition-2026', '/laureats-2025', '/galerie', '/partenaires', '/contact'].includes(location.pathname);
 
   const navLinks = [
     { name: 'Accueil', path: '/' },
     { name: 'À propos', path: '/about' },
     { name: 'Édition 2026', path: '/edition-2026' },
     { name: 'Lauréats 2025', path: '/laureats-2025' },
+    { name: 'Galerie', path: '/galerie' },
     { name: 'Partenaires', path: '/partenaires' },
   ];
 
@@ -97,7 +98,6 @@ const Navbar: React.FC = () => {
                     ? 'bg-nova-black/5 text-nova-black' 
                     : isDarkHeroPage ? 'bg-white/10 text-white backdrop-blur-md' : 'bg-nova-black/5 text-nova-black'
               }`}
-              aria-label="Toggle Menu"
             >
               {mobileMenuOpen ? <X size={22} strokeWidth={2.5} /> : <Menu size={22} strokeWidth={2.5} />}
             </button>
@@ -122,28 +122,28 @@ const Navbar: React.FC = () => {
             </div>
 
             <div className="relative flex-grow flex flex-col justify-center px-8 pt-20">
-              <nav className="space-y-4">
+              <nav className="space-y-2">
                 {navLinks.map((link, i) => (
                   <motion.div
                     key={link.path}
                     initial={{ x: -20, opacity: 0 }}
                     animate={{ x: 0, opacity: 1 }}
-                    transition={{ delay: 0.1 + i * 0.1, duration: 0.5 }}
+                    transition={{ delay: 0.1 + i * 0.05, duration: 0.4 }}
                   >
                     <Link
                       to={link.path}
                       onClick={() => setMobileMenuOpen(false)}
-                      className={`group flex items-center justify-between py-4 border-b border-gray-50 transition-all ${
+                      className={`group flex items-center justify-between py-3 border-b border-gray-50 transition-all ${
                         isActive(link.path) ? 'text-nova-violet' : 'text-nova-black'
                       }`}
                     >
-                      <span className="text-4xl font-black uppercase tracking-tighter italic group-active:translate-x-4 transition-transform duration-300">
+                      <span className="text-3xl font-black uppercase tracking-tighter italic group-active:translate-x-4 transition-transform duration-300">
                         {link.name}
                       </span>
                       <motion.div
                         animate={isActive(link.path) ? { x: 0, opacity: 1 } : { x: -10, opacity: 0 }}
                       >
-                        <ArrowRight className="text-nova-violet" size={32} />
+                        <ArrowRight className="text-nova-violet" size={24} />
                       </motion.div>
                     </Link>
                   </motion.div>
@@ -153,24 +153,24 @@ const Navbar: React.FC = () => {
               <motion.div 
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.6 }}
-                className="mt-16 space-y-8"
+                transition={{ delay: 0.5 }}
+                className="mt-12 space-y-6"
               >
                 <div className="grid grid-cols-2 gap-4">
-                  <a href="mailto:contact@technovabenin.com" className="p-6 bg-gray-50 rounded-3xl flex flex-col gap-3">
-                    <Mail className="text-nova-violet" size={20} />
-                    <span className="text-[10px] font-black uppercase tracking-widest text-gray-400">Contact</span>
+                  <a href="mailto:contact@technovabenin.com" className="p-4 bg-gray-50 rounded-2xl flex flex-col gap-2">
+                    <Mail className="text-nova-violet" size={18} />
+                    <span className="text-[9px] font-black uppercase tracking-widest text-gray-400">Contact</span>
                   </a>
-                  <div className="p-6 bg-gray-50 rounded-3xl flex flex-col gap-3">
-                    <Globe className="text-nova-violet" size={20} />
-                    <span className="text-[10px] font-black uppercase tracking-widest text-gray-400">Bénin</span>
+                  <div className="p-4 bg-gray-50 rounded-2xl flex flex-col gap-2">
+                    <Globe className="text-nova-violet" size={18} />
+                    <span className="text-[9px] font-black uppercase tracking-widest text-gray-400">Bénin</span>
                   </div>
                 </div>
                 
                 <Button 
-                  size="lg" 
+                  size="md" 
                   onClick={() => { setMobileMenuOpen(false); navigate('/participate'); }} 
-                  className="w-full text-base py-6"
+                  className="w-full py-4"
                 >
                   Postuler 2026
                 </Button>

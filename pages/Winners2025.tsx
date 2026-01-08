@@ -1,12 +1,9 @@
 
-// @google/genai guidelines followed: Using direct component export and standard Lucide icon props.
 import React from 'react';
 import { motion } from 'framer-motion';
 import { 
   Trophy, Award, CheckCircle2, ArrowDown, 
-  Users, Calendar, Quote, TrendingUp, 
-  Camera, Play, Microscope, Zap,
-  Cpu, GraduationCap, Building2, ExternalLink
+  Quote, Microscope, Play, Building2, ExternalLink
 } from 'lucide-react';
 import GlassCard from '../components/GlassCard';
 import Button from '../components/Button';
@@ -128,7 +125,7 @@ const Winners2025: React.FC = () => {
         </motion.div>
       </section>
 
-      {/* SECTION 2: INTRODUCTION & CHIFFRES CLÉS */}
+      {/* SECTION 2: CHIFFRES CLÉS */}
       <section className="py-24 md:py-40 px-6 bg-white border-b border-gray-50">
         <div className="container mx-auto max-w-6xl">
           <div className="grid lg:grid-cols-2 gap-16 md:gap-24 items-center">
@@ -138,24 +135,21 @@ const Winners2025: React.FC = () => {
               viewport={{ once: true }}
               transition={{ duration: 1 }}
             >
-              <h2 className="text-3xl md:text-5xl font-black uppercase tracking-tighter mb-8 md:mb-10 text-nova-black leading-none">
-                UNE ÉDITION PIONNIÈRE, <br /><span className="text-nova-violet italic font-light">DES PROJETS PROMETTEURS.</span>
+              <h2 className="text-3xl md:text-5xl font-black uppercase tracking-tighter mb-10 text-nova-black leading-none">
+                UNE ÉDITION PIONNIÈRE, <br /><span className="text-nova-violet italic font-light uppercase">DES PROJETS PROMETTEURS.</span>
               </h2>
               <div className="text-lg md:text-xl text-gray-500 font-light leading-relaxed space-y-6 mb-12">
                 <p>
-                  La première édition du Tech Nova Challenge, tenue en 2025, a réuni plus de 60 binômes issus d'établissements techniques et universitaires à travers le Bénin.
-                </p>
-                <p>
-                  Après plusieurs mois de compétition, de formation et de développement, 10 projets ont été sélectionnés pour la phase finale.
+                  La première édition a réuni plus de 60 binômes issus d'établissements techniques et universitaires du Bénin.
                 </p>
               </div>
               
               <div className="flex items-center gap-6 p-6 md:p-8 bg-gray-50 rounded-[2rem] md:rounded-[2.5rem] border border-gray-100">
-                <div className="w-12 h-12 rounded-full bg-nova-violet/10 text-nova-violet flex items-center justify-center">
+                <div className="w-12 h-12 rounded-full bg-nova-violet/10 text-nova-violet flex items-center justify-center flex-shrink-0">
                    <Building2 size={24} />
                 </div>
                 <div>
-                   <div className="text-[10px] font-black uppercase tracking-widest text-gray-400">Partenaire Officiel 2025</div>
+                   <div className="text-[9px] md:text-[10px] font-black uppercase tracking-widest text-gray-400">Partenaire Officiel 2025</div>
                    <div className="text-lg md:text-xl font-black text-nova-black uppercase">WISANE (INGCO)</div>
                 </div>
               </div>
@@ -173,21 +167,21 @@ const Winners2025: React.FC = () => {
         </div>
       </section>
 
-      {/* SECTION 3: LES TROIS LAURÉATS */}
-      <section className="py-24 md:py-48 px-6 bg-gray-50/50 relative">
+      {/* SECTION 3: PROJETS PRIMÉS */}
+      <section className="py-24 md:py-48 px-4 md:px-6 bg-gray-50/50 relative">
         <div className="container mx-auto max-w-6xl relative z-10">
           <header className="text-center mb-16 md:mb-32">
             <span className="text-nova-violet font-black tracking-[0.5em] uppercase text-[10px] block mb-6 md:mb-8">Le Podium de l'Excellence</span>
-            <h2 className="text-3xl md:text-7xl font-black uppercase tracking-tighter text-nova-black">🏆 LES PROJETS PRIMÉS</h2>
+            <h2 className="text-3xl md:text-7xl font-black uppercase tracking-tighter text-nova-black">🏆 PROJETS PRIMÉS</h2>
           </header>
 
           <div className="space-y-12 md:space-y-16">
             {winners.map((w, i) => (
-              <GlassCard key={i} className={`p-8 md:p-20 relative overflow-hidden ${i === 0 ? 'ring-2 ring-nova-violet ring-offset-4 md:ring-offset-8 shadow-2xl' : ''}`}>
+              <GlassCard key={i} className={`p-6 md:p-20 relative overflow-hidden ${i === 0 ? 'ring-1 md:ring-2 ring-nova-violet ring-offset-4 md:ring-offset-8 shadow-2xl' : ''}`}>
                 
-                {/* Badge Grand Lauréat - Ajusté pour mobile */}
+                {/* Badge Grand Lauréat : Position relative sur mobile pour éviter le chevauchement */}
                 {i === 0 && (
-                  <div className="inline-block mb-8 md:absolute md:top-10 md:right-10 px-6 py-2 bg-nova-violet text-white text-[10px] font-black uppercase tracking-widest rounded-full shadow-lg">
+                  <div className="inline-block md:absolute md:top-10 md:right-10 px-6 py-2 bg-nova-violet text-white text-[10px] font-black uppercase tracking-widest rounded-full mb-8 md:mb-0 shadow-lg z-20">
                     Grand Lauréat
                   </div>
                 )}
@@ -195,7 +189,7 @@ const Winners2025: React.FC = () => {
                 <div className="grid lg:grid-cols-12 gap-8 md:gap-16 items-start relative z-10">
                   <div className="lg:col-span-7">
                     
-                    {/* Header de la carte : Rang et Prix */}
+                    {/* Header : Flex-col sur mobile pour aérer */}
                     <div className="flex flex-col sm:flex-row sm:items-center gap-4 sm:gap-6 mb-8 md:mb-10">
                        <span className="text-nova-violet font-black tracking-[0.3em] uppercase text-[10px] md:text-xs">{w.rank}</span>
                        <div className="hidden sm:block h-px flex-grow bg-gray-200" />
@@ -205,17 +199,16 @@ const Winners2025: React.FC = () => {
                     <h3 className="text-2xl md:text-5xl font-black uppercase tracking-tighter mb-4 md:mb-6 leading-tight md:leading-none text-nova-black">
                       {w.project}
                     </h3>
-                    
-                    <div className="flex flex-col gap-2 mb-8 md:mb-12">
+                    <div className="flex flex-col gap-1 mb-8 md:mb-12">
                        <span className="text-nova-violet font-bold text-sm uppercase tracking-widest">{w.names}</span>
-                       <span className="text-gray-400 font-light text-xs md:text-sm italic">{w.school}</span>
+                       <span className="text-gray-400 font-light text-[10px] md:text-sm italic">{w.school}</span>
                     </div>
                     
-                    <p className="text-lg md:text-xl text-gray-500 font-light leading-relaxed mb-8 md:mb-12">{w.desc}</p>
+                    <p className="text-base md:text-xl text-gray-500 font-light leading-relaxed mb-8 md:mb-12">{w.desc}</p>
                     
                     <div className="grid sm:grid-cols-2 gap-4 md:gap-6 mb-8 md:mb-12">
                        {w.impacts.map((impact, idx) => (
-                         <div key={idx} className="flex items-start gap-4 text-[13px] md:text-sm font-medium text-gray-600">
+                         <div key={idx} className="flex items-start gap-3 text-xs md:text-sm font-medium text-gray-600">
                            <CheckCircle2 size={16} className="text-nova-violet flex-shrink-0 mt-0.5" />
                            <span>{impact}</span>
                          </div>
@@ -223,9 +216,8 @@ const Winners2025: React.FC = () => {
                     </div>
 
                     <div className="relative p-8 md:p-12 bg-nova-violet/5 rounded-[2rem] md:rounded-[3rem] border border-nova-violet/10">
-                       {/* Fix: Removed invalid responsive prop 'md:size' and used a consistent fixed size */}
-                       <Quote className="absolute top-4 left-4 md:top-8 md:left-8 text-nova-violet/10" size={48} />
-                       <p className="text-base md:text-lg italic font-light text-nova-black relative z-10 pl-6 md:pl-8">
+                       <Quote className="absolute top-4 left-4 md:top-8 md:left-8 text-nova-violet/10" size={32} />
+                       <p className="text-sm md:text-lg italic font-light text-nova-black relative z-10 pl-6 md:pl-8 leading-relaxed">
                          "{w.quote}"
                        </p>
                     </div>
@@ -247,30 +239,30 @@ const Winners2025: React.FC = () => {
         </div>
       </section>
 
-      {/* SECTION 4: LES AUTRES FINALISTES */}
+      {/* SECTION 4: AUTRES FINALISTES */}
       <section className="py-24 md:py-48 px-6 bg-white">
         <div className="container mx-auto max-w-6xl">
           <h2 className="text-2xl md:text-4xl font-black uppercase tracking-tighter mb-12 md:mb-20 text-nova-black">🌟 SEPT PROJETS REMARQUABLES</h2>
-          <div className="overflow-x-auto">
+          <div className="overflow-x-auto -mx-6 px-6">
             <table className="w-full text-left min-w-[600px]">
               <thead>
                 <tr className="border-b-2 border-nova-black">
                   <th className="py-6 md:py-8 text-[9px] md:text-[10px] font-black uppercase tracking-widest text-gray-400">Binôme & Établissement</th>
                   <th className="py-6 md:py-8 text-[9px] md:text-[10px] font-black uppercase tracking-widest text-gray-400">Projet</th>
-                  <th className="py-6 md:py-8 text-[9px] md:text-[10px] font-black uppercase tracking-widest text-gray-400">Axe de solution</th>
+                  <th className="py-6 md:py-8 text-[9px] md:text-[10px] font-black uppercase tracking-widest text-gray-400">Solution</th>
                 </tr>
               </thead>
               <tbody className="divide-y divide-gray-50">
                 {finalists.map((f, i) => (
                   <tr key={i} className="group hover:bg-gray-50/50 transition-colors">
-                    <td className="py-8 md:py-10">
-                      <div className="font-black text-nova-black uppercase text-base md:text-lg mb-1">{f.names}</div>
-                      <div className="text-[10px] font-bold text-nova-violet tracking-widest">{f.school}</div>
+                    <td className="py-8">
+                      <div className="font-black text-nova-black uppercase text-sm md:text-lg mb-1">{f.names}</div>
+                      <div className="text-[9px] md:text-xs font-bold text-nova-violet tracking-widest">{f.school}</div>
                     </td>
-                    <td className="py-8 md:py-10">
+                    <td className="py-8">
                       <div className="font-black text-lg md:text-xl uppercase tracking-tighter text-nova-black group-hover:text-nova-violet transition-colors">{f.project}</div>
                     </td>
-                    <td className="py-8 md:py-10 text-gray-500 font-light text-xs md:text-sm max-w-md">
+                    <td className="py-8 text-gray-500 font-light text-xs md:text-sm max-w-md">
                       {f.desc}
                     </td>
                   </tr>
@@ -278,69 +270,22 @@ const Winners2025: React.FC = () => {
               </tbody>
             </table>
           </div>
-          <p className="mt-12 text-[9px] md:text-[10px] font-black uppercase tracking-widest text-gray-300 italic text-center">
-            Note : Tous les finalistes ont reçu une attestation de participation et un lot de reconnaissance.
-          </p>
         </div>
       </section>
 
-      {/* SECTION 5: GALERIE PHOTOS & VIDÉOS */}
-      <section className="py-24 md:py-48 px-6 bg-nova-black text-white relative overflow-hidden">
-        <div className="container mx-auto max-w-6xl relative z-10">
-          <div className="flex flex-col md:flex-row justify-between items-start md:items-end gap-8 md:gap-12 mb-16 md:mb-24">
-            <div>
-              <span className="text-nova-violet font-black tracking-[0.5em] uppercase text-[9px] md:text-[10px] block mb-6 md:mb-8">Archives de l'Édition I</span>
-              <h2 className="text-3xl md:text-5xl font-black uppercase tracking-tighter">📸 REVIVEZ LES MOMENTS FORTS</h2>
-            </div>
-            <Button variant="outline" size="sm" className="border-white text-white hover:bg-white hover:text-nova-black flex items-center gap-3">
-               <Play size={14} /> HIGHLIGHTS
-            </Button>
-          </div>
-
-          <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8">
-            {[
-              { title: "Formation au CAEB", date: "24 juillet 2025", img: "https://images.unsplash.com/photo-1517245386807-bb43f82c33c4?auto=format&fit=crop&q=80&w=800" },
-              { title: "Visite à Sèmè City", date: "26 juillet 2025", img: "https://images.unsplash.com/photo-1522202176988-66273c2fd55f?auto=format&fit=crop&q=80&w=800" },
-              { title: "Jury Final", date: "31 mai 2025", img: "https://images.unsplash.com/photo-1540317580384-e5d43616b9aa?auto=format&fit=crop&q=80&w=800" },
-              { title: "Cérémonie Officielle", date: "30 juillet 2025", img: "https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4?auto=format&fit=crop&q=80&w=800" },
-              { title: "Échanges Techniques", date: "Saison 2025", img: "https://images.unsplash.com/photo-1556761175-b413da4baf72?auto=format&fit=crop&q=80&w=800" },
-              { title: "Phase Prototypage", date: "Saison 2025", img: "https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?auto=format&fit=crop&q=80&w=800" }
-            ].map((item, i) => (
-              <motion.div 
-                key={i} 
-                whileHover={{ y: -5 }}
-                className="group relative aspect-[4/5] rounded-[2rem] md:rounded-[3rem] overflow-hidden"
-              >
-                <img src={item.img} alt={item.title} className="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-700" />
-                <div className="absolute inset-0 bg-gradient-to-t from-nova-black via-transparent to-transparent opacity-80" />
-                <div className="absolute bottom-6 left-6 right-6 md:bottom-10 md:left-10 md:right-10">
-                   <div className="text-[9px] font-black uppercase tracking-widest text-nova-violet mb-1 md:mb-2">{item.date}</div>
-                   <h4 className="text-lg md:text-xl font-black uppercase tracking-tighter">{item.title}</h4>
-                </div>
-              </motion.div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* SECTION 6: CTA VERS L'ÉDITION 2026 */}
-      <section className="py-24 md:py-64 bg-gray-50 px-6 text-center overflow-hidden relative">
+      {/* SECTION 5: CTA */}
+      <section className="py-24 md:py-64 bg-gray-50 px-6 text-center relative overflow-hidden">
          <div className="container mx-auto max-w-4xl relative z-10">
-            <span className="text-nova-violet font-black tracking-[0.5em] uppercase text-[10px] block mb-10 md:mb-12">Prochain Chapitre</span>
-            <h2 className="editorial-title text-[clamp(2rem,10vw,8rem)] text-nova-black mb-12 md:mb-16 leading-[0.85]">
-               VOTRE TOUR<br />
-               <span className="text-nova-violet italic font-light uppercase">EST ARRIVÉ.</span>
+            <h2 className="editorial-title text-[clamp(2.5rem,10vw,8rem)] text-nova-black mb-12 md:mb-16 leading-[0.85]">
+               PRÊT À ÉCRIRE <br />
+               <span className="text-nova-violet italic font-light">L'HISTOIRE ?</span>
             </h2>
-            <p className="text-lg md:text-xl text-gray-400 font-light mb-16 md:mb-20 max-w-2xl mx-auto leading-relaxed">
-              Inspirez-vous des lauréats 2025 et lancez-vous dans l'aventure 2026.
-            </p>
             <div className="flex flex-col md:flex-row justify-center gap-6 md:gap-8">
-               <Button size="lg" className="w-full md:w-auto" onClick={() => navigate('/participate')}>INSCRIPTION 2026</Button>
+               <Button size="lg" className="w-full md:w-auto" onClick={() => navigate('/participate')}>POSTULER 2026</Button>
                <Button variant="outline" size="lg" className="w-full md:w-auto" onClick={() => navigate('/edition-2026')}>LE RÈGLEMENT</Button>
             </div>
          </div>
       </section>
-
     </div>
   );
 };

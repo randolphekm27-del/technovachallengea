@@ -7,6 +7,7 @@ import About from './pages/About';
 import Participate from './pages/Participate';
 import Edition2026 from './pages/Edition2026';
 import Winners2025 from './pages/Winners2025';
+import Gallery from './pages/Gallery';
 import Partners from './pages/Partners';
 import Contact from './pages/Contact';
 
@@ -26,6 +27,7 @@ const App: React.FC = () => {
           <Route path="/about" element={<About />} />
           <Route path="/edition-2026" element={<Edition2026 />} />
           <Route path="/laureats-2025" element={<Winners2025 />} />
+          <Route path="/galerie" element={<Gallery />} />
           <Route path="/partenaires" element={<Partners />} />
           <Route path="/contact" element={<Contact />} />
           <Route path="/participate" element={<Participate />} />
@@ -50,6 +52,7 @@ const App: React.FC = () => {
                 <li><a href="#/about" className="hover:text-white transition-colors">À propos</a></li>
                 <li><a href="#/edition-2026" className="hover:text-white transition-colors">Édition 2026</a></li>
                 <li><a href="#/laureats-2025" className="hover:text-white transition-colors">Lauréats 2025</a></li>
+                <li><a href="#/galerie" className="hover:text-white transition-colors">Galerie</a></li>
               </ul>
             </div>
             <div>
