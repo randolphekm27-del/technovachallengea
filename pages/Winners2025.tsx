@@ -106,12 +106,9 @@ const Winners2025: React.FC = () => {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 1.2, ease: [0.16, 1, 0.3, 1] }}
           >
-            <span className="text-nova-violet font-black tracking-[0.6em] uppercase text-[10px] block mb-8">
-              Rapport d'Excellence 2025
-            </span>
             <h1 className="editorial-title text-[clamp(2.5rem,8vw,8rem)] text-white leading-[0.85] mb-12">
-              L'EXCELLENCE EN <br />
-              <span className="text-nova-violet italic font-light">PLEINE LUMIÈRE.</span>
+              ILS ONT ETE LES PIONNIERS DE LA <br />
+              <span className="text-nova-violet italic font-light">PREMIÈRE ÉDITION.</span>
             </h1>
             <p className="text-xl md:text-2xl text-gray-300 font-light max-w-3xl mx-auto leading-relaxed">
               Retour sur les projets et les talents qui ont redéfini l'innovation technologique au Bénin lors de la première édition.
