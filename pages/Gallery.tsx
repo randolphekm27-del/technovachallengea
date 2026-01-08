@@ -77,11 +77,8 @@ const Gallery: React.FC = () => {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 1.2, ease: [0.16, 1, 0.3, 1] }}
           >
-            <span className="text-nova-violet font-black tracking-[0.6em] uppercase text-[10px] block mb-8">
-              Médiathèque Officielle
-            </span>
             <h1 className="editorial-title text-[clamp(2.5rem,10vw,12rem)] text-white leading-[0.85] mb-12">
-              L'HISTOIRE <br />
+              REVIVEZ LA PREMIÈRE ÉDITION <br />
               <span className="text-nova-violet italic font-light">EN IMAGES.</span>
             </h1>
             <p className="text-xl md:text-2xl text-gray-300 font-light max-w-3xl mx-auto leading-relaxed">
