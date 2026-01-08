@@ -1,53 +1,84 @@
 
-import React, { useRef } from 'react';
-import { motion, useScroll, useTransform } from 'framer-motion';
+import React, { useRef, useEffect } from 'react';
+import { motion, useScroll, useTransform, useInView, AnimatePresence } from 'framer-motion';
 import { useNavigate } from 'react-router-dom';
 import { 
   Trophy, Users, ShieldCheck, 
   ArrowRight, GraduationCap, Building2, 
   Target, Zap, BookOpen, Scale, Award,
-  CheckCircle2, Rocket, HeartHandshake, Sparkles
+  CheckCircle2, Rocket, HeartHandshake, Sparkles, ChevronDown
 } from 'lucide-react';
 import Button from '../components/Button';
 import GlassCard from '../components/GlassCard';
 
+// Fix: Change children type to React.ReactNode to avoid JSX children type mismatch errors, 
+// then safely convert to string for text processing.
+const RevealText = ({ children, className = "", delay = 0 }: { children: React.ReactNode, className?: string, delay?: number }) => {
+  const textContent = typeof children === 'string' ? children : (React.Children.toArray(children).join(''));
+  const words = textContent.split(" ");
+  return (
+    <p className={`${className} overflow-hidden flex flex-wrap justify-center`}>
+      {words.map((word, i) => (
+        <motion.span
+          key={i}
+          initial={{ y: "100%", opacity: 0 }}
+          whileInView={{ y: 0, opacity: 1 }}
+          viewport={{ once: true }}
+          transition={{ 
+            duration: 0.8, 
+            delay: delay + (i * 0.05), 
+            ease: [0.16, 1, 0.3, 1] 
+          }}
+          className="mr-[0.3em]"
+        >
+          {word}
+        </motion.span>
+      ))}
+    </p>
+  );
+};
+
 const PatronageCard = ({ label, name, sub, img, delay }: { label: string, name: string, sub: string, img: string, delay: number }) => {
   return (
-    <div className="relative pt-16 pb-8 px-4 md:px-0">
+    <div className="relative pt-20 pb-10 px-4 md:px-0">
       <motion.div
-        initial={{ opacity: 0, x: -20 }}
+        initial={{ opacity: 0, x: -40 }}
         whileInView={{ opacity: 1, x: 0 }}
-        viewport={{ once: true }}
-        transition={{ duration: 0.8, delay }}
+        viewport={{ once: true, margin: "-100px" }}
+        transition={{ duration: 1.2, delay, ease: [0.16, 1, 0.3, 1] }}
         className="relative flex items-center group cursor-default"
       >
         <motion.div
-          whileHover={{ scale: 0.95 }}
-          transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
-          className="relative z-10 ml-16 md:ml-24 w-full bg-white/80 backdrop-blur-[12px] rounded-[2rem] md:rounded-[2.5rem] p-8 md:p-12 border-[0.5px] border-nova-violet/30 shadow-sm shine-container"
+          whileHover={{ scale: 0.96, rotateX: 1, rotateY: -1 }}
+          className="relative z-10 ml-20 md:ml-32 w-full bg-white/90 backdrop-blur-xl rounded-[3rem] p-10 md:p-16 border-[0.5px] border-nova-violet/20 shadow-2xl shine-container perspective-content"
         >
           <div className="flex flex-col">
-            <span className="text-nova-violet font-black uppercase tracking-[0.4em] text-[9px] md:text-[10px] mb-4">
+            <motion.span 
+              initial={{ opacity: 0, y: 10 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              transition={{ delay: delay + 0.3 }}
+              className="text-nova-violet font-black uppercase tracking-[0.5em] text-[10px] mb-6"
+            >
               {label}
-            </span>
-            <h3 className="text-nova-black font-black text-xl md:text-3xl uppercase tracking-tighter leading-none mb-2">
+            </motion.span>
+            <h3 className="text-nova-black font-black text-2xl md:text-4xl uppercase tracking-tighter leading-none mb-4">
               {name}
             </h3>
-            <span className="text-gray-400 font-medium text-[9px] md:text-[11px] uppercase tracking-[0.2em] opacity-80">
+            <span className="text-gray-400 font-medium text-[10px] md:text-xs uppercase tracking-[0.3em] opacity-80">
               {sub}
             </span>
           </div>
         </motion.div>
 
         <motion.div
-          whileHover={{ scale: 1.1, y: -10 }}
-          transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
-          className="absolute left-0 top-0 z-20 w-32 h-44 md:w-56 md:h-72 -mt-12 -ml-4 md:-ml-8 pointer-events-none"
+          whileHover={{ scale: 1.08, y: -20, rotate: 2 }}
+          transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
+          className="absolute left-0 top-0 z-20 w-40 h-56 md:w-64 md:h-80 -mt-16 -ml-6 md:-ml-12 pointer-events-none"
         >
           <img
             src={img}
             alt={name}
-            className="w-full h-full object-contain filter drop-shadow-[0_25px_35px_rgba(0,0,0,0.35)]"
+            className="w-full h-full object-contain filter drop-shadow-[0_40px_60px_rgba(0,0,0,0.4)]"
           />
         </motion.div>
       </motion.div>
@@ -58,160 +89,189 @@ const PatronageCard = ({ label, name, sub, img, delay }: { label: string, name: 
 const Home: React.FC = () => {
   const navigate = useNavigate();
   const containerRef = useRef<HTMLDivElement>(null);
+  
   const { scrollYProgress } = useScroll({
     target: containerRef,
     offset: ["start start", "end end"]
   });
 
-  const heroScale = useTransform(scrollYProgress, [0, 0.2], [1, 1.1]);
-  const heroOpacity = useTransform(scrollYProgress, [0, 0.2], [1, 0.5]);
+  // Cinematic Parallax Transform
+  const heroScale = useTransform(scrollYProgress, [0, 0.2], [1, 1.2]);
+  const heroOpacity = useTransform(scrollYProgress, [0, 0.2], [1, 0]);
+  const heroTranslateY = useTransform(scrollYProgress, [0, 0.2], [0, 200]);
+  const contentY = useTransform(scrollYProgress, [0, 0.5], [0, -100]);
 
-  const heroImageUrl = "https://images.unsplash.com/photo-1517245386807-bb43f82c33c4?auto=format&fit=crop&q=80&w=2000";
+  const heroImageUrl = "https://images.unsplash.com/photo-1517245386807-bb43f82c33c4?auto=format&fit=crop&q=80&w=2400";
 
   return (
-    <div ref={containerRef} className="relative w-full bg-white selection:bg-nova-violet selection:text-white overflow-x-hidden">
+    <div ref={containerRef} className="relative w-full bg-white selection:bg-nova-red selection:text-white overflow-x-hidden">
       
-      {/* SESSION 1 : HERO */}
+      {/* SESSION 1 : HERO - ULTRA IMMERSIVE */}
       <section className="relative h-screen flex items-center justify-center overflow-hidden">
-        <div className="absolute inset-0">
-          <motion.img 
-            style={{ scale: heroScale, opacity: heroOpacity }}
+        {/* Layer 0: Depth Background */}
+        <motion.div 
+          style={{ scale: heroScale, opacity: heroOpacity, y: heroTranslateY }}
+          className="absolute inset-0 z-0"
+        >
+          <img 
             src={heroImageUrl} 
-            alt="Innovation Bénin" 
-            className="w-full h-full object-cover grayscale brightness-[0.35]" 
+            alt="Innovation" 
+            className="w-full h-full object-cover grayscale brightness-[0.3]" 
           />
-          <div className="absolute inset-0 bg-gradient-to-b from-nova-black/70 via-nova-black/50 to-white/10" />
-        </div>
+          <div className="absolute inset-0 bg-gradient-to-b from-nova-black/80 via-nova-black/40 to-white/10" />
+        </motion.div>
 
-        {/* Floating Light Flare */}
-        <div className="absolute top-1/4 right-1/4 w-96 h-96 bg-nova-red/20 blur-[120px] rounded-full animate-pulse-slow pointer-events-none" />
+        {/* Layer 1: Ambient Glows */}
+        <motion.div 
+          animate={{ scale: [1, 1.2, 1], opacity: [0.3, 0.5, 0.3] }}
+          transition={{ duration: 10, repeat: Infinity }}
+          className="absolute top-1/3 left-1/4 w-[50vw] h-[50vw] bg-nova-violet/20 blur-[150px] rounded-full pointer-events-none" 
+        />
         
+        {/* Layer 2: Main Content Reveal */}
         <div className="container mx-auto px-6 max-w-7xl relative z-10">
           <motion.div
-            initial={{ opacity: 0, y: 40 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 1.2, ease: [0.16, 1, 0.3, 1] }}
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ duration: 2 }}
             className="text-center"
           >
+            {/* Stage 1: Badge */}
             <motion.div
-              initial={{ opacity: 0, y: 10 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.3 }}
-              className="inline-flex items-center gap-3 mb-10 px-6 py-2 bg-nova-violet/20 backdrop-blur-md rounded-full border border-white/10"
+              initial={{ opacity: 0, scale: 0.8, y: 20 }}
+              animate={{ opacity: 1, scale: 1, y: 0 }}
+              transition={{ delay: 0.5, duration: 1, ease: [0.16, 1, 0.3, 1] }}
+              className="inline-flex items-center gap-4 mb-12 px-8 py-3 bg-white/10 backdrop-blur-2xl rounded-full border border-white/20 shadow-2xl"
             >
-              <Sparkles size={14} className="text-nova-red animate-pulse" />
-              <span className="text-white font-black tracking-[0.4em] uppercase text-[9px]">
+              <Sparkles size={16} className="text-nova-red animate-pulse" />
+              <span className="text-white font-black tracking-[0.5em] uppercase text-[10px]">
                 L'INNOVATION EST UNE PAGE BLANCHE
               </span>
             </motion.div>
 
-            <motion.h1 
-              initial={{ opacity: 0, scale: 0.9 }}
-              animate={{ opacity: 1, scale: 1 }}
-              transition={{ delay: 0.5, duration: 1, ease: [0.16, 1, 0.3, 1] }}
-              className="editorial-title text-[clamp(2rem,6vw,5.5rem)] font-black text-white leading-[1] mb-12 tracking-tighter"
-            >
-              BIENVENUE AU <br />
-              <span className="text-nova-violet italic font-light">TECH NOVA CHALLENGE !</span>
-            </motion.h1>
+            {/* Stage 2: Main Title - Line by Line */}
+            <div className="mb-14 perspective-card">
+              <motion.h1 
+                initial={{ opacity: 0, scale: 0.95, y: 50 }}
+                animate={{ opacity: 1, scale: 1, y: 0 }}
+                transition={{ delay: 0.8, duration: 1.4, ease: [0.16, 1, 0.3, 1] }}
+                className="editorial-title text-[clamp(2.5rem,7vw,7rem)] font-black text-white leading-[0.9] tracking-tighter"
+              >
+                BIENVENUE AU <br />
+                <span className="text-nova-violet italic font-light drop-shadow-[0_10px_30px_rgba(124,58,237,0.3)]">TECH NOVA CHALLENGE !</span>
+              </motion.h1>
+            </div>
 
-            <motion.p 
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{ delay: 0.7, duration: 1 }}
-              className="text-lg md:text-xl text-gray-200 font-light max-w-4xl mx-auto mb-16 leading-relaxed"
-            >
-              Premier concours de référence pour l'innovation technologique des jeunes au Bénin, 
-              pour encourager l'excellence, la créativité et l'esprit d'équipe tout en contribuant 
-              au développement de la nation !
-            </motion.p>
+            {/* Stage 3: Emotional Text */}
+            <div className="max-w-4xl mx-auto mb-16">
+              <RevealText delay={1.2} className="text-xl md:text-2xl text-gray-200 font-light leading-relaxed">
+                Le premier concours de référence pour l'innovation technologique des jeunes au Bénin pour bâtir demain aujourd'hui.
+              </RevealText>
+            </div>
 
+            {/* Stage 4: Actions */}
             <motion.div 
-              initial={{ opacity: 0, y: 20 }}
+              initial={{ opacity: 0, y: 30 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.9 }}
-              className="flex flex-col md:flex-row items-center justify-center gap-8"
+              transition={{ delay: 1.8, duration: 1 }}
+              className="flex flex-col md:flex-row items-center justify-center gap-10"
             >
-              <Button size="md" variant="accent" onClick={() => navigate('/edition-2026')}>
+              <Button size="lg" variant="accent" onClick={() => navigate('/edition-2026')}>
                 L'ÉDITION 2026
               </Button>
               <button 
                 onClick={() => navigate('/about')}
-                className="group flex items-center gap-3 text-[10px] font-black uppercase tracking-[0.4em] text-white/60 hover:text-white transition-all"
+                className="group flex items-center gap-4 text-[11px] font-black uppercase tracking-[0.5em] text-white/50 hover:text-white transition-all duration-500"
               >
-                Vision Institutionnelle <motion.div whileHover={{ x: 5 }} transition={{ type: "spring", stiffness: 400 }}><ArrowRight size={14} /></motion.div>
+                Vision Institutionnelle 
+                <motion.div whileHover={{ x: 10 }} transition={{ type: "spring", stiffness: 400 }}><ArrowRight size={18} /></motion.div>
               </button>
             </motion.div>
           </motion.div>
         </div>
+
+        {/* Floating Scroller Indicator */}
+        <motion.div 
+          animate={{ y: [0, 15, 0] }}
+          transition={{ duration: 3, repeat: Infinity, ease: "easeInOut" }}
+          className="absolute bottom-12 left-1/2 -translate-x-1/2 flex flex-col items-center gap-4 opacity-30"
+        >
+          <span className="text-[9px] font-black uppercase tracking-[0.5em] text-white">Scroll</span>
+          <ChevronDown size={24} className="text-white" />
+        </motion.div>
       </section>
 
-      {/* SESSION 2 : DÉFINITION */}
-      <section className="py-48 px-6 bg-white relative overflow-hidden">
-        {/* Shine Decorative element */}
-        <div className="absolute -left-20 top-40 w-80 h-80 bg-nova-violet/5 blur-[100px] rounded-full pointer-events-none" />
+      {/* SESSION 2 : DÉFINITION - EMERGENCE */}
+      <section className="py-64 px-6 bg-white relative overflow-hidden">
+        <div className="absolute -left-40 top-40 w-[60vw] h-[60vw] bg-nova-violet/5 blur-[150px] rounded-full pointer-events-none" />
 
-        <div className="container mx-auto max-w-5xl">
+        <div className="container mx-auto max-w-5xl relative z-10">
           <motion.div 
-            initial={{ opacity: 0, y: 40 }}
+            initial={{ opacity: 0, y: 60 }}
             whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            className="text-center mb-32"
+            viewport={{ once: true, margin: "-100px" }}
+            transition={{ duration: 1.2, ease: [0.16, 1, 0.3, 1] }}
+            className="text-center mb-40"
           >
-            <span className="text-nova-violet font-bold tracking-[0.5em] uppercase text-[10px] block mb-12">Le Programme</span>
-            <h2 className="text-3xl md:text-5xl font-black uppercase tracking-tighter text-nova-black mb-16 leading-tight">
+            <span className="text-nova-violet font-bold tracking-[0.6em] uppercase text-[11px] block mb-14">Le Programme</span>
+            <h2 className="text-4xl md:text-6xl font-black uppercase tracking-tighter text-nova-black mb-20 leading-tight">
               Qu'est ce que le <br />
-              <span className="text-nova-violet italic font-light uppercase">TECH NOVA CHALLENGE ?</span>
+              <span className="text-nova-violet italic font-light uppercase underline decoration-nova-violet/20 underline-offset-12">TECH NOVA CHALLENGE ?</span>
             </h2>
-            <div className="text-xl md:text-2xl text-gray-500 font-light leading-relaxed space-y-10">
-              <p>
-                Le TECH NOVA CHALLENGE (TNC) est le catalyseur national de l'innovation technologique au Bénin. Plus qu'une simple compétition, c'est un écosystème structuré qui identifie les jeunes talents universitaires les plus prometteurs pour les transformer en bâtisseurs de solutions concrètes.
-              </p>
-              <motion.p 
-                initial={{ opacity: 0, x: -20 }}
-                whileInView={{ opacity: 1, x: 0 }}
+            <div className="text-2xl md:text-3xl text-gray-400 font-light leading-relaxed space-y-16">
+              <RevealText delay={0.2}>
+                Le TNC est le catalyseur national de l'innovation technologique au Bénin. Plus qu'une compétition, c'est un écosystème structuré qui identifie les jeunes talents universitaires les plus prometteurs pour les transformer en bâtisseurs de solutions concrètes.
+              </RevealText>
+              
+              <motion.div 
+                initial={{ opacity: 0, scale: 0.95 }}
+                whileInView={{ opacity: 1, scale: 1 }}
                 viewport={{ once: true }}
-                transition={{ delay: 0.3 }}
-                className="text-nova-black font-medium border-l-4 border-nova-violet pl-10 text-left"
+                transition={{ delay: 0.6 }}
+                className="text-nova-black font-medium border-l-[6px] border-nova-violet pl-14 text-left py-4"
               >
-                Il a pour objectif principal de combler le déficit d'accompagnement entre la conception d'une idée et sa concrétisation industrielle, en offrant un cadre d'excellence, de mentorat expert et de financement stratégique adapté aux enjeux socio-économiques du pays.
-              </motion.p>
+                Il comble le déficit d'accompagnement entre l'idée et la concrétisation industrielle, en offrant un cadre d'excellence, de mentorat expert et de financement stratégique.
+              </motion.div>
             </div>
           </motion.div>
         </div>
       </section>
 
-      {/* SESSION 3 : ANCRAGE INSTITUTIONNEL */}
-      <section className="py-48 px-6 bg-gray-50 border-y border-gray-100 overflow-visible relative">
+      {/* SESSION 3 : ANCRAGE INSTITUTIONNEL - DEPTH & PARALLAX */}
+      <section className="py-64 px-6 bg-gray-50 border-y border-gray-100 relative overflow-visible">
         <div className="container mx-auto max-w-6xl">
-          <div className="grid lg:grid-cols-12 gap-16 md:gap-24 items-start">
+          <div className="grid lg:grid-cols-12 gap-24 md:gap-32 items-start">
             <motion.div 
-              initial={{ opacity: 0, x: -30 }}
+              initial={{ opacity: 0, x: -60 }}
               whileInView={{ opacity: 1, x: 0 }}
               viewport={{ once: true }}
-              className="lg:col-span-5"
+              transition={{ duration: 1.4, ease: [0.16, 1, 0.3, 1] }}
+              className="lg:col-span-5 sticky top-32"
             >
-              <span className="text-nova-violet font-bold tracking-[0.5em] uppercase text-[10px] block mb-10">Ancrage Institutionnel</span>
-              <h2 className="text-4xl md:text-6xl font-black uppercase tracking-tighter text-nova-black leading-none mb-12">
-                UN SOUTIEN <br /><span className="text-nova-violet">DE HAUT NIVEAU.</span>
+              <span className="text-nova-violet font-bold tracking-[0.6em] uppercase text-[11px] block mb-14">Ancrage Institutionnel</span>
+              <h2 className="text-5xl md:text-7xl font-black uppercase tracking-tighter text-nova-black leading-none mb-16">
+                UN SOUTIEN <br /><span className="text-nova-violet">D'EXCEPTION.</span>
               </h2>
-              <div className="space-y-12 text-lg text-gray-500 font-light leading-relaxed">
+              <div className="space-y-14 text-xl text-gray-500 font-light leading-relaxed">
                 <p>
                   Son organisation est placée sous le patronage officiel des directions de l'École Nationale Supérieure d'Enseignement Technique (**ENSET**) et de l'Institut National Supérieur de Technologie Industrielle (**INSTI**).
                 </p>
-                <div className="p-10 bg-white rounded-[2.5rem] border border-nova-violet/10 flex items-center gap-8 group hover:shadow-xl transition-all shine-container">
-                  <div className="w-16 h-16 bg-nova-violet/5 rounded-2xl flex items-center justify-center text-nova-violet">
-                    <HeartHandshake size={32} />
+                <motion.div 
+                  whileHover={{ scale: 1.05, y: -5 }}
+                  className="p-12 bg-white rounded-[3rem] border border-nova-violet/10 flex items-center gap-10 group shadow-lg transition-all shine-container"
+                >
+                  <div className="w-20 h-20 bg-nova-violet/5 rounded-3xl flex items-center justify-center text-nova-violet">
+                    <HeartHandshake size={40} />
                   </div>
                   <div>
-                    <span className="text-[10px] font-black uppercase tracking-widest text-nova-violet">Partenaire Officiel</span>
-                    <div className="text-2xl font-black text-nova-black mt-1 uppercase">WISANE (INGCO)</div>
+                    <span className="text-[11px] font-black uppercase tracking-widest text-nova-violet">Partenaire Officiel</span>
+                    <div className="text-3xl font-black text-nova-black mt-1 uppercase">WISANE (INGCO)</div>
                   </div>
-                </div>
+                </motion.div>
               </div>
             </motion.div>
 
-            <div className="lg:col-span-7 space-y-16 md:space-y-20 pt-12 lg:pt-0">
+            <div className="lg:col-span-7 space-y-24 md:space-y-32 pt-20 lg:pt-0">
                <PatronageCard 
                  label="PARRAINAGE"
                  name="Prof. Gustave DJEDATIN"
@@ -232,172 +292,138 @@ const Home: React.FC = () => {
         </div>
       </section>
 
-      {/* SESSION 4 : CIBLE & ACCESSIBILITÉ */}
-      <section className="py-48 px-6 bg-white overflow-hidden relative">
+      {/* SESSION 4 : CIBLE - INTERACTIVE GRID */}
+      <section className="py-64 px-6 bg-white overflow-hidden relative">
         <div className="container mx-auto max-w-5xl">
-          <header className="text-center mb-32">
-            <span className="text-nova-violet font-bold tracking-[0.5em] uppercase text-[10px] block mb-8">Éligibilité & Candidature</span>
-            <h2 className="text-4xl md:text-7xl font-black uppercase tracking-tighter text-nova-black">Alors, à qui s'adresse <br /><span className="text-nova-violet italic font-light">ce concours ?</span></h2>
+          <header className="text-center mb-40">
+            <span className="text-nova-violet font-bold tracking-[0.6em] uppercase text-[11px] block mb-10">Éligibilité</span>
+            <h2 className="text-5xl md:text-8xl font-black uppercase tracking-tighter text-nova-black">À qui s'adresse <br /><span className="text-nova-violet italic font-light">ce défi ?</span></h2>
           </header>
 
-          <div className="space-y-16 text-xl md:text-2xl font-light text-gray-500 leading-relaxed">
-            <motion.p 
-              initial={{ opacity: 0, y: 20 }}
+          <div className="space-y-24 text-2xl md:text-3xl font-light text-gray-500 leading-relaxed">
+            <motion.div 
+              initial={{ opacity: 0, y: 30 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
-              className="flex items-start gap-8"
+              className="flex items-start gap-12 group"
             >
-              <div className="mt-2 text-nova-violet"><Users size={32} /></div>
+              <div className="mt-3 text-nova-violet p-4 bg-nova-violet/5 rounded-3xl group-hover:bg-nova-violet group-hover:text-white transition-all duration-700">
+                <Users size={48} />
+              </div>
               <span>
-                Le <strong className="text-nova-black font-black">Tech Nova Challenge</strong> vise les jeunes talents béninois, passionnés par la technique et l'innovation, âgés de <strong className="text-nova-black">15 à 25 ans</strong> et inscrits dans un établissement d'enseignement supérieur du pays.
+                Le <strong className="text-nova-black font-black">Tech Nova Challenge</strong> vise les jeunes talents béninois passionnés par la technique et l'innovation, âgés de <strong className="text-nova-black">15 à 25 ans</strong>.
               </span>
-            </motion.p>
+            </motion.div>
 
-            <motion.p 
-              initial={{ opacity: 0, y: 20 }}
+            <motion.div 
+              initial={{ opacity: 0, y: 30 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ delay: 0.2 }}
-              className="flex items-start gap-8"
+              className="flex items-start gap-12 group"
             >
-              <div className="mt-2 text-nova-violet"><Zap size={32} /></div>
+              <div className="mt-3 text-nova-violet p-4 bg-nova-violet/5 rounded-3xl group-hover:bg-nova-violet group-hover:text-white transition-all duration-700">
+                <Zap size={48} />
+              </div>
               <span>
-                La participation se fait exclusivement <strong className="text-nova-black">en binôme</strong>. Nous encourageons la synergie des compétences : qu'il s'agisse de deux profils techniques ou d'une alliance entre un inventeur et un gestionnaire, l'interdisciplinarité est la clé du succès.
+                La participation se fait exclusivement <strong className="text-nova-black">en binôme</strong>. L'interdisciplinarité entre inventeur et gestionnaire est la clé du succès.
               </span>
-            </motion.p>
+            </motion.div>
 
-            <motion.div 
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ delay: 0.4 }}
-              className="bg-gray-50 p-12 rounded-[3rem] border border-gray-100 shine-container"
-            >
-              <div className="text-[10px] font-black uppercase tracking-widest text-nova-violet mb-8">Un processus en trois temps</div>
-              <div className="grid md:grid-cols-3 gap-12">
+            <GlassCard className="mt-32 p-16 md:p-24 border-gray-100 bg-gray-50/50">
+              <div className="text-[11px] font-black uppercase tracking-[0.4em] text-nova-violet mb-12">Processus en 3 Temps</div>
+              <div className="grid md:grid-cols-3 gap-16">
                 {[
-                  { title: "Sélection", desc: "Dépôt de dossier technique et vidéo de pitch." },
+                  { title: "Sélection", desc: "Dossier technique et vidéo de pitch." },
                   { title: "Immersion", desc: "Formation accélérée de 3 jours offerte." },
-                  { title: "Apothéose", desc: "Finale publique devant un jury d'experts." }
+                  { title: "Apothéose", desc: "Finale publique devant experts." }
                 ].map((step, idx) => (
-                  <div key={idx} className="space-y-4">
-                    <h4 className="text-nova-black font-black uppercase text-sm">{idx + 1}. {step.title}</h4>
-                    <p className="text-sm leading-relaxed">{step.desc}</p>
-                  </div>
+                  <motion.div 
+                    key={idx} 
+                    className="space-y-6"
+                    initial={{ opacity: 0, y: 20 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    transition={{ delay: 0.4 + (idx * 0.1) }}
+                  >
+                    <h4 className="text-nova-black font-black uppercase text-base">{idx + 1}. {step.title}</h4>
+                    <p className="text-base leading-relaxed text-gray-400 font-light">{step.desc}</p>
+                  </motion.div>
                 ))}
               </div>
-            </motion.div>
+            </GlassCard>
           </div>
 
           <motion.div 
-            initial={{ opacity: 0, scale: 0.95 }}
+            initial={{ opacity: 0, scale: 0.98 }}
             whileInView={{ opacity: 1, scale: 1 }}
             viewport={{ once: true }}
-            className="mt-32 p-12 md:p-20 bg-nova-black text-white rounded-[4rem] relative overflow-hidden text-center shine-container"
+            className="mt-40 p-16 md:p-32 bg-nova-black text-white rounded-[5rem] relative overflow-hidden text-center shine-container shadow-3xl"
           >
-            <h3 className="text-3xl font-black uppercase tracking-tighter mb-12 relative z-10">Rejoignez l'élite technologique</h3>
+            <motion.h3 
+              animate={{ y: [0, -5, 0] }}
+              transition={{ duration: 4, repeat: Infinity }}
+              className="text-4xl md:text-5xl font-black uppercase tracking-tighter mb-16 relative z-10"
+            >
+              Rejoignez l'élite technologique
+            </motion.h3>
             <div className="flex justify-center relative z-10">
               <Button size="lg" variant="accent" onClick={() => navigate('/participate')}>Postuler maintenant</Button>
             </div>
-            <div className="absolute top-0 right-0 w-[50vw] h-[50vw] bg-nova-violet/10 blur-[120px] rounded-full translate-x-1/2 -translate-y-1/2 pointer-events-none" />
+            <div className="absolute inset-0 bg-gradient-to-br from-nova-violet/20 via-transparent to-nova-red/10 pointer-events-none" />
+            <div className="absolute -top-1/2 -right-1/4 w-[60vw] h-[60vw] bg-nova-violet/10 blur-[150px] rounded-full pointer-events-none" />
           </motion.div>
         </div>
       </section>
 
-      {/* SESSION 5 : ACCOMPAGNEMENT */}
-      <section className="py-48 px-6 bg-gray-50 border-y border-gray-100 relative overflow-hidden">
-        <div className="container mx-auto max-w-6xl">
-          <div className="grid lg:grid-cols-12 gap-24 items-center">
-            <div className="lg:col-span-6 space-y-12">
-              <span className="text-nova-violet font-bold tracking-[0.5em] uppercase text-[10px] block">Accompagnement & Expertise</span>
-              <h2 className="text-4xl md:text-5xl font-black uppercase tracking-tighter text-nova-black leading-none">
-                AU-DELÀ DE LA COMPÉTITION, <br /><span className="text-nova-violet italic font-light uppercase">VOUS BÉNÉFICIEZ...</span>
-              </h2>
-              <div className="space-y-8">
-                {[
-                  { icon: <BookOpen size={24} />, title: "Formations Thématiques", desc: "Maîtrisez l'art oratoire, l'entrepreneuriat innovant et la gouvernance de projet." },
-                  { icon: <Building2 size={24} />, title: "Visites Pédagogiques", desc: "Immersion totale dans les centres de référence comme le laboratoire SCOP à Sèmè City." },
-                  { icon: <Scale size={24} />, title: "Expertise Scientifique", desc: "Conseils de haut niveau par un jury de docteurs et de professionnels de l'industrie." }
-                ].map((step, i) => (
-                  <motion.div 
-                    key={i}
-                    initial={{ opacity: 0, x: -20 }}
-                    whileInView={{ opacity: 1, x: 0 }}
-                    viewport={{ once: true }}
-                    transition={{ delay: i * 0.1 }}
-                    className="flex gap-8 group"
-                  >
-                    <div className="w-12 h-12 rounded-xl bg-white shadow-sm flex items-center justify-center text-nova-violet group-hover:bg-nova-violet group-hover:text-white transition-all">
-                      {step.icon}
-                    </div>
-                    <div className="flex-1 border-b border-gray-200 pb-8 last:border-0">
-                      <h4 className="font-black uppercase text-xs mb-3">{step.title}</h4>
-                      <p className="text-sm text-gray-500 font-light">{step.desc}</p>
-                    </div>
-                  </motion.div>
-                ))}
-              </div>
-            </div>
-            <motion.div 
-              initial={{ opacity: 0, scale: 0.9 }}
-              whileInView={{ opacity: 1, scale: 1 }}
-              viewport={{ once: true }}
-              transition={{ duration: 1.2 }}
-              className="lg:col-span-6"
-            >
-               <div className="relative rounded-[4rem] overflow-hidden group shadow-2xl shine-container">
-                 <img 
-                   src="https://images.unsplash.com/photo-1522202176988-66273c2fd55f?auto=format&fit=crop&q=80&w=1200" 
-                   alt="Pédagogie Nova" 
-                   className="grayscale group-hover:grayscale-0 transition-all duration-1000"
-                 />
-               </div>
-            </motion.div>
-          </div>
-        </div>
-      </section>
-
-      {/* SESSION 7 : PERSPECTIVES 2026 */}
-      <section className="py-64 px-6 bg-gray-50 text-center relative overflow-hidden">
-        <div className="container mx-auto max-w-4xl relative z-10">
-          <span className="text-nova-violet font-bold tracking-[0.5em] uppercase text-[10px] block mb-12">Perspectives & Évolutions</span>
-          <h2 className="editorial-title text-[clamp(2.5rem,10vw,8rem)] text-nova-black mb-16 leading-[0.85]">
+      {/* SESSION 7 : PERSPECTIVES 2026 - HORIZON REVEAL */}
+      <section className="py-80 px-6 bg-gray-50 text-center relative overflow-hidden">
+        <div className="container mx-auto max-w-5xl relative z-10">
+          <span className="text-nova-violet font-bold tracking-[0.6em] uppercase text-[11px] block mb-14">Futur & Horizons</span>
+          <h2 className="editorial-title text-[clamp(3rem,12vw,14rem)] text-nova-black mb-20 leading-[0.8]">
             HORIZON <br />
             <span className="text-nova-violet italic font-light">2026.</span>
           </h2>
 
-          <div className="grid md:grid-cols-3 gap-8 mb-20 text-left">
+          <div className="grid md:grid-cols-3 gap-10 mb-32 text-left">
              {[
-               { price: "500.000 FCFA", sub: "1er Prix + Ordinateur" },
-               { price: "300.000 FCFA", sub: "2e Prix + Ordinateur" },
-               { price: "200.000 FCFA", sub: "3e Prix + Ordinateur" }
+               { price: "500.000 FCFA", sub: "1er Prix + Excellence", icon: <Award size={48} className="text-nova-red" /> },
+               { price: "300.000 FCFA", sub: "2e Prix + Mérite", icon: <Award size={48} className="text-nova-violet" /> },
+               { price: "200.000 FCFA", sub: "3e Prix + Distinction", icon: <Award size={48} className="text-gray-300" /> }
              ].map((item, i) => (
                <motion.div 
                  key={i}
-                 initial={{ opacity: 0, y: 20 }}
+                 initial={{ opacity: 0, y: 40 }}
                  whileInView={{ opacity: 1, y: 0 }}
                  viewport={{ once: true }}
-                 transition={{ delay: i * 0.1 }}
-                 className="p-10 bg-white rounded-[2.5rem] border border-gray-100 shadow-sm hover:shadow-xl transition-all shine-container"
+                 transition={{ delay: i * 0.15, duration: 1, ease: [0.16, 1, 0.3, 1] }}
+                 className="p-12 bg-white rounded-[3.5rem] border border-gray-100 shadow-xl hover:shadow-2xl transition-all duration-700 shine-container"
                >
-                  <div className="text-nova-violet mb-4"><Award size={32} /></div>
-                  <div className="text-2xl font-black text-nova-black">{item.price}</div>
-                  <div className="text-[10px] uppercase font-bold tracking-widest text-gray-400 mt-2">{item.sub}</div>
+                  <motion.div 
+                    animate={{ rotate: [0, 5, -5, 0] }}
+                    transition={{ duration: 6, repeat: Infinity }}
+                    className="mb-10"
+                  >
+                    {item.icon}
+                  </motion.div>
+                  <div className="text-3xl font-black text-nova-black mb-2">{item.price}</div>
+                  <div className="text-[11px] uppercase font-bold tracking-[0.4em] text-gray-400">{item.sub}</div>
                </motion.div>
              ))}
           </div>
           
-          <div className="max-w-3xl mx-auto space-y-12">
-            <p className="text-xl text-gray-500 font-light leading-relaxed">
-              La deuxième édition, programmée de janvier à mai 2026, vise un déploiement national élargi, intégrant une phase de **prototypage/maquettage** et la création du réseau **« Tech Nova Alumni »**.
-            </p>
-            <div className="flex flex-col md:flex-row justify-center gap-8">
+          <div className="max-w-3xl mx-auto space-y-16">
+            <RevealText className="text-2xl text-gray-500 font-light leading-relaxed">
+              La deuxième édition programmée de janvier à mai 2026 vise un déploiement national élargi intégrant une phase de prototypage poussée.
+            </RevealText>
+            <div className="flex flex-col md:flex-row justify-center gap-10">
                <Button size="lg" variant="accent" onClick={() => navigate('/participate')}>Postuler pour 2026</Button>
                <Button variant="outline" size="lg" onClick={() => navigate('/edition-2026')}>Voir le Programme</Button>
             </div>
           </div>
         </div>
-        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[100vw] h-[100vw] bg-nova-violet/5 blur-[150px] rounded-full pointer-events-none" />
+        
+        {/* Deep Atmospheric Background */}
+        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[120vw] h-[120vw] bg-nova-violet/5 blur-[200px] rounded-full pointer-events-none" />
       </section>
 
     </div>
