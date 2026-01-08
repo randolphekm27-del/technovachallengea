@@ -136,18 +136,6 @@ const Home: React.FC = () => {
             transition={{ duration: 2 }}
             className="text-center"
           >
-            {/* Stage 1: Badge */}
-            <motion.div
-              initial={{ opacity: 0, scale: 0.8, y: 20 }}
-              animate={{ opacity: 1, scale: 1, y: 0 }}
-              transition={{ delay: 0.5, duration: 1, ease: [0.16, 1, 0.3, 1] }}
-              className="inline-flex items-center gap-4 mb-12 px-8 py-3 bg-white/10 backdrop-blur-2xl rounded-full border border-white/20 shadow-2xl"
-            >
-              <Sparkles size={16} className="text-nova-red animate-pulse" />
-              <span className="text-white font-black tracking-[0.5em] uppercase text-[10px]">
-                L'INNOVATION EST UNE PAGE BLANCHE
-              </span>
-            </motion.div>
 
             {/* Stage 2: Main Title - Line by Line */}
             <div className="mb-14 perspective-card">
@@ -220,7 +208,7 @@ const Home: React.FC = () => {
             </h2>
             <div className="text-2xl md:text-3xl text-gray-400 font-light leading-relaxed space-y-16">
               <RevealText delay={0.2}>
-                Le TNC est le catalyseur national de l'innovation technologique au Bénin. Plus qu'une compétition, c'est un écosystème structuré qui identifie les jeunes talents universitaires les plus prometteurs pour les transformer en bâtisseurs de solutions concrètes.
+                Le TNC est un concours national d’innovation technologique qui accompagne les jeunes talents universitaires vers des solutions concrètes.
               </RevealText>
               
               <motion.div 
@@ -230,7 +218,7 @@ const Home: React.FC = () => {
                 transition={{ delay: 0.6 }}
                 className="text-nova-black font-medium border-l-[6px] border-nova-violet pl-14 text-left py-4"
               >
-                Il comble le déficit d'accompagnement entre l'idée et la concrétisation industrielle, en offrant un cadre d'excellence, de mentorat expert et de financement stratégique.
+               Il accompagne les porteurs de projets tout au long du processus, de l’idée à la concrétisation, avec un suivi, du mentorat et un soutien financier.
               </motion.div>
             </div>
           </motion.div>
@@ -254,7 +242,7 @@ const Home: React.FC = () => {
               </h2>
               <div className="space-y-14 text-xl text-gray-500 font-light leading-relaxed">
                 <p>
-                  Son organisation est placée sous le patronage officiel des directions de l'École Nationale Supérieure d'Enseignement Technique (**ENSET**) et de l'Institut National Supérieur de Technologie Industrielle (**INSTI**).
+                  Le TECH NOVA CHALLENGE bénéficie du patronage officiel des plus prestigieuses universités scientifiques du Bénin, notamment l’École Nationale Supérieure d’Enseignement Technique (ENSET) et l’Institut National Supérieur de Technologie Industrielle (INSTI), qui soutiennent et encadrent son organisation.
                 </p>
                 <motion.div 
                   whileHover={{ scale: 1.05, y: -5 }}
@@ -331,26 +319,43 @@ const Home: React.FC = () => {
             </motion.div>
 
             <GlassCard className="mt-32 p-16 md:p-24 border-gray-100 bg-gray-50/50">
-              <div className="text-[11px] font-black uppercase tracking-[0.4em] text-nova-violet mb-12">Processus en 3 Temps</div>
-              <div className="grid md:grid-cols-3 gap-16">
-                {[
-                  { title: "Sélection", desc: "Dossier technique et vidéo de pitch." },
-                  { title: "Immersion", desc: "Formation accélérée de 3 jours offerte." },
-                  { title: "Apothéose", desc: "Finale publique devant experts." }
-                ].map((step, idx) => (
-                  <motion.div 
-                    key={idx} 
-                    className="space-y-6"
-                    initial={{ opacity: 0, y: 20 }}
-                    whileInView={{ opacity: 1, y: 0 }}
-                    transition={{ delay: 0.4 + (idx * 0.1) }}
-                  >
-                    <h4 className="text-nova-black font-black uppercase text-base">{idx + 1}. {step.title}</h4>
-                    <p className="text-base leading-relaxed text-gray-400 font-light">{step.desc}</p>
-                  </motion.div>
-                ))}
-              </div>
-            </GlassCard>
+  <div className="text-[11px] font-black uppercase tracking-[0.4em] text-nova-violet mb-12">
+    Un parcours structuré en 3 étapes clés
+  </div>
+
+  <div className="grid md:grid-cols-3 gap-16">
+    {[
+      {
+        title: "Sélection",
+        desc: "Les candidats soumettent un dossier technique solide accompagné d’une vidéo de pitch, permettant d’évaluer la pertinence, la faisabilité et l’impact de leur projet."
+      },
+      {
+        title: "Immersion",
+        desc: "Les équipes retenues bénéficient d’une formation intensive de 3 jours, axée sur le renforcement des compétences techniques, entrepreneuriales et stratégiques."
+      },
+      {
+        title: "Apothéose",
+        desc: "Les projets finalistes sont présentés lors d’une finale publique devant un jury d’experts, marquant l’aboutissement du parcours et la mise en lumière des meilleures solutions."
+      }
+    ].map((step, idx) => (
+      <motion.div
+        key={idx}
+        className="space-y-6"
+        initial={{ opacity: 0, y: 20 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        transition={{ delay: 0.4 + idx * 0.1 }}
+      >
+        <h4 className="text-nova-black font-black uppercase text-base">
+          {idx + 1}. {step.title}
+        </h4>
+        <p className="text-base leading-relaxed text-gray-400 font-light">
+          {step.desc}
+        </p>
+      </motion.div>
+    ))}
+  </div>
+</GlassCard>
+
           </div>
 
           <motion.div 
@@ -413,7 +418,7 @@ const Home: React.FC = () => {
           
           <div className="max-w-3xl mx-auto space-y-16">
             <RevealText className="text-2xl text-gray-500 font-light leading-relaxed">
-              La deuxième édition programmée de janvier à mai 2026 vise un déploiement national élargi intégrant une phase de prototypage poussée.
+              La deuxième édition, qui se déroulera de janvier à mai 2026, s’ouvre à tous les talents du Bénin ! Cette année, vous aurez l’opportunité de passer vos idées du papier à la réalité grâce à une phase de prototypage guidée et complète.
             </RevealText>
             <div className="flex flex-col md:flex-row justify-center gap-10">
                <Button size="lg" variant="accent" onClick={() => navigate('/participate')}>Postuler pour 2026</Button>
