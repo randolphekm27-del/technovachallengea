@@ -82,7 +82,7 @@ const Navbar: React.FC = () => {
           <div className="flex items-center gap-3 md:gap-4 z-[110]">
             <Button 
               size="sm" 
-              variant={scrolled ? "primary" : isDarkHeroPage && !mobileMenuOpen ? "outline" : "primary"}
+              variant={scrolled ? "accent" : isDarkHeroPage && !mobileMenuOpen ? "outline" : "accent"}
               onClick={() => navigate('/participate')}
               className={`hidden md:inline-flex text-[9px] py-2 px-6 ${!scrolled && isDarkHeroPage && !mobileMenuOpen ? 'border-white text-white hover:bg-white hover:text-nova-black' : ''}`}
             >
@@ -169,6 +169,7 @@ const Navbar: React.FC = () => {
                 
                 <Button 
                   size="md" 
+                  variant="accent"
                   onClick={() => { setMobileMenuOpen(false); navigate('/participate'); }} 
                   className="w-full py-4"
                 >

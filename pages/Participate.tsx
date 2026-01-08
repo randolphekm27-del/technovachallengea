@@ -45,7 +45,7 @@ const Participate: React.FC = () => {
             <div key={s.id} className="flex flex-col items-center gap-4 bg-white px-4">
               <motion.div
                 animate={{
-                  backgroundColor: step >= s.id ? '#7C3AED' : '#F3F4F6',
+                  backgroundColor: step >= s.id ? (s.id === 4 ? '#9d0a00' : '#7C3AED') : '#F3F4F6',
                   color: step >= s.id ? '#FFFFFF' : '#9CA3AF',
                   scale: step === s.id ? 1.2 : 1
                 }}
@@ -53,7 +53,7 @@ const Participate: React.FC = () => {
               >
                 {step > s.id ? <Check size={18} /> : s.icon}
               </motion.div>
-              <span className={`text-[10px] font-black uppercase tracking-widest ${step >= s.id ? 'text-nova-violet' : 'text-gray-300'}`}>
+              <span className={`text-[10px] font-black uppercase tracking-widest ${step >= s.id ? (s.id === 4 ? 'text-nova-red' : 'text-nova-violet') : 'text-gray-300'}`}>
                 {s.label}
               </span>
             </div>
@@ -174,7 +174,7 @@ const Participate: React.FC = () => {
                     value={formData.motivation}
                     onChange={handleInputChange}
                     placeholder="Décrivez votre ambition..."
-                    className="w-full bg-transparent border-b border-gray-100 py-4 text-xl outline-none focus:border-nova-violet transition-colors placeholder:text-gray-100 resize-none h-48"
+                    className="w-full bg-transparent border-b border-gray-100 py-4 text-xl outline-none focus:border-nova-violet transition-all h-48"
                   />
                 </div>
               </GlassCard>
@@ -183,7 +183,7 @@ const Participate: React.FC = () => {
                 <button onClick={prevStep} className="flex items-center gap-2 text-gray-400 hover:text-nova-black transition-colors font-bold uppercase text-[10px] tracking-widest">
                   <ChevronLeft size={16} /> Retour
                 </button>
-                <Button onClick={nextStep} disabled={!formData.motivation} size="lg">
+                <Button onClick={nextStep} variant="accent" disabled={!formData.motivation} size="lg">
                   Soumettre ma candidature
                 </Button>
               </div>
@@ -201,11 +201,11 @@ const Participate: React.FC = () => {
                 initial={{ scale: 0 }}
                 animate={{ scale: 1 }}
                 transition={{ type: 'spring', damping: 12, delay: 0.2 }}
-                className="w-32 h-32 bg-nova-violet rounded-full flex items-center justify-center mx-auto mb-12 shadow-2xl"
+                className="w-32 h-32 bg-nova-red rounded-full flex items-center justify-center mx-auto mb-12 shadow-2xl"
               >
                 <Check size={64} className="text-white" />
               </motion.div>
-              <h1 className="editorial-title text-6xl md:text-8xl mb-8">INSCRIPTION<br/><span className="text-nova-violet">TERMINÉE.</span></h1>
+              <h1 className="editorial-title text-6xl md:text-8xl mb-8">INSCRIPTION<br/><span className="text-nova-red">TERMINÉE.</span></h1>
               <p className="text-gray-500 text-xl font-light mb-16 max-w-xl mx-auto">
                 Votre dossier a été scellé. Nos experts analyseront votre vision et vous recontacteront d'ici 14 jours.
               </p>
