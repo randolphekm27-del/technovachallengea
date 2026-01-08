@@ -39,8 +39,8 @@ const About: React.FC = () => {
             transition={{ duration: 1.5, ease: [0.16, 1, 0.3, 1] }}
           >
             <h1 className="editorial-title text-[clamp(2.5rem,8vw,8rem)] text-white leading-[0.85] mb-12">
-              VOICI TOUT SUR LE <br />
-              <span className="text-nova-violet italic font-light">TECH NOVA CHALLENGE.</span>
+              CLARIFIONS LE <br />
+              <span className="text-nova-violet italic font-light">CONCOURS.</span>
             </h1>
           </motion.div>
         </div>
