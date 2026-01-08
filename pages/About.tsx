@@ -38,16 +38,10 @@ const About: React.FC = () => {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 1.5, ease: [0.16, 1, 0.3, 1] }}
           >
-            <span className="text-nova-violet font-black tracking-[0.6em] uppercase text-[10px] block mb-8">
-              Manifeste Institutionnel
-            </span>
             <h1 className="editorial-title text-[clamp(2.5rem,8vw,8rem)] text-white leading-[0.85] mb-12">
-              L'INNOVATION <br />
-              <span className="text-nova-violet italic font-light">COMME HÉRITAGE.</span>
+              VOICI TOUT SUR LE <br />
+              <span className="text-nova-violet italic font-light">TECH NOVA CHALLENGE.</span>
             </h1>
-            <p className="text-xl md:text-2xl text-gray-300 font-light max-w-3xl mx-auto leading-relaxed">
-              Le Tech Nova Challenge (TNC) est le catalyseur national de l'excellence technologique béninoise.
-            </p>
           </motion.div>
         </div>
         
@@ -76,15 +70,16 @@ const About: React.FC = () => {
             </div>
             
             <h2 className="text-4xl md:text-6xl font-black text-nova-black uppercase tracking-tighter leading-none mb-10">
-              UNE PLATEFORME <br /><span className="text-nova-violet italic font-light">D'EXPRESSION ET DE VALORISATION.</span>
-            </h2>
+  LE TECH NOVA CHALLENGE <br />
+  <span className="text-nova-violet italic font-light">UNE AVENTURE POUR FAIRE VIVRE VOS IDÉES.</span>
+</h2>
             
             <div className="prose prose-2xl max-w-none text-gray-500 font-light leading-[1.8] space-y-10">
               <p>
-                Le Tech Nova Challenge (TNC) se positionne comme une plateforme structurée d’expression, de formation et de valorisation des talents, principalement issus des filières techniques, scientifiques et du numérique. 
+                Le Tech Nova Challenge (TNC) se positionne comme une plateforme structurée d’expression, de formation et de valorisation des talents, principalement issus des filières techniques, scientifiques, littéraires et numériques du Bénin. 
               </p>
               <p>
-                Le concours offre un cadre organisé permettant aux étudiants et jeunes professionnels d’identifier des problématiques concrètes de leur environnement — notamment dans les domaines de l’emploi, de l’éducation, de la sécurité, du cadre de vie ou des services numériques — et de proposer des solutions technologiques adaptées. 
+                Le concours offre un cadre organisé permettant aux étudiants d’identifier des problématiques concrètes de leur environnement — notamment dans les domaines de l’emploi, de l’éducation, de la sécurité, du cadre de vie ou des services numériques — et de proposer des solutions technologiques adaptées. 
               </p>
               <p className="border-l-4 border-nova-violet pl-10 italic text-nova-black font-medium">
                 Ces solutions font l’objet d’un processus de conception, de prototypage et de présentation devant un jury et un public, conformément à des critères professionnels définis.
@@ -109,11 +104,11 @@ const About: React.FC = () => {
               <h3 className="text-3xl md:text-4xl font-black uppercase mb-10 tracking-tighter text-nova-black">Répondre au déficit <br /><span className="text-nova-violet">de cadres structurés.</span></h3>
               <div className="text-gray-500 font-light text-lg leading-relaxed space-y-8">
                 <p>
-                  La mise en place du Tech Nova Challenge repose sur le constat de l’existence, au Bénin, d’un important vivier de jeunes disposant de compétences techniques et scientifiques, mais confrontés à un manque de cadres favorisant l’expérimentation.
-                </p>
-                <p>
-                  Le concours a été conçu comme un dispositif d’innovations appliquées, offrant un parcours complet : de l’appel à candidatures à la finale, en passant par le renforcement de capacités et la préparation au pitch.
-                </p>
+  Le Tech Nova Challenge part d’un constat simple : au Bénin, il y a plein de jeunes qui ont des compétences techniques et scientifiques, mais peu d’opportunités pour tester et expérimenter leurs idées.
+</p>
+<p>
+  Le concours a été pensé comme un parcours complet d’innovation pratique, allant de l’appel à candidatures jusqu’à la finale, en incluant des formations pour renforcer les compétences et préparer les participants à présenter leurs projets.
+</p>
               </div>
             </motion.div>
             
