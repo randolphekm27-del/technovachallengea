@@ -64,16 +64,6 @@ const Home: React.FC = () => {
             transition={{ duration: 1.2, ease: [0.16, 1, 0.3, 1] }}
             className="text-center"
           >
-            <motion.div
-              initial={{ opacity: 0, y: 10 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.3 }}
-              className="inline-flex items-center gap-3 mb-10 px-6 py-2 bg-nova-violet/20 backdrop-blur-md rounded-full border border-white/10"
-            >
-              <span className="text-white font-black tracking-[0.4em] uppercase text-[9px]">
-                L'INNOVATION EST UNE PAGE BLANCHE
-              </span>
-            </motion.div>
 
             <motion.h1 
               initial={{ opacity: 0, scale: 0.9 }}
@@ -123,14 +113,14 @@ const Home: React.FC = () => {
             viewport={{ once: true }}
             className="text-center mb-32"
           >
-            <span className="text-nova-violet font-bold tracking-[0.5em] uppercase text-[10px] block mb-12">Le Programme</span>
+            <span className="text-nova-violet font-bold tracking-[0.5em] uppercase text-[10px] block mb-12">A savoir</span>
             <h2 className="text-3xl md:text-5xl font-black uppercase tracking-tighter text-nova-black mb-16 leading-tight">
               Qu'est ce que le <br />
               <span className="text-nova-violet italic font-light uppercase">TECH NOVA CHALLENGE ?</span>
             </h2>
             <div className="text-xl md:text-2xl text-gray-500 font-light leading-relaxed space-y-10">
               <p>
-                Le TECH NOVA CHALLENGE (TNC) est le catalyseur national de l'innovation technologique au Bénin. Plus qu'une simple compétition, c'est un écosystème structuré qui identifie les jeunes talents universitaires les plus prometteurs pour les transformer en bâtisseurs de solutions concrètes.
+                Le TECH NOVA CHALLENGE (TNC) est un concours national dédié à l’innovation technologique au Bénin. Il permet d’identifier de jeunes talents et de les accompagner dans la création de solutions concrètes pour le pays.
               </p>
               <motion.p 
                 initial={{ opacity: 0, x: -20 }}
@@ -158,11 +148,11 @@ const Home: React.FC = () => {
             >
               <span className="text-nova-violet font-bold tracking-[0.5em] uppercase text-[10px] block mb-10">Ancrage Institutionnel</span>
               <h2 className="text-4xl md:text-6xl font-black uppercase tracking-tighter text-nova-black leading-none mb-12">
-                UN SOUTIEN <br /><span className="text-nova-violet">DE HAUT NIVEAU.</span>
+                BENEFICIT D'UN SOUTIEN <br /><span className="text-nova-violet">DE HAUT NIVEAU.</span>
               </h2>
               <div className="space-y-12 text-lg text-gray-500 font-light leading-relaxed">
                 <p>
-                  Son organisation est placée sous le patronage officiel de la direction de l'École Nationale Supérieure d'Enseignement Technique (**ENSET**), représentée par le **Professeur Titulaire Gustave DJEDATIN**, et de l'Institut National Supérieur de Technologie Industrielle (**INSTI**), représenté par la **Professeur Titulaire Clotilde GUIDI TOGNON**, respectivement parrain et marraine de l'édition inaugurale.
+                  Le TECH NOVA CHALLENGE est placé sous le patronage officiel de la direction de l'École Nationale Supérieure d'Enseignement Technique (ENSET), représentée par le Professeur Titulaire Gustave DJEDATIN, et de l'Institut National Supérieur de Technologie Industrielle (INSTI), représenté par la Professeur Titulaire Clotilde GUIDI TOGNON, respectivement parrain et marraine de l'édition inaugurale.
                 </p>
                 <div className="p-10 bg-white rounded-[2.5rem] border border-nova-violet/10 flex items-center gap-8 group hover:shadow-xl transition-all">
                   <div className="w-16 h-16 bg-nova-violet/5 rounded-2xl flex items-center justify-center text-nova-violet">
@@ -244,26 +234,37 @@ const Home: React.FC = () => {
             </motion.p>
 
             <motion.div 
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ delay: 0.4 }}
-              className="bg-gray-50 p-12 rounded-[3rem] border border-gray-100"
-            >
-              <div className="text-[10px] font-black uppercase tracking-widest text-nova-violet mb-8">Un processus en trois temps</div>
-              <div className="grid md:grid-cols-3 gap-12">
-                {[
-                  { title: "Sélection", desc: "Dépôt de dossier technique et vidéo de pitch." },
-                  { title: "Immersion", desc: "Formation accélérée de 3 jours offerte." },
-                  { title: "Apothéose", desc: "Finale publique devant un jury d'experts." }
-                ].map((step, idx) => (
-                  <div key={idx} className="space-y-4">
-                    <h4 className="text-nova-black font-black uppercase text-sm">{idx + 1}. {step.title}</h4>
-                    <p className="text-sm leading-relaxed">{step.desc}</p>
-                  </div>
-                ))}
-              </div>
-            </motion.div>
+  initial={{ opacity: 0, y: 20 }}
+  whileInView={{ opacity: 1, y: 0 }}
+  viewport={{ once: true }}
+  transition={{ delay: 0.4 }}
+  className="bg-gray-50 p-12 rounded-[3rem] border border-gray-100"
+>
+  <div className="text-[10px] font-black uppercase tracking-widest text-nova-violet mb-8">
+    Trois étapes pour réussir votre innovation
+  </div>
+  <div className="grid md:grid-cols-3 gap-12">
+    {[
+      { 
+        title: "1. Soumission & Sélection", 
+        desc: "Soumettez votre dossier complet (projet technique et vidéo de présentation) pour être évalué par notre comité technique." 
+      },
+      { 
+        title: "2. Formation & Immersion", 
+        desc: "Si sélectionné, bénéficiez gratuitement d'une formation intensive de 3 jours incluant hébergement, restauration et ateliers spécialisés." 
+      },
+      { 
+        title: "3. Présentation & Finale", 
+        desc: "Défendez votre projet lors d'une finale publique devant un jury composé d'experts, d'universitaires et de professionnels." 
+      }
+    ].map((step, idx) => (
+      <div key={idx} className="space-y-4">
+        <h4 className="text-nova-black font-black uppercase text-sm">{step.title}</h4>
+        <p className="text-sm leading-relaxed text-gray-600">{step.desc}</p>
+      </div>
+    ))}
+  </div>
+</motion.div>
           </div>
 
           <motion.div 
@@ -281,20 +282,35 @@ const Home: React.FC = () => {
         </div>
       </section>
 
-      {/* SESSION 5 : ACCOMPAGNEMENT (TITRE ENRICHI) */}
+      {/* SECTION 5 : ACCOMPAGNEMENT INTENSIF */}
       <section className="py-48 px-6 bg-gray-50 border-y border-gray-100">
         <div className="container mx-auto max-w-6xl">
           <div className="grid lg:grid-cols-12 gap-24 items-center">
             <div className="lg:col-span-6 space-y-12">
-              <span className="text-nova-violet font-bold tracking-[0.5em] uppercase text-[10px] block">Accompagnement & Expertise</span>
+              <span className="text-nova-violet font-bold tracking-[0.5em] uppercase text-[10px] block">Accompagnement Structuré</span>
               <h2 className="text-4xl md:text-5xl font-black uppercase tracking-tighter text-nova-black leading-none">
-                AU-DELÀ DE LA COMPÉTITION, <br /><span className="text-nova-violet italic font-light uppercase">VOUS BÉNÉFICIEZ...</span>
+                UN PARCOURS D'ACCOMPAGNEMENT <br /><span className="text-nova-violet italic font-light uppercase">COMPLET POUR VOTRE PROJET</span>
               </h2>
+              <p className="text-gray-600 font-light text-lg">
+                Au-delà du concours, chaque finaliste bénéficie d'un programme d'accompagnement sur-mesure pour transformer son idée en projet viable.
+              </p>
               <div className="space-y-8">
                 {[
-                  { icon: <BookOpen size={24} />, title: "Formations Thématiques", desc: "Maîtrisez l'art oratoire, l'entrepreneuriat innovant et la gouvernance de projet." },
-                  { icon: <Building2 size={24} />, title: "Visites Pédagogiques", desc: "Immersion totale dans les centres de référence comme le laboratoire SCOP à Sèmè City." },
-                  { icon: <Scale size={24} />, title: "Expertise Scientifique", desc: "Conseils de haut niveau par un jury de docteurs et de professionnels de l'industrie." }
+                  { 
+                    icon: <BookOpen size={24} />, 
+                    title: "Formations Spécialisées", 
+                    desc: "Ateliers pratiques sur l'art oratoire, l'entrepreneuriat innovant et la gestion de projet pour défendre efficacement votre solution." 
+                  },
+                  { 
+                    icon: <Building2 size={24} />, 
+                    title: "Immersion en Milieu d'Innovation", 
+                    desc: "Visites exclusives dans des laboratoires de pointe comme le SCOP à Sèmè City pour découvrir les dernières technologies." 
+                  },
+                  { 
+                    icon: <Scale size={24} />, 
+                    title: "Mentorat par des Experts", 
+                    desc: "Accompagnement personnalisé par des docteurs, enseignants-chercheurs et professionnels du secteur pour affiner votre projet." 
+                  }
                 ].map((step, i) => (
                   <motion.div 
                     key={i}
@@ -324,14 +340,13 @@ const Home: React.FC = () => {
             >
                <img 
                  src="https://images.unsplash.com/photo-1522202176988-66273c2fd55f?auto=format&fit=crop&q=80&w=1200" 
-                 alt="Pédagogie Nova" 
+                 alt="Étudiants en formation et accompagnement Tech Nova Challenge" 
                  className="rounded-[4rem] shadow-2xl grayscale"
                />
             </motion.div>
           </div>
         </div>
       </section>
-
       {/* SESSION 6 : RÉSULTATS 2025 */}
       <section className="py-48 px-6 bg-white overflow-hidden">
         <div className="container mx-auto max-w-7xl">
@@ -341,6 +356,7 @@ const Home: React.FC = () => {
           </div>
 
           <div className="grid lg:grid-cols-12 gap-16 items-start">
+            {/* Colonne gauche : Statistiques */}
             <div className="lg:col-span-4 space-y-8">
                <motion.div 
                  initial={{ opacity: 0, y: 20 }}
@@ -351,6 +367,7 @@ const Home: React.FC = () => {
                   <div className="text-6xl font-black text-nova-violet mb-2">67</div>
                   <div className="text-[10px] font-bold uppercase tracking-widest text-gray-400">Binômes inscrits initialement</div>
                </motion.div>
+               
                <motion.div 
                  initial={{ opacity: 0, y: 20 }}
                  whileInView={{ opacity: 1, y: 0 }}
@@ -365,22 +382,113 @@ const Home: React.FC = () => {
                     ))}
                   </div>
                </motion.div>
+
+               {/* Nouvelle carte : Photo illustrative des gagnants */}
+               <motion.div 
+                 initial={{ opacity: 0, scale: 0.95 }}
+                 whileInView={{ opacity: 1, scale: 1 }}
+                 viewport={{ once: true }}
+                 transition={{ delay: 0.3 }}
+                 className="relative rounded-[2rem] overflow-hidden shadow-xl"
+               >
+                 <div className="aspect-square bg-gradient-to-br from-nova-violet/20 to-nova-blue/20 flex items-center justify-center">
+                   <div className="text-center p-8">
+                     <div className="w-24 h-24 rounded-full bg-gradient-to-br from-nova-violet to-nova-blue flex items-center justify-center mx-auto mb-6 shadow-lg">
+                       <Trophy className="text-white" size={40} />
+                     </div>
+                     <h4 className="font-black uppercase text-sm text-nova-black mb-2">Champions 2025</h4>
+                     <p className="text-xs text-gray-500">ENSET Lokossa</p>
+                   </div>
+                 </div>
+                 <div className="absolute inset-0 border-2 border-white/20 rounded-[2rem] pointer-events-none"></div>
+               </motion.div>
             </div>
 
-            <div className="lg:col-span-8">
-               <GlassCard className="p-12 md:p-20 relative overflow-hidden flex flex-col md:flex-row gap-12 items-center">
+            {/* Colonne droite : Lauréats et description */}
+            <div className="lg:col-span-8 space-y-8">
+               {/* Carte principale du binôme gagnant */}
+               <GlassCard className="p-12 md:p-20 relative overflow-hidden">
                   <div className="absolute top-10 right-10 opacity-20"><Award size={100} className="text-nova-violet" /></div>
-                  <div className="flex-1">
-                    <span className="text-nova-violet font-black uppercase tracking-widest text-xs block mb-8">Binôme Lauréat 2025</span>
-                    <h3 className="text-3xl md:text-5xl font-black uppercase tracking-tighter text-nova-black mb-6">
-                      BOKO Béoula <br />& N’TCHA Siméon
-                    </h3>
-                    <p className="text-xl text-gray-500 font-light leading-relaxed mb-4">
-                      Récompensés pour leur projet de **motopompe optimisée pour l'irrigation** (ENSET).
-                    </p>
-                    <p className="text-sm text-gray-400">L'événement a révélé des solutions concrètes facilitant les rencontres directes entre étudiants, académiques et partenaires industriels.</p>
+                  <div className="grid md:grid-cols-3 gap-12 items-center">
+                    <div className="md:col-span-2">
+                      <span className="text-nova-violet font-black uppercase tracking-widest text-xs block mb-8">Premier Prix - Édition 2025</span>
+                      <h3 className="text-3xl md:text-5xl font-black uppercase tracking-tighter text-nova-black mb-6">
+                        BOKO Béoula <br />& N'TCHA Siméon
+                      </h3>
+                      <p className="text-xl text-gray-500 font-light leading-relaxed mb-4">
+                        Lauréats avec leur projet de <strong>motopompe intelligente</strong> optimisée pour l'irrigation en zone rurale.
+                      </p>
+                      <div className="flex items-center gap-4 text-sm text-gray-400">
+                        <GraduationCap size={16} />
+                        <span>Élèves-professeurs en Fabrication Mécanique 1ère année</span>
+                      </div>
+                      <div className="flex items-center gap-4 text-sm text-gray-400 mt-2">
+                        <MapPin size={16} />
+                        <span>ENSET Lokossa</span>
+                      </div>
+                    </div>
+                    
+                    {/* Illustration du projet */}
+                    <div className="md:col-span-1">
+                      <div className="bg-gradient-to-br from-gray-50 to-white p-6 rounded-2xl border border-gray-100 shadow-inner">
+                        <div className="aspect-square bg-gradient-to-br from-nova-violet/10 to-nova-blue/10 rounded-xl flex items-center justify-center">
+                          <div className="text-center">
+                            <Droplets className="text-nova-violet mx-auto mb-3" size={32} />
+                            <span className="text-xs font-bold uppercase text-nova-black">Irrigation intelligente</span>
+                          </div>
+                        </div>
+                        <div className="mt-6 text-center">
+                          <div className="text-2xl font-black text-nova-violet">150 000 FCFA</div>
+                          <div className="text-[10px] uppercase tracking-widest text-gray-400 mt-1">Prime + Accompagnement</div>
+                        </div>
+                      </div>
+                    </div>
                   </div>
                </GlassCard>
+
+               {/* Cartes des autres lauréats */}
+               <div className="grid md:grid-cols-2 gap-8">
+                  <motion.div 
+                    initial={{ opacity: 0, x: -20 }}
+                    whileInView={{ opacity: 1, x: 0 }}
+                    viewport={{ once: true }}
+                    className="bg-gray-50 p-8 rounded-[2rem] border border-gray-100"
+                  >
+                    <div className="flex items-center gap-4 mb-6">
+                      <div className="w-10 h-10 rounded-full bg-nova-violet/10 flex items-center justify-center">
+                        <Medal className="text-nova-violet" size={20} />
+                      </div>
+                      <h4 className="font-black uppercase text-sm">Deuxième Prix</h4>
+                    </div>
+                    <h5 className="text-lg font-bold text-nova-black mb-2">ISSAKA Awa & FOLARIN Mourchid</h5>
+                    <p className="text-sm text-gray-500 mb-4">Innovation thermique pour l'agroalimentaire (INSTI)</p>
+                    <div className="text-nova-violet font-black">100 000 FCFA</div>
+                  </motion.div>
+
+                  <motion.div 
+                    initial={{ opacity: 0, x: 20 }}
+                    whileInView={{ opacity: 1, x: 0 }}
+                    viewport={{ once: true }}
+                    className="bg-gray-50 p-8 rounded-[2rem] border border-gray-100"
+                  >
+                    <div className="flex items-center gap-4 mb-6">
+                      <div className="w-10 h-10 rounded-full bg-nova-blue/10 flex items-center justify-center">
+                        <Medal className="text-nova-blue" size={20} />
+                      </div>
+                      <h4 className="font-black uppercase text-sm">Troisième Prix</h4>
+                    </div>
+                    <h5 className="text-lg font-bold text-nova-black mb-2">ROUFAI Aissatou & ZANVO Horeb</h5>
+                    <p className="text-sm text-gray-500 mb-4">Plateforme d'orientation et développement personnel (ENSET)</p>
+                    <div className="text-nova-blue font-black">50 000 FCFA</div>
+                  </motion.div>
+               </div>
+
+               <div className="text-center pt-8">
+                 <p className="text-gray-400 text-sm italic">
+                   "L'édition 2025 a démontré le fort potentiel d'innovation des jeunes Béninois, 
+                   avec des projets concrets facilitant les rencontres entre étudiants, académiques et partenaires industriels."
+                 </p>
+               </div>
             </div>
           </div>
         </div>
@@ -418,7 +526,7 @@ const Home: React.FC = () => {
           
           <div className="max-w-3xl mx-auto space-y-12">
             <p className="text-xl text-gray-500 font-light leading-relaxed">
-              La deuxième édition, programmée de janvier à mai 2026, vise un déploiement national élargi, intégrant une phase de **prototypage/maquettage** et la création du réseau **« Tech Nova Alumni »**.
+              La deuxième édition, programmée de janvier à mai 2026, vise un déploiement national élargi, intégrant une phase de prototypage/maquettage et la création du réseau « Tech Nova Alumni ».
             </p>
             <div className="flex flex-col md:flex-row justify-center gap-8">
                <Button size="lg" onClick={() => navigate('/participate')}>Postuler pour 2026</Button>
