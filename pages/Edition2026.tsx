@@ -71,15 +71,12 @@ const Edition2026: React.FC = () => {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 1.2, ease: [0.16, 1, 0.3, 1] }}
           >
-            <span className="text-nova-violet font-black tracking-[0.6em] uppercase text-[10px] block mb-8">
-              Session Nationale 2026
-            </span>
             <h1 className="editorial-title text-[clamp(2.5rem,8vw,8rem)] text-white leading-[0.85] mb-12">
-              L'AVENIR EN <br />
-              <span className="text-nova-violet italic font-light">CONSTRUCTION.</span>
+              VOTRE BINOME PEUT ETRE <br />
+              <span className="text-nova-violet italic font-light">LE PROCHAIN A GAGNER L'EDITION.</span>
             </h1>
             <p className="text-xl md:text-2xl text-gray-300 font-light max-w-3xl mx-auto leading-relaxed">
-              Les technologies émergentes au service de l’entrepreneuriat durable au Bénin.
+              Alors saisissez l'opportunitté maintenant. Scrolle en bas pour prendre les bonnes informations qui t'aideront.
             </p>
           </motion.div>
         </div>
@@ -98,14 +95,13 @@ const Edition2026: React.FC = () => {
         <div className="container mx-auto max-w-6xl">
           <div className="grid lg:grid-cols-12 gap-24 items-center">
             <div className="lg:col-span-7">
-              <span className="text-nova-violet font-black tracking-[0.5em] uppercase text-[10px] block mb-10">Orientation Stratégique</span>
               <h2 className="text-4xl md:text-6xl font-black uppercase tracking-tighter text-nova-black leading-none mb-12">
-                TECHNOLOGIES <br />
-                <span className="text-nova-violet italic font-light text-2xl md:text-5xl uppercase">ÉMERGENTES & DURABILITÉ.</span>
+                POUR CETTE EDITION <br />
+                <span className="text-nova-violet italic font-light text-2xl md:text-5xl uppercase">EXCLUSIVE 2026.</span>
               </h2>
               <div className="text-xl text-gray-500 font-light leading-relaxed space-y-8 mb-16">
                 <p>
-                  Pour l’édition 2026, le Tech Nova Challenge invite les jeunes à réfléchir à la manière dont les technologies émergentes peuvent soutenir le développement d’un entrepreneuriat durable au Bénin.
+                  Le Tech Nova Challenge invite les jeunes à réfléchir à la manière dont les technologies émergentes peuvent soutenir le développement d’un entrepreneuriat durable au Bénin.
                 </p>
                 <p>
                   Les participants sont encouragés à proposer des projets utilisant l’intelligence artificielle, l’Internet des objets (IoT), les énergies renouvelables ou la biotechnologie.
@@ -225,8 +221,7 @@ const Edition2026: React.FC = () => {
         <div className="container mx-auto max-w-6xl">
            <div className="grid lg:grid-cols-2 gap-24">
               <div>
-                 <h2 className="text-4xl font-black uppercase tracking-tighter mb-12 text-nova-black">MODALITÉS DE <br /><span className="text-nova-violet italic font-light">PARTICIPATION.</span></h2>
-                 <p className="text-xl text-gray-500 font-light mb-12">Critères de sélection pour les binômes candidats.</p>
+                 <h2 className="text-4xl font-black uppercase tracking-tighter mb-12 text-nova-black">QUELLES SONT LES MODALITES DE <br /><span className="text-nova-violet italic font-light">PARTICIPATION ? </span></h2>
                  <div className="space-y-12">
                     <div className="p-10 bg-gray-50 rounded-[3rem] border border-gray-100">
                        <h4 className="text-lg font-black uppercase mb-8 text-nova-black flex items-center gap-3">
