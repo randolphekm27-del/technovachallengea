@@ -1,19 +1,43 @@
 
 import React, { useRef } from 'react';
-import { motion } from 'framer-motion';
+import { motion, useScroll, useTransform } from 'framer-motion';
 import { useNavigate } from 'react-router-dom';
 import { 
-  Trophy, Globe, Users, ShieldCheck, 
-  ArrowRight, Cpu, GraduationCap, Building2, 
-  Target, Zap, Microscope, BookOpen, Scale,
-  Rocket, Briefcase, Award
+  Trophy, Users, ShieldCheck, 
+  ArrowRight, GraduationCap, Building2, 
+  Target, Zap, BookOpen, Scale, Award
 } from 'lucide-react';
 import Button from '../components/Button';
 import GlassCard from '../components/GlassCard';
 
+// Composant pour l'animation de flottement des icônes
+const FloatingIcon = ({ children, delay = 0 }: { children: React.ReactNode, delay?: number }) => (
+  <motion.div
+    animate={{ 
+      y: [0, -8, 0],
+      rotate: [0, 3, 0]
+    }}
+    transition={{ 
+      duration: 5, 
+      repeat: Infinity, 
+      ease: "easeInOut",
+      delay 
+    }}
+  >
+    {children}
+  </motion.div>
+);
+
 const Home: React.FC = () => {
   const navigate = useNavigate();
   const containerRef = useRef<HTMLDivElement>(null);
+  const { scrollYProgress } = useScroll({
+    target: containerRef,
+    offset: ["start start", "end end"]
+  });
+
+  const heroScale = useTransform(scrollYProgress, [0, 0.2], [1, 1.1]);
+  const heroOpacity = useTransform(scrollYProgress, [0, 0.2], [1, 0.5]);
 
   const heroImageUrl = "https://images.unsplash.com/photo-1517245386807-bb43f82c33c4?auto=format&fit=crop&q=80&w=2000";
 
@@ -22,14 +46,14 @@ const Home: React.FC = () => {
       
       {/* SESSION 1 : IDENTITÉ NATIONALE & HERO */}
       <section className="relative h-screen flex items-center justify-center overflow-hidden">
-        {/* Filtre sombre sur l'image de fond pour éviter le "trop blanc" */}
         <div className="absolute inset-0">
-          <img 
+          <motion.img 
+            style={{ scale: heroScale, opacity: heroOpacity }}
             src={heroImageUrl} 
             alt="Innovation Bénin" 
-            className="w-full h-full object-cover grayscale brightness-[0.4]" 
+            className="w-full h-full object-cover grayscale brightness-[0.35]" 
           />
-          <div className="absolute inset-0 bg-gradient-to-b from-nova-black/60 via-nova-black/40 to-white" />
+          <div className="absolute inset-0 bg-gradient-to-b from-nova-black/70 via-nova-black/50 to-white/10" />
         </div>
         
         <div className="container mx-auto px-6 max-w-7xl relative z-10">
@@ -39,34 +63,42 @@ const Home: React.FC = () => {
             transition={{ duration: 1.2, ease: [0.16, 1, 0.3, 1] }}
             className="text-center"
           >
-            <motion.div
-              initial={{ opacity: 0, y: 10 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.3 }}
-              className="inline-flex items-center gap-3 mb-10 px-6 py-2 bg-nova-violet/20 backdrop-blur-md rounded-full border border-white/10"
+
+            <motion.h1 
+              initial={{ opacity: 0, scale: 0.9 }}
+              animate={{ opacity: 1, scale: 1 }}
+              transition={{ delay: 0.5, duration: 1, ease: [0.16, 1, 0.3, 1] }}
+              className="editorial-title text-[clamp(2rem,6vw,5.5rem)] font-black text-white leading-[1] mb-12 tracking-tighter"
             >
-              <span className="text-white font-black tracking-[0.4em] uppercase text-[9px]">
-                PREMIÈRE INITIATIVE NATIONALE STRUCTURÉE
-              </span>
-            </motion.div>
+              BIENVENUE AU <br />
+              <span className="text-nova-violet italic font-light">TECH NOVA CHALLENGE !</span>
+            </motion.h1>
 
-            <h1 className="editorial-title text-[clamp(2.5rem,7vw,7rem)] font-black text-white leading-[0.85] mb-12 tracking-tighter">
-              TECH NOVA <br /><span className="text-nova-violet italic font-light">CHALLENGE.</span>
-            </h1>
+            <motion.p 
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ delay: 0.7, duration: 1 }}
+              className="text-lg md:text-xl text-gray-200 font-light max-w-4xl mx-auto mb-16 leading-relaxed"
+            >
+              Premier concours de référence pour l'innovation technologique des jeunes au Bénin, 
+              pour encourager l'excellence, la créativité et l'esprit d'équipe tout en contribuant 
+              au développement de la nation !
+            </motion.p>
 
-            <p className="text-xl md:text-2xl text-gray-300 font-light max-w-3xl mx-auto mb-16 leading-relaxed">
-              Identifier, former et promouvoir les jeunes talents universitaires porteurs de projets techniques et innovants au Bénin.
-            </p>
-
-            <div className="flex flex-col md:flex-row items-center justify-center gap-8">
+            <motion.div 
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.9 }}
+              className="flex flex-col md:flex-row items-center justify-center gap-8"
+            >
               <Button size="md" onClick={() => navigate('/edition-2026')}>L'ÉDITION 2026</Button>
               <button 
                 onClick={() => navigate('/about')}
                 className="group flex items-center gap-3 text-[10px] font-black uppercase tracking-[0.4em] text-white/60 hover:text-white transition-all"
               >
-                Vision Institutionnelle <ArrowRight size={14} className="group-hover:translate-x-2 transition-transform" />
+                Vision Institutionnelle <motion.div whileHover={{ x: 5 }} transition={{ type: "spring", stiffness: 400 }}><ArrowRight size={14} /></motion.div>
               </button>
-            </div>
+            </motion.div>
           </motion.div>
         </div>
       </section>
@@ -74,7 +106,12 @@ const Home: React.FC = () => {
       {/* SESSION 2 : CADRE ET MISSION */}
       <section className="py-48 px-6 bg-white relative">
         <div className="container mx-auto max-w-5xl">
-          <div className="text-center mb-32">
+          <motion.div 
+            initial={{ opacity: 0, y: 40 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            className="text-center mb-32"
+          >
             <span className="text-nova-violet font-bold tracking-[0.5em] uppercase text-[10px] block mb-12">Le Programme</span>
             <h2 className="text-3xl md:text-5xl font-black uppercase tracking-tighter text-nova-black mb-16 leading-tight">
               Combler le déficit <br />
@@ -84,11 +121,17 @@ const Home: React.FC = () => {
               <p>
                 Le Tech Nova Challenge constitue la première initiative nationale structurée de concours d'innovation technologique au Bénin. Établi en 2025, ce programme vise à identifier, former et promouvoir les jeunes talents universitaires porteurs de projets techniques et innovants.
               </p>
-              <p className="text-nova-black font-medium border-l-4 border-nova-violet pl-10 text-left">
+              <motion.p 
+                initial={{ opacity: 0, x: -20 }}
+                whileInView={{ opacity: 1, x: 0 }}
+                viewport={{ once: true }}
+                transition={{ delay: 0.3 }}
+                className="text-nova-black font-medium border-l-4 border-nova-violet pl-10 text-left"
+              >
                 Il a pour objectif principal de combler le déficit d'accompagnement entre la conception d'une idée et sa concrétisation, en offrant un cadre compétitif, formateur et propice au développement de solutions répondant aux enjeux de développement socio-économique du pays.
-              </p>
+              </motion.p>
             </div>
-          </div>
+          </motion.div>
         </div>
       </section>
 
@@ -96,7 +139,12 @@ const Home: React.FC = () => {
       <section className="py-48 px-6 bg-gray-50 border-y border-gray-100">
         <div className="container mx-auto max-w-6xl">
           <div className="grid lg:grid-cols-12 gap-24 items-center">
-            <div className="lg:col-span-7">
+            <motion.div 
+              initial={{ opacity: 0, x: -30 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              viewport={{ once: true }}
+              className="lg:col-span-7"
+            >
               <span className="text-nova-violet font-bold tracking-[0.5em] uppercase text-[10px] block mb-10">Ancrage Institutionnel</span>
               <h2 className="text-4xl md:text-6xl font-black uppercase tracking-tighter text-nova-black leading-none mb-12">
                 UN SOUTIEN <br /><span className="text-nova-violet">DE HAUT NIVEAU.</span>
@@ -109,24 +157,27 @@ const Home: React.FC = () => {
                   Le concours s'appuie également sur un réseau de partenaires opérationnels et financiers, incluant des entreprises privées telles que la société **WISANE (INGCO)**, partenaire officiel, ainsi que des organismes d'appui à l'entrepreneuriat et des médias.
                 </p>
               </div>
-            </div>
-            <div className="lg:col-span-5">
-              <div className="space-y-6">
-                <GlassCard className="p-10 border-nova-violet/10 bg-white">
-                  <div className="text-nova-violet font-black uppercase text-[10px] tracking-widest mb-4">Parrainage</div>
-                  <div className="text-nova-black font-black text-xl uppercase leading-tight">Prof. Gustave DJEDATIN</div>
-                  <div className="text-gray-400 text-xs mt-2 uppercase">Direction ENSET</div>
+            </motion.div>
+            <div className="lg:col-span-5 space-y-6">
+              {[
+                { label: "Parrainage", name: "Prof. Gustave DJEDATIN", sub: "Direction ENSET" },
+                { label: "Parrainage", name: "Prof. Clotilde GUIDI TOGNON", sub: "Direction INSTI" }
+              ].map((item, i) => (
+                <GlassCard key={i} delay={i * 0.1} className="p-10 border-nova-violet/10 bg-white">
+                  <div className="text-nova-violet font-black uppercase text-[10px] tracking-widest mb-4">{item.label}</div>
+                  <div className="text-nova-black font-black text-xl uppercase leading-tight">{item.name}</div>
+                  <div className="text-gray-400 text-xs mt-2 uppercase">{item.sub}</div>
                 </GlassCard>
-                <GlassCard className="p-10 border-nova-violet/10 bg-white">
-                  <div className="text-nova-violet font-black uppercase text-[10px] tracking-widest mb-4">Parrainage</div>
-                  <div className="text-nova-black font-black text-xl uppercase leading-tight">Prof. Clotilde GUIDI TOGNON</div>
-                  <div className="text-gray-400 text-xs mt-2 uppercase">Direction INSTI</div>
-                </GlassCard>
-                <div className="p-10 bg-nova-violet/5 rounded-[2.5rem] border border-nova-violet/10 text-center">
-                  <span className="text-[10px] font-black uppercase tracking-widest text-nova-violet">Partenaire Officiel</span>
-                  <div className="text-2xl font-black text-nova-black mt-2">WISANE (INGCO)</div>
-                </div>
-              </div>
+              ))}
+              <motion.div 
+                initial={{ opacity: 0, scale: 0.95 }}
+                whileInView={{ opacity: 1, scale: 1 }}
+                viewport={{ once: true }}
+                className="p-10 bg-nova-violet/5 rounded-[2.5rem] border border-nova-violet/10 text-center"
+              >
+                <span className="text-[10px] font-black uppercase tracking-widest text-nova-violet">Partenaire Officiel</span>
+                <div className="text-2xl font-black text-nova-black mt-2">WISANE (INGCO)</div>
+              </motion.div>
             </div>
           </div>
         </div>
@@ -163,17 +214,24 @@ const Home: React.FC = () => {
                 desc: "Formation accélérée de trois jours entièrement prise en charge (transport, hébergement, restauration)." 
               }
             ].map((item, i) => (
-              <GlassCard key={i} className="p-10 flex flex-col items-center text-center">
-                <div className="w-16 h-16 bg-gray-50 rounded-2xl flex items-center justify-center text-nova-violet mb-8">
-                  {item.icon}
-                </div>
+              <GlassCard key={i} delay={i * 0.1} className="p-10 flex flex-col items-center text-center">
+                <FloatingIcon delay={i * 0.2}>
+                  <div className="w-16 h-16 bg-gray-50 rounded-2xl flex items-center justify-center text-nova-violet mb-8">
+                    {item.icon}
+                  </div>
+                </FloatingIcon>
                 <h3 className="text-lg font-black uppercase mb-4 text-nova-black">{item.title}</h3>
                 <p className="text-sm text-gray-500 font-light leading-relaxed">{item.desc}</p>
               </GlassCard>
             ))}
           </div>
 
-          <div className="p-12 md:p-20 bg-nova-black text-white rounded-[4rem] relative overflow-hidden">
+          <motion.div 
+            initial={{ opacity: 0, y: 40 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            className="p-12 md:p-20 bg-nova-black text-white rounded-[4rem] relative overflow-hidden"
+          >
             <div className="relative z-10 grid lg:grid-cols-2 gap-16 items-center">
               <div>
                  <h3 className="text-3xl font-black uppercase tracking-tighter mb-8">La Phase Finale</h3>
@@ -186,7 +244,7 @@ const Home: React.FC = () => {
               </div>
             </div>
             <div className="absolute top-0 right-0 w-[50vw] h-[50vw] bg-nova-violet/10 blur-[120px] rounded-full translate-x-1/2 -translate-y-1/2" />
-          </div>
+          </motion.div>
         </div>
       </section>
 
@@ -200,42 +258,43 @@ const Home: React.FC = () => {
                 AU-DELÀ DE LA <br /><span className="text-nova-violet italic font-light uppercase">COMPÉTITION.</span>
               </h2>
               <div className="space-y-8">
-                <div className="flex gap-8 group">
-                  <div className="w-12 h-12 rounded-xl bg-white shadow-sm flex items-center justify-center text-nova-violet group-hover:bg-nova-violet group-hover:text-white transition-all">
-                    <BookOpen size={24} />
-                  </div>
-                  <div className="flex-1 border-b border-gray-200 pb-8">
-                    <h4 className="font-black uppercase text-xs mb-3">Formations Thématiques</h4>
-                    <p className="text-sm text-gray-500 font-light">Dispensées par des experts sur l'art oratoire, l'entrepreneuriat innovant ou la gouvernance locale.</p>
-                  </div>
-                </div>
-                <div className="flex gap-8 group">
-                  <div className="w-12 h-12 rounded-xl bg-white shadow-sm flex items-center justify-center text-nova-violet group-hover:bg-nova-violet group-hover:text-white transition-all">
-                    <Building2 size={24} />
-                  </div>
-                  <div className="flex-1 border-b border-gray-200 pb-8">
-                    <h4 className="font-black uppercase text-xs mb-3">Visites Pédagogiques</h4>
-                    <p className="text-sm text-gray-500 font-light">Dans des centres d'innovation de référence, comme le laboratoire SCOP à Sèmè City.</p>
-                  </div>
-                </div>
-                <div className="flex gap-8 group">
-                  <div className="w-12 h-12 rounded-xl bg-white shadow-sm flex items-center justify-center text-nova-violet group-hover:bg-nova-violet group-hover:text-white transition-all">
-                    <Scale size={24} />
-                  </div>
-                  <div className="flex-1">
-                    <h4 className="font-black uppercase text-xs mb-3">Comité Scientifique</h4>
-                    <p className="text-sm text-gray-500 font-light">Encadrement par un jury composé d'universitaires (ex. : **Dr ALIOU M. Sophia**, **Dr OGOUBIYI Assane**) et de professionnels.</p>
-                  </div>
-                </div>
+                {[
+                  { icon: <BookOpen size={24} />, title: "Formations Thématiques", desc: "Dispensées par des experts sur l'art oratoire, l'entrepreneuriat innovant ou la gouvernance locale." },
+                  { icon: <Building2 size={24} />, title: "Visites Pédagogiques", desc: "Dans des centres d'innovation de référence, comme le laboratoire SCOP à Sèmè City." },
+                  { icon: <Scale size={24} />, title: "Comité Scientifique", desc: "Encadrement par un jury composé d'universitaires (ex. : **Dr ALIOU M. Sophia**, **Dr OGOUBIYI Assane**) et de professionnels." }
+                ].map((step, i) => (
+                  <motion.div 
+                    key={i}
+                    initial={{ opacity: 0, x: -20 }}
+                    whileInView={{ opacity: 1, x: 0 }}
+                    viewport={{ once: true }}
+                    transition={{ delay: i * 0.1 }}
+                    className="flex gap-8 group"
+                  >
+                    <div className="w-12 h-12 rounded-xl bg-white shadow-sm flex items-center justify-center text-nova-violet group-hover:bg-nova-violet group-hover:text-white transition-all">
+                      {step.icon}
+                    </div>
+                    <div className="flex-1 border-b border-gray-200 pb-8 last:border-0">
+                      <h4 className="font-black uppercase text-xs mb-3">{step.title}</h4>
+                      <p className="text-sm text-gray-500 font-light">{step.desc}</p>
+                    </div>
+                  </motion.div>
+                ))}
               </div>
             </div>
-            <div className="lg:col-span-6">
+            <motion.div 
+              initial={{ opacity: 0, scale: 0.9 }}
+              whileInView={{ opacity: 1, scale: 1 }}
+              viewport={{ once: true }}
+              transition={{ duration: 1.2 }}
+              className="lg:col-span-6"
+            >
                <img 
                  src="https://images.unsplash.com/photo-1522202176988-66273c2fd55f?auto=format&fit=crop&q=80&w=1200" 
                  alt="Pédagogie Nova" 
                  className="rounded-[4rem] shadow-2xl grayscale"
                />
-            </div>
+            </motion.div>
           </div>
         </div>
       </section>
@@ -250,18 +309,29 @@ const Home: React.FC = () => {
 
           <div className="grid lg:grid-cols-12 gap-16 items-start">
             <div className="lg:col-span-4 space-y-8">
-               <div className="p-12 bg-gray-50 rounded-[3rem] border border-gray-100">
+               <motion.div 
+                 initial={{ opacity: 0, y: 20 }}
+                 whileInView={{ opacity: 1, y: 0 }}
+                 viewport={{ once: true }}
+                 className="p-12 bg-gray-50 rounded-[3rem] border border-gray-100"
+               >
                   <div className="text-6xl font-black text-nova-violet mb-2">67</div>
                   <div className="text-[10px] font-bold uppercase tracking-widest text-gray-400">Binômes inscrits initialement</div>
-               </div>
-               <div className="p-10 bg-nova-black text-white rounded-[3rem]">
+               </motion.div>
+               <motion.div 
+                 initial={{ opacity: 0, y: 20 }}
+                 whileInView={{ opacity: 1, y: 0 }}
+                 viewport={{ once: true }}
+                 transition={{ delay: 0.2 }}
+                 className="p-10 bg-nova-black text-white rounded-[3rem]"
+               >
                   <h4 className="text-xs font-black uppercase tracking-widest mb-6">Domaines couverts</h4>
                   <div className="flex flex-wrap gap-4">
                     {["Efficacité énergétique", "Agriculture", "Déchets", "Santé", "IA Entreprise"].map((d, i) => (
                       <span key={i} className="px-4 py-2 bg-white/5 rounded-full text-[9px] font-bold uppercase tracking-widest border border-white/10">{d}</span>
                     ))}
                   </div>
-               </div>
+               </motion.div>
             </div>
 
             <div className="lg:col-span-8">
@@ -292,21 +362,24 @@ const Home: React.FC = () => {
           </h2>
 
           <div className="grid md:grid-cols-3 gap-8 mb-20 text-left">
-             <div className="p-10 bg-white rounded-[2.5rem] border border-gray-100">
-                <div className="text-nova-violet mb-4"><Award size={32} /></div>
-                <div className="text-2xl font-black text-nova-black">500.000 FCFA</div>
-                <div className="text-[10px] uppercase font-bold tracking-widest text-gray-400 mt-2">1er Prix + Ordinateur</div>
-             </div>
-             <div className="p-10 bg-white rounded-[2.5rem] border border-gray-100">
-                <div className="text-nova-violet mb-4"><Award size={32} /></div>
-                <div className="text-2xl font-black text-nova-black">300.000 FCFA</div>
-                <div className="text-[10px] uppercase font-bold tracking-widest text-gray-400 mt-2">2e Prix + Ordinateur</div>
-             </div>
-             <div className="p-10 bg-white rounded-[2.5rem] border border-gray-100">
-                <div className="text-nova-violet mb-4"><Award size={32} /></div>
-                <div className="text-2xl font-black text-nova-black">200.000 FCFA</div>
-                <div className="text-[10px] uppercase font-bold tracking-widest text-gray-400 mt-2">3e Prix + Ordinateur</div>
-             </div>
+             {[
+               { price: "500.000 FCFA", sub: "1er Prix + Ordinateur" },
+               { price: "300.000 FCFA", sub: "2e Prix + Ordinateur" },
+               { price: "200.000 FCFA", sub: "3e Prix + Ordinateur" }
+             ].map((item, i) => (
+               <motion.div 
+                 key={i}
+                 initial={{ opacity: 0, y: 20 }}
+                 whileInView={{ opacity: 1, y: 0 }}
+                 viewport={{ once: true }}
+                 transition={{ delay: i * 0.1 }}
+                 className="p-10 bg-white rounded-[2.5rem] border border-gray-100 shadow-sm hover:shadow-xl transition-all"
+               >
+                  <div className="text-nova-violet mb-4"><Award size={32} /></div>
+                  <div className="text-2xl font-black text-nova-black">{item.price}</div>
+                  <div className="text-[10px] uppercase font-bold tracking-widest text-gray-400 mt-2">{item.sub}</div>
+               </motion.div>
+             ))}
           </div>
           
           <div className="max-w-3xl mx-auto space-y-12">
