@@ -11,9 +11,9 @@ import {
 import Button from '../components/Button';
 import GlassCard from '../components/GlassCard';
 
-// Fix: Change children type to React.ReactNode to avoid JSX children type mismatch errors, 
+// Fix: Explicitly typing RevealText as React.FC with optional children to ensure children prop is correctly recognized in JSX, 
 // then safely convert to string for text processing.
-const RevealText = ({ children, className = "", delay = 0 }: { children: React.ReactNode, className?: string, delay?: number }) => {
+const RevealText: React.FC<{ children?: React.ReactNode, className?: string, delay?: number }> = ({ children, className = "", delay = 0 }) => {
   const textContent = typeof children === 'string' ? children : (React.Children.toArray(children).join(''));
   const words = textContent.split(" ");
   return (

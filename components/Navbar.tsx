@@ -2,7 +2,7 @@
 import React, { useState, useEffect } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Menu, X, ArrowRight, Globe, Mail } from 'lucide-react';
+import { Menu, X, ArrowRight, Globe, Mail, LayoutDashboard, User } from 'lucide-react';
 import Button from './Button';
 
 const Navbar: React.FC = () => {
@@ -10,20 +10,27 @@ const Navbar: React.FC = () => {
   const navigate = useNavigate();
   const [scrolled, setScrolled] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
 
   useEffect(() => {
     const handleScroll = () => setScrolled(window.scrollY > 20);
     window.addEventListener('scroll', handleScroll);
-    return () => window.removeEventListener('scroll', handleScroll);
-  }, []);
-
-  useEffect(() => {
-    if (mobileMenuOpen) {
-      document.body.style.overflow = 'hidden';
-    } else {
-      document.body.style.overflow = 'unset';
-    }
-  }, [mobileMenuOpen]);
+    
+    // Check login state
+    const checkLogin = () => {
+      const user = localStorage.getItem('tnc_user_name');
+      setIsLoggedIn(!!user);
+    };
+    
+    checkLogin();
+    // Re-check on storage changes (for local simulations)
+    window.addEventListener('storage', checkLogin);
+    
+    return () => {
+      window.removeEventListener('scroll', handleScroll);
+      window.removeEventListener('storage', checkLogin);
+    };
+  }, [location.pathname]);
 
   const isActive = (path: string) => location.pathname === path;
   const isDarkHeroPage = ['/', '/about', '/edition-2026', '/laureats-2025', '/galerie', '/partenaires', '/contact'].includes(location.pathname);
@@ -78,16 +85,43 @@ const Navbar: React.FC = () => {
             ))}
           </div>
 
-          {/* Right Side */}
+          {/* Right Side - Dynamic Button */}
           <div className="flex items-center gap-3 md:gap-4 z-[110]">
-            <Button 
-              size="sm" 
-              variant={scrolled ? "accent" : isDarkHeroPage && !mobileMenuOpen ? "outline" : "accent"}
-              onClick={() => navigate('/participate')}
-              className={`hidden md:inline-flex text-[9px] py-2 px-6 ${!scrolled && isDarkHeroPage && !mobileMenuOpen ? 'border-white text-white hover:bg-white hover:text-nova-black' : ''}`}
-            >
-              Participer
-            </Button>
+            <AnimatePresence mode="wait">
+              {isLoggedIn ? (
+                <motion.div
+                  key="dashboard-btn"
+                  initial={{ opacity: 0, scale: 0.8 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  exit={{ opacity: 0, scale: 0.8 }}
+                >
+                  <Button 
+                    size="sm" 
+                    variant="accent"
+                    onClick={() => navigate('/dashboard')}
+                    className="hidden md:inline-flex"
+                  >
+                    <LayoutDashboard size={14} className="mr-2" /> Mon Espace
+                  </Button>
+                </motion.div>
+              ) : (
+                <motion.div
+                  key="participate-btn"
+                  initial={{ opacity: 0, scale: 0.8 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  exit={{ opacity: 0, scale: 0.8 }}
+                >
+                  <Button 
+                    size="sm" 
+                    variant={scrolled ? "accent" : isDarkHeroPage && !mobileMenuOpen ? "outline" : "accent"}
+                    onClick={() => navigate('/participate')}
+                    className={`hidden md:inline-flex ${!scrolled && isDarkHeroPage && !mobileMenuOpen ? 'border-white text-white hover:bg-white hover:text-nova-black' : ''}`}
+                  >
+                    Participer
+                  </Button>
+                </motion.div>
+              )}
+            </AnimatePresence>
             
             <button 
               onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
@@ -115,12 +149,6 @@ const Navbar: React.FC = () => {
             transition={{ duration: 0.4 }}
             className="fixed inset-0 z-[90] bg-white overflow-hidden flex flex-col"
           >
-            {/* Background Pattern */}
-            <div className="absolute inset-0 opacity-[0.03] pointer-events-none flex items-center justify-center">
-               <div className="w-[150vw] h-[150vw] border-[1px] border-nova-black rounded-full" />
-               <div className="absolute w-[100vw] h-[100vw] border-[1px] border-nova-black rounded-full" />
-            </div>
-
             <div className="relative flex-grow flex flex-col justify-center px-8 pt-20">
               <nav className="space-y-2">
                 {navLinks.map((link, i) => (
@@ -140,11 +168,7 @@ const Navbar: React.FC = () => {
                       <span className="text-3xl font-black uppercase tracking-tighter italic group-active:translate-x-4 transition-transform duration-300">
                         {link.name}
                       </span>
-                      <motion.div
-                        animate={isActive(link.path) ? { x: 0, opacity: 1 } : { x: -10, opacity: 0 }}
-                      >
-                        <ArrowRight className="text-nova-violet" size={24} />
-                      </motion.div>
+                      <ArrowRight className={isActive(link.path) ? 'text-nova-violet' : 'text-gray-200'} size={24} />
                     </Link>
                   </motion.div>
                 ))}
@@ -154,34 +178,17 @@ const Navbar: React.FC = () => {
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.5 }}
-                className="mt-12 space-y-6"
+                className="mt-12"
               >
-                <div className="grid grid-cols-2 gap-4">
-                  <a href="mailto:contact@technovabenin.com" className="p-4 bg-gray-50 rounded-2xl flex flex-col gap-2">
-                    <Mail className="text-nova-violet" size={18} />
-                    <span className="text-[9px] font-black uppercase tracking-widest text-gray-400">Contact</span>
-                  </a>
-                  <div className="p-4 bg-gray-50 rounded-2xl flex flex-col gap-2">
-                    <Globe className="text-nova-violet" size={18} />
-                    <span className="text-[9px] font-black uppercase tracking-widest text-gray-400">Bénin</span>
-                  </div>
-                </div>
-                
                 <Button 
                   size="md" 
                   variant="accent"
-                  onClick={() => { setMobileMenuOpen(false); navigate('/participate'); }} 
+                  onClick={() => { setMobileMenuOpen(false); navigate(isLoggedIn ? '/dashboard' : '/participate'); }} 
                   className="w-full py-4"
                 >
-                  Postuler 2026
+                  {isLoggedIn ? 'Mon Espace' : 'Postuler 2026'}
                 </Button>
               </motion.div>
-            </div>
-
-            <div className="p-8 text-center">
-              <span className="text-[9px] font-bold text-gray-300 uppercase tracking-[0.4em]">
-                Tech Nova Challenge — Édition 2026
-              </span>
             </div>
           </motion.div>
         )}

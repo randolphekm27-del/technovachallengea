@@ -11,8 +11,9 @@ import Winners2025 from './pages/Winners2025';
 import Gallery from './pages/Gallery';
 import Partners from './pages/Partners';
 import Contact from './pages/Contact';
+import Dashboard from './pages/Dashboard';
+import Admin from './pages/Admin';
 
-// Fix: Explicitly typing PageWrapper as React.FC to ensure children prop is correctly recognized in JSX
 const PageWrapper: React.FC<{ children: React.ReactNode }> = ({ children }) => (
   <motion.div
     initial={{ opacity: 0, y: 20, filter: "blur(10px)" }}
@@ -45,15 +46,15 @@ const App: React.FC = () => {
             <Route path="/partenaires" element={<PageWrapper><Partners /></PageWrapper>} />
             <Route path="/contact" element={<PageWrapper><Contact /></PageWrapper>} />
             <Route path="/participate" element={<PageWrapper><Participate /></PageWrapper>} />
+            <Route path="/dashboard" element={<PageWrapper><Dashboard /></PageWrapper>} />
+            <Route path="/admin" element={<PageWrapper><Admin /></PageWrapper>} />
             <Route path="*" element={<Navigate to="/" replace />} />
           </Routes>
         </AnimatePresence>
       </main>
       
       <footer className="py-40 bg-nova-black text-white relative overflow-hidden">
-        {/* Footer Ambient Background */}
         <div className="absolute bottom-0 right-0 w-[50vw] h-[50vw] bg-nova-violet/5 blur-[120px] rounded-full pointer-events-none" />
-        
         <div className="container mx-auto px-6 relative z-10">
           <div className="grid md:grid-cols-4 gap-20 mb-24">
             <div className="col-span-1 md:col-span-2">
@@ -86,15 +87,12 @@ const App: React.FC = () => {
               </ul>
             </div>
           </div>
-          
           <div className="pt-20 border-t border-white/5 flex flex-col md:flex-row justify-between items-center gap-10">
             <div className="text-gray-600 text-[10px] uppercase font-bold tracking-[0.4em]">
               © 2025-2026 Tech Nova Benin. Excellence Institutionnelle.
             </div>
             <div className="flex gap-12 text-[10px] font-black uppercase tracking-[0.5em] text-gray-500">
-              <a href="#" className="hover:text-white transition-all duration-500">Twitter</a>
-              <a href="#" className="hover:text-white transition-all duration-500">Instagram</a>
-              <a href="#" className="hover:text-white transition-all duration-500">LinkedIn</a>
+              <a href="/#/admin" className="hover:text-white transition-all duration-500">Accès Admin</a>
             </div>
           </div>
         </div>
