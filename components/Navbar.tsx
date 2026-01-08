@@ -90,7 +90,7 @@ const Navbar: React.FC = () => {
             
             <button 
               onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-              className={`p-2 rounded-full transition-all duration-500 ${
+              className={`md:hidden p-2 rounded-full transition-all duration-500 ${
                 mobileMenuOpen 
                   ? 'bg-nova-black text-white' 
                   : scrolled 
