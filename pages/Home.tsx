@@ -264,7 +264,7 @@ const Home: React.FC = () => {
                  label="PARRAINAGE"
                  name="Prof. Gustave DJEDATIN"
                  sub="DIRECTEUR DE L'ENSET"
-                 img="https://lh3.googleusercontent.com/d/1yDq595M_rA74uUatJj6k-uN_p_fQ7G9F"
+                 img="https://i.postimg.cc/R0DLtgv0/Directeur-ENSET.jpg"
                  delay={0.2}
                />
                
@@ -272,7 +272,7 @@ const Home: React.FC = () => {
                  label="MARRAINAGE"
                  name="Prof. Clotilde GUIDI TOGNON"
                  sub="DIRECTRICE DE L'INSTI"
-                 img="https://lh3.googleusercontent.com/d/1vQG_H8-p-q-m_p-q-m_p-q-m_p-q-m_p"
+                 img="https://i.postimg.cc/kG96RSRJ/DIRECTRICE-INSTI.jpg"
                  delay={0.4}
                />
             </div>
