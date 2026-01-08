@@ -72,8 +72,8 @@ const Edition2026: React.FC = () => {
             transition={{ duration: 1.2, ease: [0.16, 1, 0.3, 1] }}
           >
             <h1 className="editorial-title text-[clamp(2.5rem,8vw,8rem)] text-white leading-[0.85] mb-12">
-              VDONNEZ UNE CHANCE <br />
-              <span className="text-nova-violet italic font-light">A COTRE BINOME.</span>
+              DONNEZ UNE CHANCE <br />
+              <span className="text-nova-violet italic font-light">A VOTRE BINOME.</span>
             </h1>
             <p className="text-xl md:text-2xl text-gray-300 font-light max-w-3xl mx-auto leading-relaxed">
               Alors saisissez l'opportunitté maintenant. Scrolle en bas pour prendre les bonnes informations qui t'aideront.
