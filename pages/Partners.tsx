@@ -49,12 +49,9 @@ const Partners: React.FC = () => {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 1.2, ease: [0.16, 1, 0.3, 1] }}
           >
-            <span className="text-nova-violet font-black tracking-[0.4em] uppercase text-[10px] block mb-8">
-              Gouvernance & Alliances
-            </span>
             <h1 className="editorial-title text-[clamp(2.5rem,7vw,7rem)] text-white leading-none mb-12">
-              PARTENARIATS <br />
-              <span className="text-nova-violet italic font-light">OFFICIELS.</span>
+              ILS NOUS ONT FAIT <br />
+              <span className="text-nova-violet italic font-light">CONFIANCE.</span>
             </h1>
             <p className="text-xl text-gray-200 font-light max-w-2xl mx-auto leading-relaxed">
               Le Tech Nova Challenge repose sur une coopération étroite entre l'excellence académique, le secteur industriel et les appuis institutionnels.
