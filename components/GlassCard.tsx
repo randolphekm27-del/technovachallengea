@@ -11,25 +11,22 @@ interface GlassCardProps {
 const GlassCard: React.FC<GlassCardProps> = ({ children, className = '', delay = 0 }) => {
   return (
     <motion.div
-      initial={{ opacity: 0, y: 40 }}
+      initial={{ opacity: 0, y: 30 }}
       whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true, margin: "-100px" }}
+      viewport={{ once: true, margin: "-50px" }}
       transition={{ 
         duration: 0.8, 
         delay, 
         ease: [0.16, 1, 0.3, 1]
       }}
-      whileHover={{ 
-        y: -12,
-        transition: { duration: 0.4, ease: [0.16, 1, 0.3, 1] }
-      }}
-      className={`glass rounded-[2.5rem] p-10 soft-border shadow-sm relative overflow-hidden group hover:shadow-[0_30px_60px_rgba(124,58,237,0.15)] transition-all duration-500 ${className}`}
+      // On garde l'effet de lévitation subtil mais on le réduit sur mobile via Tailwind group-hover
+      className={`glass rounded-[2rem] md:rounded-[2.5rem] p-6 md:p-10 soft-border shadow-sm relative overflow-hidden group hover:shadow-[0_20px_40px_rgba(124,58,237,0.1)] md:hover:-translate-y-2 transition-all duration-500 ${className}`}
     >
-      {/* Micro-animation de lueur en arrière-plan au hover */}
+      {/* Micro-animation de lueur en arrière-plan */}
       <div className="absolute inset-0 bg-gradient-to-br from-nova-violet/[0.05] to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-700 pointer-events-none" />
       
-      {/* Bordure animée subtile au hover */}
-      <div className="absolute inset-0 border border-nova-violet/0 group-hover:border-nova-violet/10 rounded-[2.5rem] transition-colors duration-500 pointer-events-none" />
+      {/* Bordure animée subtile */}
+      <div className="absolute inset-0 border border-nova-violet/0 group-hover:border-nova-violet/10 rounded-[2rem] md:rounded-[2.5rem] transition-colors duration-500 pointer-events-none" />
 
       <div className="relative z-10">
         {children}

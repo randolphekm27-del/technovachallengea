@@ -2,7 +2,7 @@
 import React, { useState, useEffect } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Menu, X } from 'lucide-react';
+import { Menu, X, ArrowRight, Globe, Mail } from 'lucide-react';
 import Button from './Button';
 
 const Navbar: React.FC = () => {
@@ -12,14 +12,20 @@ const Navbar: React.FC = () => {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   useEffect(() => {
-    const handleScroll = () => setScrolled(window.scrollY > 50);
+    const handleScroll = () => setScrolled(window.scrollY > 20);
     window.addEventListener('scroll', handleScroll);
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
-  const isActive = (path: string) => location.pathname === path;
+  useEffect(() => {
+    if (mobileMenuOpen) {
+      document.body.style.overflow = 'hidden';
+    } else {
+      document.body.style.overflow = 'unset';
+    }
+  }, [mobileMenuOpen]);
 
-  // Pages ayant un header plein écran sombre (Ajout de '/' ici)
+  const isActive = (path: string) => location.pathname === path;
   const isDarkHeroPage = ['/', '/about', '/edition-2026', '/laureats-2025', '/partenaires', '/contact'].includes(location.pathname);
 
   const navLinks = [
@@ -32,38 +38,24 @@ const Navbar: React.FC = () => {
 
   const logoSrc = "https://lh3.googleusercontent.com/d/1unzmI9yrKSgdAupyyrxAHRKCcB1ak_Z7";
 
-  // Déterminer la couleur du texte en fonction du défilement et du type de page
-  const getTextColorClass = () => {
-    if (scrolled) return 'text-nova-black';
-    if (isDarkHeroPage) return 'text-white';
-    return 'text-nova-black';
-  };
-
-  const getLinkColorClass = (path: string) => {
-    if (isActive(path)) return 'text-nova-violet';
-    if (scrolled) return 'text-nova-black/50 hover:text-nova-black';
-    if (isDarkHeroPage) return 'text-white/70 hover:text-white';
-    return 'text-nova-black/50 hover:text-nova-black';
-  };
-
   return (
     <>
-      <nav className="fixed top-0 left-0 w-full z-[100] transition-all duration-700 pointer-events-none flex justify-center pt-6">
+      <nav className={`fixed top-0 left-0 w-full z-[100] transition-all duration-500 pointer-events-none flex justify-center ${scrolled ? 'pt-4' : 'pt-6 md:pt-8'}`}>
         <motion.div 
           initial={{ y: -100, opacity: 0 }}
           animate={{ y: 0, opacity: 1 }}
           className={`
-            pointer-events-auto flex items-center justify-between px-6 md:px-10 py-3 
-            ${scrolled ? 'w-[92%] md:w-auto glass rounded-full shadow-2xl border-white/20' : 'w-full max-w-7xl rounded-none border-transparent'} 
+            pointer-events-auto flex items-center justify-between px-5 md:px-10 py-3 
+            ${scrolled ? 'w-[94%] md:w-auto glass rounded-full shadow-2xl border-white/20' : 'w-full max-w-7xl rounded-none border-transparent'} 
             transition-all duration-700 ease-in-out
           `}
         >
           {/* Logo */}
-          <Link to="/" className="flex items-center">
+          <Link to="/" className="flex items-center z-[110]" onClick={() => setMobileMenuOpen(false)}>
             <img 
               src={logoSrc} 
-              alt="Tech Nova Challenge Logo" 
-              className={`h-10 md:h-12 w-auto object-contain rounded-lg p-1 transition-all duration-500 ${scrolled ? 'bg-white/50 border border-gray-100' : isDarkHeroPage ? 'bg-white border-white' : 'bg-white/50 border border-gray-100'}`}
+              alt="Tech Nova Challenge" 
+              className={`h-9 md:h-12 w-auto object-contain rounded-lg p-1 transition-all duration-500 ${scrolled ? 'bg-white/50' : isDarkHeroPage && !mobileMenuOpen ? 'bg-white' : 'bg-white/50'}`}
             />
           </Link>
 
@@ -73,7 +65,9 @@ const Navbar: React.FC = () => {
               <Link
                 key={link.path}
                 to={link.path}
-                className={`text-[9px] uppercase tracking-[0.25em] font-black transition-all duration-300 relative py-2 ${getLinkColorClass(link.path)}`}
+                className={`text-[9px] uppercase tracking-[0.25em] font-black transition-all duration-300 relative py-2 ${
+                  isActive(link.path) ? 'text-nova-violet' : scrolled ? 'text-nova-black/50 hover:text-nova-black' : isDarkHeroPage ? 'text-white/70 hover:text-white' : 'text-nova-black/50 hover:text-nova-black'
+                }`}
               >
                 {link.name}
                 {isActive(link.path) && (
@@ -84,49 +78,109 @@ const Navbar: React.FC = () => {
           </div>
 
           {/* Right Side */}
-          <div className="flex items-center gap-4">
+          <div className="flex items-center gap-3 md:gap-4 z-[110]">
             <Button 
               size="sm" 
-              variant={scrolled ? "primary" : isDarkHeroPage ? "outline" : "primary"}
+              variant={scrolled ? "primary" : isDarkHeroPage && !mobileMenuOpen ? "outline" : "primary"}
               onClick={() => navigate('/participate')}
-              className={`hidden md:inline-flex text-[9px] py-2 px-6 transition-all duration-500 ${!scrolled && isDarkHeroPage ? 'border-white text-white hover:bg-white hover:text-nova-black' : ''}`}
+              className={`hidden md:inline-flex text-[9px] py-2 px-6 ${!scrolled && isDarkHeroPage && !mobileMenuOpen ? 'border-white text-white hover:bg-white hover:text-nova-black' : ''}`}
             >
               Participer
             </Button>
+            
             <button 
               onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-              className={`md:hidden p-2 transition-colors duration-500 ${scrolled ? 'text-nova-black' : isDarkHeroPage ? 'text-white' : 'text-nova-black'}`}
+              className={`p-2 rounded-full transition-all duration-500 ${
+                mobileMenuOpen 
+                  ? 'bg-nova-black text-white' 
+                  : scrolled 
+                    ? 'bg-nova-black/5 text-nova-black' 
+                    : isDarkHeroPage ? 'bg-white/10 text-white backdrop-blur-md' : 'bg-nova-black/5 text-nova-black'
+              }`}
+              aria-label="Toggle Menu"
             >
-              {mobileMenuOpen ? <X size={20} /> : <Menu size={20} />}
+              {mobileMenuOpen ? <X size={22} strokeWidth={2.5} /> : <Menu size={22} strokeWidth={2.5} />}
             </button>
           </div>
         </motion.div>
       </nav>
 
-      {/* Mobile Menu */}
+      {/* Mobile Menu Overlay */}
       <AnimatePresence>
         {mobileMenuOpen && (
           <motion.div 
-            initial={{ opacity: 0, x: '100%' }}
-            animate={{ opacity: 1, x: 0 }}
-            exit={{ opacity: 0, x: '100%' }}
-            className="fixed inset-0 z-[90] bg-white md:hidden flex flex-col pt-32 px-8"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.4 }}
+            className="fixed inset-0 z-[90] bg-white overflow-hidden flex flex-col"
           >
-            <Link to="/" onClick={() => setMobileMenuOpen(false)} className="mb-12">
-              <img src={logoSrc} alt="Logo" className="h-16 w-auto border border-gray-100 rounded-xl p-2" />
-            </Link>
-            {navLinks.map((link) => (
-              <Link
-                key={link.path}
-                to={link.path}
-                onClick={() => setMobileMenuOpen(false)}
-                className="text-4xl font-black uppercase tracking-tighter text-nova-black mb-8"
+            {/* Background Pattern */}
+            <div className="absolute inset-0 opacity-[0.03] pointer-events-none flex items-center justify-center">
+               <div className="w-[150vw] h-[150vw] border-[1px] border-nova-black rounded-full" />
+               <div className="absolute w-[100vw] h-[100vw] border-[1px] border-nova-black rounded-full" />
+            </div>
+
+            <div className="relative flex-grow flex flex-col justify-center px-8 pt-20">
+              <nav className="space-y-4">
+                {navLinks.map((link, i) => (
+                  <motion.div
+                    key={link.path}
+                    initial={{ x: -20, opacity: 0 }}
+                    animate={{ x: 0, opacity: 1 }}
+                    transition={{ delay: 0.1 + i * 0.1, duration: 0.5 }}
+                  >
+                    <Link
+                      to={link.path}
+                      onClick={() => setMobileMenuOpen(false)}
+                      className={`group flex items-center justify-between py-4 border-b border-gray-50 transition-all ${
+                        isActive(link.path) ? 'text-nova-violet' : 'text-nova-black'
+                      }`}
+                    >
+                      <span className="text-4xl font-black uppercase tracking-tighter italic group-active:translate-x-4 transition-transform duration-300">
+                        {link.name}
+                      </span>
+                      <motion.div
+                        animate={isActive(link.path) ? { x: 0, opacity: 1 } : { x: -10, opacity: 0 }}
+                      >
+                        <ArrowRight className="text-nova-violet" size={32} />
+                      </motion.div>
+                    </Link>
+                  </motion.div>
+                ))}
+              </nav>
+
+              <motion.div 
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.6 }}
+                className="mt-16 space-y-8"
               >
-                {link.name}
-              </Link>
-            ))}
-            <div className="mt-auto pb-12">
-              <Button size="lg" onClick={() => { setMobileMenuOpen(false); navigate('/participate'); }} className="w-full">PARTICIPER</Button>
+                <div className="grid grid-cols-2 gap-4">
+                  <a href="mailto:contact@technovabenin.com" className="p-6 bg-gray-50 rounded-3xl flex flex-col gap-3">
+                    <Mail className="text-nova-violet" size={20} />
+                    <span className="text-[10px] font-black uppercase tracking-widest text-gray-400">Contact</span>
+                  </a>
+                  <div className="p-6 bg-gray-50 rounded-3xl flex flex-col gap-3">
+                    <Globe className="text-nova-violet" size={20} />
+                    <span className="text-[10px] font-black uppercase tracking-widest text-gray-400">Bénin</span>
+                  </div>
+                </div>
+                
+                <Button 
+                  size="lg" 
+                  onClick={() => { setMobileMenuOpen(false); navigate('/participate'); }} 
+                  className="w-full text-base py-6"
+                >
+                  Postuler 2026
+                </Button>
+              </motion.div>
+            </div>
+
+            <div className="p-8 text-center">
+              <span className="text-[9px] font-bold text-gray-300 uppercase tracking-[0.4em]">
+                Tech Nova Challenge — Édition 2026
+              </span>
             </div>
           </motion.div>
         )}
