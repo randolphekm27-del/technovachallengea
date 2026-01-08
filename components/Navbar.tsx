@@ -19,8 +19,8 @@ const Navbar: React.FC = () => {
 
   const isActive = (path: string) => location.pathname === path;
 
-  // Pages ayant un header plein écran sombre
-  const isDarkHeroPage = ['/about', '/edition-2026', '/laureats-2025', '/partenaires', '/contact'].includes(location.pathname);
+  // Pages ayant un header plein écran sombre (Ajout de '/' ici)
+  const isDarkHeroPage = ['/', '/about', '/edition-2026', '/laureats-2025', '/partenaires', '/contact'].includes(location.pathname);
 
   const navLinks = [
     { name: 'Accueil', path: '/' },
