@@ -21,17 +21,21 @@ const Gallery: React.FC = () => {
   const [activeCategory, setActiveCategory] = useState<Category>('All');
 
   const images: GalleryImage[] = [
-    // FINALE
+    // FINALE & SYMBOLES
     { id: 1, category: 'Finale', src: 'https://i.postimg.cc/g2vWrmTp/FINALISTE_PREMIER.jpg' },
     { id: 2, category: 'Finale', src: 'https://i.postimg.cc/nc9ZbvKs/FINALISTE_2EME.jpg' },
     { id: 3, category: 'Finale', src: 'https://i.postimg.cc/bwQhdpBY/FINALISTE_3EME.jpg' },
     { id: 4, category: 'Finale', src: 'https://i.postimg.cc/tg28VTdM/BON_FINALISTES.jpg' },
     { id: 5, category: 'Finale', src: 'https://i.postimg.cc/XJvS2F7Y/FINALE_PRESElection.jpg' },
+    { id: 21, category: 'Finale', src: 'https://i.postimg.cc/kGGyhQHK/COUPE_OU_TROPHEE.jpg' },
+    { id: 22, category: 'Finale', src: 'https://i.postimg.cc/2yyxXQtb/embassadrice_de_TNC.jpg' },
+    { id: 24, category: 'Finale', src: 'https://i.postimg.cc/y8D8YkMQ/promoteur-tnc.jpg' },
     
-    // VISITES
+    // VISITES & SCOP
     { id: 6, category: 'Visite', src: 'https://i.postimg.cc/5tTTmrGQ/visite_scopp.jpg' },
     { id: 7, category: 'Visite', src: 'https://i.postimg.cc/wvzcHcs3/visite_scop1.jpg' },
     { id: 8, category: 'Visite', src: 'https://i.postimg.cc/fLsjZj0N/visite_scop.jpg' },
+    { id: 23, category: 'Visite', src: 'https://i.postimg.cc/cLwBj4Dd/a_scop_s.jpg' },
     { id: 9, category: 'Visite', src: 'https://i.postimg.cc/mkJPZB62/SCOPPP.jpg' },
     { id: 10, category: 'Visite', src: 'https://i.postimg.cc/FF8zLFDK/SCOPP.jpg' },
     { id: 11, category: 'Visite', src: 'https://i.postimg.cc/5tVFF99s/SCOP_E.jpg' },
@@ -142,7 +146,6 @@ const Gallery: React.FC = () => {
                       alt="Capture Tech Nova"
                       className="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-110"
                     />
-                    {/* Overlay discret au survol sans texte */}
                     <div className="absolute inset-0 bg-nova-black/20 opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none" />
                   </div>
                 </motion.div>

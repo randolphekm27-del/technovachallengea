@@ -168,7 +168,12 @@ const Winners2025: React.FC = () => {
       </section>
 
       {/* SECTION 3: PROJETS PRIMÉS */}
-      <section className="py-24 md:py-48 px-4 md:px-6 bg-gray-50/50 relative">
+      <section className="py-24 md:py-48 px-4 md:px-6 bg-gray-50/50 relative overflow-hidden">
+        {/* IMAGE DU TROPHÉE EN DÉCORATION D'ARRIÈRE-PLAN */}
+        <div className="absolute top-1/2 right-[-10%] -translate-y-1/2 w-1/2 h-full opacity-10 pointer-events-none hidden lg:block">
+           <img src="https://i.postimg.cc/kGGyhQHK/COUPE_OU_TROPHEE.jpg" alt="Trophée Tech Nova" className="w-full h-full object-contain mix-blend-multiply" />
+        </div>
+
         <div className="container mx-auto max-w-6xl relative z-10">
           <header className="text-center mb-16 md:mb-32">
             <span className="text-nova-violet font-black tracking-[0.5em] uppercase text-[10px] block mb-6 md:mb-8 text-center">Le Podium de l'Excellence</span>
@@ -179,7 +184,6 @@ const Winners2025: React.FC = () => {
             {winners.map((w, i) => (
               <GlassCard key={i} className={`p-6 md:p-20 relative overflow-hidden ${i === 0 ? 'ring-1 md:ring-2 ring-nova-violet ring-offset-4 md:ring-offset-8 shadow-2xl' : ''}`}>
                 
-                {/* Badge Grand Lauréat : Amélioration mobile */}
                 {i === 0 && (
                   <div className="inline-block md:absolute md:top-10 md:right-10 px-6 py-2 bg-nova-violet text-white text-[10px] font-black uppercase tracking-widest rounded-full mb-8 md:mb-0 shadow-lg z-20">
                     Grand Lauréat
@@ -188,8 +192,6 @@ const Winners2025: React.FC = () => {
 
                 <div className="grid lg:grid-cols-12 gap-8 md:gap-16 items-start relative z-10">
                   <div className="lg:col-span-7">
-                    
-                    {/* Header : Flex-col sur mobile pour éviter les collisions */}
                     <div className="flex flex-col sm:flex-row sm:items-center gap-4 sm:gap-6 mb-8 md:mb-10">
                        <span className="text-nova-violet font-black tracking-[0.3em] uppercase text-[10px] md:text-xs whitespace-nowrap">{w.rank}</span>
                        <div className="hidden sm:block h-px flex-grow bg-gray-200" />
@@ -223,7 +225,6 @@ const Winners2025: React.FC = () => {
                     </div>
                   </div>
 
-                  {/* PORTRAIT DU LAURÉAT */}
                   <div className="lg:col-span-5 w-full">
                     <div className="relative aspect-[4/5] md:aspect-square bg-white rounded-[3rem] overflow-hidden group shadow-2xl border border-gray-100">
                        <img 

@@ -46,7 +46,6 @@ const PatronageCard = ({ label, name, sub, img, delay }: { label: string, name: 
         transition={{ duration: 1.2, delay, ease: [0.16, 1, 0.3, 1] }}
         className="relative flex items-center group cursor-default w-full"
       >
-        {/* Main Card Body */}
         <motion.div
           whileHover={{ scale: 0.98 }}
           className="relative z-10 ml-12 md:ml-32 w-full bg-white/95 backdrop-blur-2xl rounded-[2.5rem] md:rounded-[3rem] p-10 md:p-16 border-[0.5px] border-nova-violet/20 shadow-2xl shadow-nova-black/5 overflow-hidden"
@@ -67,12 +66,9 @@ const PatronageCard = ({ label, name, sub, img, delay }: { label: string, name: 
               {sub}
             </span>
           </div>
-          
-          {/* Decorative element inside card */}
           <div className="absolute top-0 right-0 w-32 h-32 bg-nova-violet/5 rounded-full blur-3xl -mr-16 -mt-16" />
         </motion.div>
 
-        {/* Floating Portrait with "Pro Frame" border */}
         <motion.div
           whileHover={{ scale: 1.05, rotate: -2 }}
           transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
@@ -84,7 +80,6 @@ const PatronageCard = ({ label, name, sub, img, delay }: { label: string, name: 
               alt={name}
               className="w-full h-full object-cover transition-all duration-700"
             />
-            {/* Subtle inner shadow for depth */}
             <div className="absolute inset-0 shadow-[inset_0_0_40px_rgba(0,0,0,0.1)] pointer-events-none" />
           </div>
         </motion.div>
@@ -230,7 +225,7 @@ const Home: React.FC = () => {
               </h2>
               <div className="space-y-14 text-xl text-gray-500 font-light leading-relaxed">
                 <p>
-                  Le TECH NOVA CHALLENGE bénéficie du patronage officiel des plus prestigieuses universités scientifiques du Bénin, notamment l’École Nationale Supérieure d’Enseignement Technique (ENSET) et l’Institut National Supérieur de Technologie Industrielle (INSTI).
+                  Le TECH NOVA CHALLENGE bénéficie du patronage officiel des plus prestigieuses universités scientifiques du Bénin et d'un soutien institutionnel fort pour valoriser l'excellence.
                 </p>
                 <motion.div 
                   whileHover={{ scale: 1.05, y: -5 }}
@@ -249,11 +244,19 @@ const Home: React.FC = () => {
 
             <div className="lg:col-span-7 space-y-12 md:space-y-32 pt-20 lg:pt-0">
                <PatronageCard 
+                 label="VISIONNAIRE"
+                 name="Samuel OGOUGNION"
+                 sub="PROMOTEUR DU TECH NOVA CHALLENGE"
+                 img="https://i.postimg.cc/y8D8YkMQ/promoteur-tnc.jpg"
+                 delay={0.1}
+               />
+
+               <PatronageCard 
                  label="PARRAINAGE"
                  name="Prof. Gustave DJEDATIN"
                  sub="DIRECTEUR DE L'ENSET"
                  img="https://i.postimg.cc/R0DLtgv0/Directeur_ENSET.jpg"
-                 delay={0.2}
+                 delay={0.3}
                />
                
                <PatronageCard 
@@ -261,7 +264,15 @@ const Home: React.FC = () => {
                  name="Prof. Clotilde GUIDI TOGNON"
                  sub="DIRECTRICE DE L'INSTI"
                  img="https://i.postimg.cc/d0Pq0Yyq/DIRECTRICE_INSTI.jpg"
-                 delay={0.4}
+                 delay={0.5}
+               />
+
+               <PatronageCard 
+                 label="AMBASSADRICE"
+                 name="Mlle Victoire AÏNA"
+                 sub="AMBASSADRICE DE L'INNOVATION TNC"
+                 img="https://i.postimg.cc/2yyxXQtb/embassadrice_de_TNC.jpg"
+                 delay={0.7}
                />
             </div>
           </div>
@@ -307,41 +318,41 @@ const Home: React.FC = () => {
             </motion.div>
 
             <GlassCard className="mt-32 mx-4 p-8 md:p-24 border-gray-100 bg-gray-50/50 md:mx-auto md:max-w-[90%]">
-  <div className="text-[11px] font-black uppercase tracking-[0.4em] text-nova-violet mb-12">
-    Un parcours structuré en 3 étapes clés
-  </div>
-  <div className="grid md:grid-cols-3 gap-12 md:gap-16">
-    {[
-      {
-        title: "Sélection",
-        desc: "Les candidats soumettent un dossier technique solide accompagné d'une vidéo de pitch."
-      },
-      {
-        title: "Immersion",
-        desc: "Les équipes retenues bénéficient d'une formation intensive de 3 jours."
-      },
-      {
-        title: "Apothéose",
-        desc: "Les projets finalistes sont présentés lors d'une finale publique devant un jury d'experts."
-      }
-    ].map((step, idx) => (
-      <motion.div
-        key={idx}
-        className="space-y-6"
-        initial={{ opacity: 0, y: 20 }}
-        whileInView={{ opacity: 1, y: 0 }}
-        transition={{ delay: 0.4 + idx * 0.1 }}
-      >
-        <h4 className="text-nova-black font-black uppercase text-base">
-          {idx + 1}. {step.title}
-        </h4>
-        <p className="text-base leading-relaxed text-gray-400 font-light">
-          {step.desc}
-        </p>
-      </motion.div>
-    ))}
-  </div>
-</GlassCard>
+              <div className="text-[11px] font-black uppercase tracking-[0.4em] text-nova-violet mb-12">
+                Un parcours structuré en 3 étapes clés
+              </div>
+              <div className="grid md:grid-cols-3 gap-12 md:gap-16">
+                {[
+                  {
+                    title: "Sélection",
+                    desc: "Les candidats soumettent un dossier technique solide accompagné d'une vidéo de pitch."
+                  },
+                  {
+                    title: "Immersion",
+                    desc: "Les équipes retenues bénéficient d'une formation intensive de 3 jours."
+                  },
+                  {
+                    title: "Apothéose",
+                    desc: "Les projets finalistes sont présentés lors d'une finale publique devant un jury d'experts."
+                  }
+                ].map((step, idx) => (
+                  <motion.div
+                    key={idx}
+                    className="space-y-6"
+                    initial={{ opacity: 0, y: 20 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    transition={{ delay: 0.4 + idx * 0.1 }}
+                  >
+                    <h4 className="text-nova-black font-black uppercase text-base">
+                      {idx + 1}. {step.title}
+                    </h4>
+                    <p className="text-base leading-relaxed text-gray-400 font-light">
+                      {step.desc}
+                    </p>
+                  </motion.div>
+                ))}
+              </div>
+            </GlassCard>
           </div>
 
           <motion.div 
