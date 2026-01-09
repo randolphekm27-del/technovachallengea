@@ -1,11 +1,32 @@
 
 import React from 'react';
 import { motion } from 'framer-motion';
-import { Mail, Phone, MapPin, ArrowDown } from 'lucide-react';
+import { Mail, Phone, MapPin, ArrowDown, MessageCircle, Facebook, Linkedin } from 'lucide-react';
 import GlassCard from '../components/GlassCard';
 import Button from '../components/Button';
 
 const Contact: React.FC = () => {
+  const socialLinks = [
+    { 
+      name: 'WhatsApp', 
+      icon: <MessageCircle size={20} />, 
+      url: 'https://wa.me/22997204690?text=Salut%20!%20J%27ai%20une%20pr%C3%A9occupation...',
+      color: 'hover:text-green-500'
+    },
+    { 
+      name: 'Facebook', 
+      icon: <Facebook size={20} />, 
+      url: 'https://www.facebook.com/profile.php?id=61574559687910',
+      color: 'hover:text-blue-600'
+    },
+    { 
+      name: 'LinkedIn', 
+      icon: <Linkedin size={20} />, 
+      url: 'https://www.linkedin.com/in/tech-nova-challenge-44b10b359',
+      color: 'hover:text-blue-700'
+    }
+  ];
+
   return (
     <div className="bg-white min-h-screen selection:bg-nova-violet selection:text-white">
       
@@ -47,33 +68,63 @@ const Contact: React.FC = () => {
             <div className="space-y-16">
                <h2 className="text-4xl font-black uppercase tracking-tighter text-nova-black">Coordonnées <br /><span className="text-nova-violet">Institutionnelles</span></h2>
                
-               <div className="space-y-12">
+               <div className="space-y-10">
                   <div className="flex items-center gap-8 group">
                     <div className="w-16 h-16 rounded-[1.5rem] bg-gray-50 flex items-center justify-center text-nova-violet group-hover:bg-nova-violet group-hover:text-white transition-all">
                       <Mail size={24} />
                     </div>
                     <div>
                       <div className="text-[10px] font-black uppercase tracking-widest text-gray-400 mb-1">E-mail Officiel</div>
-                      <div className="text-xl font-medium">contact@technovabenin.com</div>
+                      <a href="mailto:contact@technovabenin.com" className="text-xl font-medium hover:text-nova-violet transition-colors">contact@technovabenin.com</a>
                     </div>
                   </div>
+
                   <div className="flex items-center gap-8 group">
                     <div className="w-16 h-16 rounded-[1.5rem] bg-gray-50 flex items-center justify-center text-nova-violet group-hover:bg-nova-violet group-hover:text-white transition-all">
                       <Phone size={24} />
                     </div>
                     <div>
                       <div className="text-[10px] font-black uppercase tracking-widest text-gray-400 mb-1">Secrétariat</div>
-                      <div className="text-xl font-medium">+229 90 00 00 00</div>
+                      <a href="tel:+2290147335106" className="text-xl font-medium hover:text-nova-violet transition-colors">+229 01 47 33 51 06</a>
                     </div>
                   </div>
+
+                  <div className="flex items-center gap-8 group">
+                    <div className="w-16 h-16 rounded-[1.5rem] bg-gray-50 flex items-center justify-center text-nova-violet group-hover:bg-nova-violet group-hover:text-white transition-all">
+                      <MessageCircle size={24} />
+                    </div>
+                    <div>
+                      <div className="text-[10px] font-black uppercase tracking-widest text-gray-400 mb-1">WhatsApp Direct</div>
+                      <a href="https://wa.me/22997204690?text=Salut%20!%20J%27ai%20une%20pr%C3%A9occupation..." target="_blank" rel="noopener noreferrer" className="text-xl font-medium hover:text-green-500 transition-colors">Démarrer une discussion</a>
+                    </div>
+                  </div>
+
                   <div className="flex items-center gap-8 group">
                     <div className="w-16 h-16 rounded-[1.5rem] bg-gray-50 flex items-center justify-center text-nova-violet group-hover:bg-nova-violet group-hover:text-white transition-all">
                       <MapPin size={24} />
                     </div>
                     <div>
                       <div className="text-[10px] font-black uppercase tracking-widest text-gray-400 mb-1">Siège</div>
-                      <div className="text-xl font-medium">Sèmè City, Cotonou, Bénin</div>
+                      <div className="text-xl font-medium">La ville de Lokossa</div>
                     </div>
+                  </div>
+               </div>
+
+               <div className="pt-10 border-t border-gray-100">
+                  <div className="text-[10px] font-black uppercase tracking-widest text-gray-400 mb-8">Suivez l'aventure</div>
+                  <div className="flex gap-6">
+                    {socialLinks.map((social, i) => (
+                      <a 
+                        key={i} 
+                        href={social.url} 
+                        target="_blank" 
+                        rel="noopener noreferrer"
+                        className={`w-12 h-12 rounded-full border border-gray-100 flex items-center justify-center text-gray-400 transition-all duration-500 ${social.color} hover:border-current hover:scale-110`}
+                        title={social.name}
+                      >
+                        {social.icon}
+                      </a>
+                    ))}
                   </div>
                </div>
             </div>
