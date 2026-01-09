@@ -116,7 +116,7 @@ const About: React.FC = () => {
               <motion.img 
                 whileHover={{ scale: 1.05 }}
                 transition={{ duration: 1.5 }}
-                src="https://images.unsplash.com/photo-1531482615713-2afd69097998?auto=format&fit=crop&q=80&w=1200" 
+                src="https://i.postimg.cc/fRMvCYxm/Equipe-tech-nova-challenge.jpg" 
                 alt="Travail collaboratif" 
                 className="w-full h-full object-cover"
               />
