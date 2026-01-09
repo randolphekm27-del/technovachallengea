@@ -3,24 +3,17 @@ import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { 
   Camera, 
-  MapPin, 
-  Trophy, 
-  Users,
-  Eye,
-  ArrowDown,
-  Filter
+  ArrowDown
 } from 'lucide-react';
 import Button from '../components/Button';
 import { useNavigate } from 'react-router-dom';
 
-type Category = 'All' | 'Formation' | 'Visite' | 'Finale' | 'Pitch';
+type Category = 'All' | 'Formation' | 'Visite' | 'Finale';
 
 interface GalleryImage {
   id: number;
   src: string;
   category: Category;
-  title: string;
-  desc: string;
 }
 
 const Gallery: React.FC = () => {
@@ -28,34 +21,43 @@ const Gallery: React.FC = () => {
   const [activeCategory, setActiveCategory] = useState<Category>('All');
 
   const images: GalleryImage[] = [
-    // FORMATIONS
-    { id: 1, category: 'Formation', title: 'Atelier Pitch Deck', desc: 'Préparation intensive au CAEB de Lokossa.', src: 'https://images.unsplash.com/photo-1517245386807-bb43f82c33c4?auto=format&fit=crop&q=80&w=1200' },
-    { id: 2, category: 'Formation', title: 'Session Mentoring', desc: 'Échanges avec les experts de Sèmè City.', src: 'https://images.unsplash.com/photo-1515187029135-18ee286d815b?auto=format&fit=crop&q=80&w=1200' },
-    { id: 3, category: 'Formation', title: 'Workshops Technique', desc: 'Immersion dans les outils de développement.', src: 'https://images.unsplash.com/photo-1531482615713-2afd69097998?auto=format&fit=crop&q=80&w=1200' },
+    // FINALE
+    { id: 1, category: 'Finale', src: 'https://i.postimg.cc/g2vWrmTp/FINALISTE_PREMIER.jpg' },
+    { id: 2, category: 'Finale', src: 'https://i.postimg.cc/nc9ZbvKs/FINALISTE_2EME.jpg' },
+    { id: 3, category: 'Finale', src: 'https://i.postimg.cc/bwQhdpBY/FINALISTE_3EME.jpg' },
+    { id: 4, category: 'Finale', src: 'https://i.postimg.cc/tg28VTdM/BON_FINALISTES.jpg' },
+    { id: 5, category: 'Finale', src: 'https://i.postimg.cc/XJvS2F7Y/FINALE_PRESElection.jpg' },
     
     // VISITES
-    { id: 4, category: 'Visite', title: 'Sèmè City', desc: 'Découverte des laboratoires d\'innovation.', src: 'https://images.unsplash.com/photo-1497366216548-37526070297c?auto=format&fit=crop&q=80&w=1200' },
-    { id: 5, category: 'Visite', title: 'Lab SCOP', desc: 'Exploration des technologies de prototypage.', src: 'https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?auto=format&fit=crop&q=80&w=1200' },
-    
-    // FINALE
-    { id: 6, category: 'Finale', title: 'Cérémonie Officielle', desc: 'L\'apothéose de l\'édition 2025.', src: 'https://images.unsplash.com/photo-1475721027185-403429803274?auto=format&fit=crop&q=80&w=1200' },
-    { id: 7, category: 'Finale', title: 'Proclamation', desc: 'Le moment de la victoire.', src: 'https://images.unsplash.com/photo-1511578314322-379afb476865?auto=format&fit=crop&q=80&w=1200' },
-    
-    // PITCH
-    { id: 8, category: 'Pitch', title: 'Pitch Session', desc: 'Convaincre le jury en 3 minutes.', src: 'https://images.unsplash.com/photo-1475721027185-403429803274?auto=format&fit=crop&q=80&w=1200' },
-    { id: 9, category: 'Pitch', title: 'Q&A Jury', desc: 'Défendre sa solution technique.', src: 'https://images.unsplash.com/photo-1542744173-8e7e53415bb0?auto=format&fit=crop&q=80&w=1200' }
+    { id: 6, category: 'Visite', src: 'https://i.postimg.cc/5tTTmrGQ/visite_scopp.jpg' },
+    { id: 7, category: 'Visite', src: 'https://i.postimg.cc/wvzcHcs3/visite_scop1.jpg' },
+    { id: 8, category: 'Visite', src: 'https://i.postimg.cc/fLsjZj0N/visite_scop.jpg' },
+    { id: 9, category: 'Visite', src: 'https://i.postimg.cc/mkJPZB62/SCOPPP.jpg' },
+    { id: 10, category: 'Visite', src: 'https://i.postimg.cc/FF8zLFDK/SCOPP.jpg' },
+    { id: 11, category: 'Visite', src: 'https://i.postimg.cc/5tVFF99s/SCOP_E.jpg' },
+    { id: 12, category: 'Visite', src: 'https://i.postimg.cc/4xT3W8D2/SCOP_1.jpg' },
+    { id: 13, category: 'Visite', src: 'https://i.postimg.cc/wBLcSbMG/SCOP.jpg' },
+    { id: 14, category: 'Visite', src: 'https://i.postimg.cc/CMXTNz3c/IGCO_PARTENAIRE_NEGOCE.jpg' },
+
+    // FORMATIONS
+    { id: 15, category: 'Formation', src: 'https://i.postimg.cc/VNY36Mt9/formation.jpg' },
+    { id: 16, category: 'Formation', src: 'https://i.postimg.cc/SsP5Dvv2/formationsr.jpg' },
+    { id: 17, category: 'Formation', src: 'https://i.postimg.cc/j519ZF1V/formationss.jpg' },
+    { id: 18, category: 'Formation', src: 'https://i.postimg.cc/JnFgP22F/formationsss.jpg' },
+    { id: 19, category: 'Formation', src: 'https://i.postimg.cc/BZk9gXrw/récré.jpg' },
+    { id: 20, category: 'Formation', src: 'https://i.postimg.cc/5yFrGmc1/fin_formation.jpg' }
   ];
 
   const filteredImages = activeCategory === 'All' 
     ? images 
     : images.filter(img => img.category === activeCategory);
 
-  const categories: Category[] = ['All', 'Formation', 'Visite', 'Finale', 'Pitch'];
+  const categories: Category[] = ['All', 'Formation', 'Visite', 'Finale'];
 
   return (
     <div className="bg-white min-h-screen selection:bg-nova-violet selection:text-white">
       
-      {/* SECTION 1 : HERO PLEIN ÉCRAN */}
+      {/* SECTION 1 : HERO */}
       <section className="relative h-screen w-full flex items-center justify-center overflow-hidden">
         <motion.div 
           initial={{ scale: 1.1 }}
@@ -90,7 +92,6 @@ const Gallery: React.FC = () => {
           </motion.div>
         </div>
         
-        {/* Scroll Indicator */}
         <motion.div 
           animate={{ y: [0, 10, 0] }}
           transition={{ duration: 2, repeat: Infinity }}
@@ -104,7 +105,6 @@ const Gallery: React.FC = () => {
       <section className="py-24 md:py-40 px-6 bg-white">
         <div className="container mx-auto max-w-7xl">
           
-          {/* Navigation des Catégories */}
           <div className="flex flex-wrap justify-center gap-4 md:gap-8 mb-24">
             {categories.map((cat) => (
               <button
@@ -121,7 +121,6 @@ const Gallery: React.FC = () => {
             ))}
           </div>
 
-          {/* Grille de la Galerie */}
           <motion.div 
             layout
             className="grid sm:grid-cols-2 lg:grid-cols-3 gap-8 md:gap-12"
@@ -138,27 +137,19 @@ const Gallery: React.FC = () => {
                   className="group relative"
                 >
                   <div className="relative aspect-[4/5] md:aspect-[3/4] overflow-hidden rounded-[2.5rem] bg-gray-100 shadow-sm">
-                    <img 
+                    <motion.img 
                       src={img.src} 
-                      alt={img.title}
+                      alt="Capture Tech Nova"
                       className="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-110"
                     />
-                    
-                    {/* Overlay d'information au survol */}
-                    <div className="absolute inset-0 bg-nova-black/60 opacity-0 group-hover:opacity-100 transition-opacity duration-500 flex flex-col justify-end p-10">
-                       <div className="translate-y-4 group-hover:translate-y-0 transition-transform duration-500">
-                          <span className="text-nova-violet font-black uppercase tracking-widest text-[9px] mb-2 block">{img.category}</span>
-                          <h3 className="text-white text-2xl font-black uppercase tracking-tighter mb-2">{img.title}</h3>
-                          <p className="text-gray-300 text-sm font-light">{img.desc}</p>
-                       </div>
-                    </div>
+                    {/* Overlay discret au survol sans texte */}
+                    <div className="absolute inset-0 bg-nova-black/20 opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none" />
                   </div>
                 </motion.div>
               ))}
             </AnimatePresence>
           </motion.div>
 
-          {/* État vide si aucune image */}
           {filteredImages.length === 0 && (
             <div className="py-40 text-center">
               <Camera className="mx-auto text-gray-200 mb-6" size={64} />
