@@ -95,7 +95,7 @@ const Winners2025: React.FC = () => {
           <img 
             src="https://images.unsplash.com/photo-1531482615713-2afd69097998?auto=format&fit=crop&q=80&w=2000" 
             alt="Palmarès 2025" 
-            className="w-full h-full object-cover grayscale brightness-50"
+            className="w-full h-full object-cover brightness-50"
           />
           <div className="absolute inset-0 bg-nova-black/60 backdrop-blur-[2px]" />
         </motion.div>

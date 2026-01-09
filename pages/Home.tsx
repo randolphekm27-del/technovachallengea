@@ -11,8 +11,6 @@ import {
 import Button from '../components/Button';
 import GlassCard from '../components/GlassCard';
 
-// Fix: Explicitly typing RevealText as React.FC with optional children to ensure children prop is correctly recognized in JSX, 
-// then safely convert to string for text processing.
 const RevealText: React.FC<{ children?: React.ReactNode, className?: string, delay?: number }> = ({ children, className = "", delay = 0 }) => {
   const textContent = typeof children === 'string' ? children : (React.Children.toArray(children).join(''));
   const words = textContent.split(" ");
@@ -40,46 +38,55 @@ const RevealText: React.FC<{ children?: React.ReactNode, className?: string, del
 
 const PatronageCard = ({ label, name, sub, img, delay }: { label: string, name: string, sub: string, img: string, delay: number }) => {
   return (
-    <div className="relative pt-20 pb-10 px-4 md:px-0">
+    <div className="relative pt-24 pb-12 px-2 md:px-0">
       <motion.div
-        initial={{ opacity: 0, x: -40 }}
-        whileInView={{ opacity: 1, x: 0 }}
+        initial={{ opacity: 0, y: 40 }}
+        whileInView={{ opacity: 1, y: 0 }}
         viewport={{ once: true, margin: "-100px" }}
         transition={{ duration: 1.2, delay, ease: [0.16, 1, 0.3, 1] }}
-        className="relative flex items-center group cursor-default"
+        className="relative flex items-center group cursor-default w-full"
       >
+        {/* Main Card Body */}
         <motion.div
-          whileHover={{ scale: 0.96, rotateX: 1, rotateY: -1 }}
-          className="relative z-10 ml-20 md:ml-32 w-full bg-white/90 backdrop-blur-xl rounded-[3rem] p-10 md:p-16 border-[0.5px] border-nova-violet/20 shadow-2xl shine-container perspective-content"
+          whileHover={{ scale: 0.98 }}
+          className="relative z-10 ml-12 md:ml-32 w-full bg-white/95 backdrop-blur-2xl rounded-[2.5rem] md:rounded-[3rem] p-10 md:p-16 border-[0.5px] border-nova-violet/20 shadow-2xl shadow-nova-black/5 overflow-hidden"
         >
-          <div className="flex flex-col">
+          <div className="flex flex-col pl-16 md:pl-20">
             <motion.span 
-              initial={{ opacity: 0, y: 10 }}
-              whileInView={{ opacity: 1, y: 0 }}
+              initial={{ opacity: 0, x: -10 }}
+              whileInView={{ opacity: 1, x: 0 }}
               transition={{ delay: delay + 0.3 }}
-              className="text-nova-violet font-black uppercase tracking-[0.5em] text-[10px] mb-6"
+              className="text-nova-violet font-black uppercase tracking-[0.4em] text-[9px] md:text-[10px] mb-4 md:mb-6"
             >
               {label}
             </motion.span>
-            <h3 className="text-nova-black font-black text-2xl md:text-4xl uppercase tracking-tighter leading-none mb-4">
+            <h3 className="text-nova-black font-black text-xl md:text-4xl uppercase tracking-tighter leading-tight mb-2 md:mb-4">
               {name}
             </h3>
-            <span className="text-gray-400 font-medium text-[10px] md:text-xs uppercase tracking-[0.3em] opacity-80">
+            <span className="text-gray-400 font-bold text-[8px] md:text-xs uppercase tracking-[0.25em] opacity-70">
               {sub}
             </span>
           </div>
+          
+          {/* Decorative element inside card */}
+          <div className="absolute top-0 right-0 w-32 h-32 bg-nova-violet/5 rounded-full blur-3xl -mr-16 -mt-16" />
         </motion.div>
 
+        {/* Floating Portrait with "Pro Frame" border */}
         <motion.div
-          whileHover={{ scale: 1.08, y: -20, rotate: 2 }}
-          transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
-          className="absolute left-0 top-0 z-20 w-40 h-56 md:w-64 md:h-80 -mt-16 -ml-6 md:-ml-12 pointer-events-none"
+          whileHover={{ scale: 1.05, rotate: -2 }}
+          transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
+          className="absolute left-0 top-1/2 -translate-y-1/2 z-20 w-32 h-44 md:w-64 md:h-80 -ml-4 md:-ml-12"
         >
-          <img
-            src={img}
-            alt={name}
-            className="w-full h-full object-contain filter drop-shadow-[0_40px_60px_rgba(0,0,0,0.4)]"
-          />
+          <div className="w-full h-full rounded-2xl md:rounded-[2rem] overflow-hidden border-4 md:border-8 border-white shadow-2xl shadow-nova-black/20 bg-gray-100 relative">
+            <img
+              src={img}
+              alt={name}
+              className="w-full h-full object-cover transition-all duration-700"
+            />
+            {/* Subtle inner shadow for depth */}
+            <div className="absolute inset-0 shadow-[inset_0_0_40px_rgba(0,0,0,0.1)] pointer-events-none" />
+          </div>
         </motion.div>
       </motion.div>
     </div>
@@ -95,20 +102,17 @@ const Home: React.FC = () => {
     offset: ["start start", "end end"]
   });
 
-  // Cinematic Parallax Transform
   const heroScale = useTransform(scrollYProgress, [0, 0.2], [1, 1.2]);
   const heroOpacity = useTransform(scrollYProgress, [0, 0.2], [1, 0]);
   const heroTranslateY = useTransform(scrollYProgress, [0, 0.2], [0, 200]);
-  const contentY = useTransform(scrollYProgress, [0, 0.5], [0, -100]);
 
   const heroImageUrl = "https://images.unsplash.com/photo-1517245386807-bb43f82c33c4?auto=format&fit=crop&q=80&w=2400";
 
   return (
     <div ref={containerRef} className="relative w-full bg-white selection:bg-nova-red selection:text-white overflow-x-hidden">
       
-      {/* SESSION 1 : HERO - ULTRA IMMERSIVE */}
+      {/* SESSION 1 : HERO */}
       <section className="relative h-screen flex items-center justify-center overflow-hidden">
-        {/* Layer 0: Depth Background */}
         <motion.div 
           style={{ scale: heroScale, opacity: heroOpacity, y: heroTranslateY }}
           className="absolute inset-0 z-0"
@@ -116,19 +120,17 @@ const Home: React.FC = () => {
           <img 
             src={heroImageUrl} 
             alt="Innovation" 
-            className="w-full h-full object-cover grayscale brightness-[0.3]" 
+            className="w-full h-full object-cover brightness-[0.3]" 
           />
           <div className="absolute inset-0 bg-gradient-to-b from-nova-black/80 via-nova-black/40 to-white/10" />
         </motion.div>
 
-        {/* Layer 1: Ambient Glows */}
         <motion.div 
           animate={{ scale: [1, 1.2, 1], opacity: [0.3, 0.5, 0.3] }}
           transition={{ duration: 10, repeat: Infinity }}
           className="absolute top-1/3 left-1/4 w-[50vw] h-[50vw] bg-nova-violet/20 blur-[150px] rounded-full pointer-events-none" 
         />
         
-        {/* Layer 2: Main Content Reveal */}
         <div className="container mx-auto px-6 max-w-7xl relative z-10">
           <motion.div
             initial={{ opacity: 0 }}
@@ -136,8 +138,6 @@ const Home: React.FC = () => {
             transition={{ duration: 2 }}
             className="text-center"
           >
-
-            {/* Stage 2: Main Title - Line by Line */}
             <div className="mb-14 perspective-card">
               <motion.h1 
                 initial={{ opacity: 0, scale: 0.95, y: 50 }}
@@ -150,14 +150,12 @@ const Home: React.FC = () => {
               </motion.h1>
             </div>
 
-            {/* Stage 3: Emotional Text */}
             <div className="max-w-4xl mx-auto mb-16">
               <RevealText delay={1.2} className="text-xl md:text-2xl text-gray-200 font-light leading-relaxed">
                 Le premier concours de référence pour l'innovation technologique des jeunes au Bénin pour bâtir demain aujourd'hui.
               </RevealText>
             </div>
 
-            {/* Stage 4: Actions */}
             <motion.div 
               initial={{ opacity: 0, y: 30 }}
               animate={{ opacity: 1, y: 0 }}
@@ -177,19 +175,9 @@ const Home: React.FC = () => {
             </motion.div>
           </motion.div>
         </div>
-
-        {/* Floating Scroller Indicator */}
-        <motion.div 
-          animate={{ y: [0, 15, 0] }}
-          transition={{ duration: 3, repeat: Infinity, ease: "easeInOut" }}
-          className="absolute bottom-12 left-1/2 -translate-x-1/2 flex flex-col items-center gap-4 opacity-30"
-        >
-          <span className="text-[9px] font-black uppercase tracking-[0.5em] text-white">Scroll</span>
-          <ChevronDown size={24} className="text-white" />
-        </motion.div>
       </section>
 
-      {/* SESSION 2 : DÉFINITION - EMERGENCE */}
+      {/* SESSION 2 : DÉFINITION */}
       <section className="py-64 px-6 bg-white relative overflow-hidden">
         <div className="absolute -left-40 top-40 w-[60vw] h-[60vw] bg-nova-violet/5 blur-[150px] rounded-full pointer-events-none" />
 
@@ -225,7 +213,7 @@ const Home: React.FC = () => {
         </div>
       </section>
 
-      {/* SESSION 3 : ANCRAGE INSTITUTIONNEL - DEPTH & PARALLAX */}
+      {/* SESSION 3 : ANCRAGE INSTITUTIONNEL */}
       <section className="py-64 px-6 bg-gray-50 border-y border-gray-100 relative overflow-visible">
         <div className="container mx-auto max-w-6xl">
           <div className="grid lg:grid-cols-12 gap-24 md:gap-32 items-start">
@@ -242,7 +230,7 @@ const Home: React.FC = () => {
               </h2>
               <div className="space-y-14 text-xl text-gray-500 font-light leading-relaxed">
                 <p>
-                  Le TECH NOVA CHALLENGE bénéficie du patronage officiel des plus prestigieuses universités scientifiques du Bénin, notamment l’École Nationale Supérieure d’Enseignement Technique (ENSET) et l’Institut National Supérieur de Technologie Industrielle (INSTI), qui soutiennent et encadrent son organisation.
+                  Le TECH NOVA CHALLENGE bénéficie du patronage officiel des plus prestigieuses universités scientifiques du Bénin, notamment l’École Nationale Supérieure d’Enseignement Technique (ENSET) et l’Institut National Supérieur de Technologie Industrielle (INSTI).
                 </p>
                 <motion.div 
                   whileHover={{ scale: 1.05, y: -5 }}
@@ -259,12 +247,12 @@ const Home: React.FC = () => {
               </div>
             </motion.div>
 
-            <div className="lg:col-span-7 space-y-24 md:space-y-32 pt-20 lg:pt-0">
+            <div className="lg:col-span-7 space-y-12 md:space-y-32 pt-20 lg:pt-0">
                <PatronageCard 
                  label="PARRAINAGE"
                  name="Prof. Gustave DJEDATIN"
                  sub="DIRECTEUR DE L'ENSET"
-                 img="https://i.postimg.cc/R0DLtgv0/Directeur-ENSET.jpg"
+                 img="https://i.postimg.cc/R0DLtgv0/Directeur_ENSET.jpg"
                  delay={0.2}
                />
                
@@ -272,7 +260,7 @@ const Home: React.FC = () => {
                  label="MARRAINAGE"
                  name="Prof. Clotilde GUIDI TOGNON"
                  sub="DIRECTRICE DE L'INSTI"
-                 img="https://i.postimg.cc/d0Pq0Yyq/DIRECTRICE-INSTI.jpg"
+                 img="https://i.postimg.cc/d0Pq0Yyq/DIRECTRICE_INSTI.jpg"
                  delay={0.4}
                />
             </div>
@@ -280,7 +268,7 @@ const Home: React.FC = () => {
         </div>
       </section>
 
-      {/* SESSION 4 : CIBLE - INTERACTIVE GRID */}
+      {/* SESSION 4 : CIBLE */}
       <section className="py-64 px-6 bg-white overflow-hidden relative">
         <div className="container mx-auto max-w-5xl">
           <header className="text-center mb-40">
@@ -318,24 +306,23 @@ const Home: React.FC = () => {
               </span>
             </motion.div>
 
-            <GlassCard className="mt-32 p-16 md:p-24 border-gray-100 bg-gray-50/50">
+            <GlassCard className="mt-32 mx-4 p-8 md:p-24 border-gray-100 bg-gray-50/50 md:mx-auto md:max-w-[90%]">
   <div className="text-[11px] font-black uppercase tracking-[0.4em] text-nova-violet mb-12">
     Un parcours structuré en 3 étapes clés
   </div>
-
-  <div className="grid md:grid-cols-3 gap-16">
+  <div className="grid md:grid-cols-3 gap-12 md:gap-16">
     {[
       {
         title: "Sélection",
-        desc: "Les candidats soumettent un dossier technique solide accompagné d’une vidéo de pitch, permettant d’évaluer la pertinence, la faisabilité et l’impact de leur projet."
+        desc: "Les candidats soumettent un dossier technique solide accompagné d'une vidéo de pitch."
       },
       {
         title: "Immersion",
-        desc: "Les équipes retenues bénéficient d’une formation intensive de 3 jours, axée sur le renforcement des compétences techniques, entrepreneuriales et stratégiques."
+        desc: "Les équipes retenues bénéficient d'une formation intensive de 3 jours."
       },
       {
         title: "Apothéose",
-        desc: "Les projets finalistes sont présentés lors d’une finale publique devant un jury d’experts, marquant l’aboutissement du parcours et la mise en lumière des meilleures solutions."
+        desc: "Les projets finalistes sont présentés lors d'une finale publique devant un jury d'experts."
       }
     ].map((step, idx) => (
       <motion.div
@@ -355,14 +342,13 @@ const Home: React.FC = () => {
     ))}
   </div>
 </GlassCard>
-
           </div>
 
           <motion.div 
             initial={{ opacity: 0, scale: 0.98 }}
             whileInView={{ opacity: 1, scale: 1 }}
             viewport={{ once: true }}
-            className="mt-40 p-16 md:p-32 bg-nova-black text-white rounded-[5rem] relative overflow-hidden text-center shine-container shadow-3xl"
+            className="mt-40 p-16 md:p-32 bg-nova-black text-white rounded-[5rem] relative overflow-hidden text-center shadow-3xl"
           >
             <motion.h3 
               animate={{ y: [0, -5, 0] }}
@@ -375,12 +361,11 @@ const Home: React.FC = () => {
               <Button size="lg" variant="accent" onClick={() => navigate('/participate')}>Postuler maintenant</Button>
             </div>
             <div className="absolute inset-0 bg-gradient-to-br from-nova-violet/20 via-transparent to-nova-red/10 pointer-events-none" />
-            <div className="absolute -top-1/2 -right-1/4 w-[60vw] h-[60vw] bg-nova-violet/10 blur-[150px] rounded-full pointer-events-none" />
           </motion.div>
         </div>
       </section>
 
-      {/* SESSION 7 : PERSPECTIVES 2026 - HORIZON REVEAL */}
+      {/* SESSION 7 : PERSPECTIVES 2026 */}
       <section className="py-80 px-6 bg-gray-50 text-center relative overflow-hidden">
         <div className="container mx-auto max-w-5xl relative z-10">
           <span className="text-nova-violet font-bold tracking-[0.6em] uppercase text-[11px] block mb-14">Futur & Horizons</span>
@@ -401,7 +386,7 @@ const Home: React.FC = () => {
                  whileInView={{ opacity: 1, y: 0 }}
                  viewport={{ once: true }}
                  transition={{ delay: i * 0.15, duration: 1, ease: [0.16, 1, 0.3, 1] }}
-                 className="p-12 bg-white rounded-[3.5rem] border border-gray-100 shadow-xl hover:shadow-2xl transition-all duration-700 shine-container"
+                 className="p-12 bg-white rounded-[3.5rem] border border-gray-100 shadow-xl hover:shadow-2xl transition-all duration-700"
                >
                   <motion.div 
                     animate={{ rotate: [0, 5, -5, 0] }}
@@ -418,19 +403,15 @@ const Home: React.FC = () => {
           
           <div className="max-w-3xl mx-auto space-y-16">
             <RevealText className="text-2xl text-gray-500 font-light leading-relaxed">
-              La deuxième édition, qui se déroulera de janvier à mai 2026, s’ouvre à tous les talents du Bénin ! Cette année, vous aurez l’opportunité de passer vos idées du papier à la réalité grâce à une phase de prototypage guidée et complète.
+              La deuxième édition, qui se déroulera de janvier à mai 2026, s’ouvre à tous les talents du Bénin !
             </RevealText>
-            <div className="flex flex-col md:flex-row justify-center gap-10">
+            <div className="flex flex-col md:flex-row justify-center gap-8">
                <Button size="lg" variant="accent" onClick={() => navigate('/participate')}>Postuler pour 2026</Button>
                <Button variant="outline" size="lg" onClick={() => navigate('/edition-2026')}>Voir le Programme</Button>
             </div>
           </div>
         </div>
-        
-        {/* Deep Atmospheric Background */}
-        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[120vw] h-[120vw] bg-nova-violet/5 blur-[200px] rounded-full pointer-events-none" />
       </section>
-
     </div>
   );
 };

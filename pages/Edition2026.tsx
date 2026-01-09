@@ -60,7 +60,7 @@ const Edition2026: React.FC = () => {
           <img 
             src="https://images.unsplash.com/photo-1451187580459-43490279c0fa?auto=format&fit=crop&q=80&w=2000" 
             alt="Edition 2026" 
-            className="w-full h-full object-cover grayscale brightness-50"
+            className="w-full h-full object-cover brightness-50"
           />
           <div className="absolute inset-0 bg-nova-black/70 backdrop-blur-[1px]" />
         </motion.div>
@@ -330,7 +330,7 @@ const Edition2026: React.FC = () => {
                <span className="text-nova-violet italic font-light">DÉFI 2026.</span>
             </h2>
             <p className="text-xl text-gray-400 font-light mb-20 max-w-2xl mx-auto leading-relaxed">
-              Transformez votre potentiel technologique en réalité entrepreneuriale au service du Bénin.
+              Transformez votre potentiel technologique en reality entrepreneuriale au service du Bénin.
             </p>
             <div className="flex flex-col md:flex-row justify-center gap-8">
                <Button size="lg" onClick={() => navigate('/participate')}>Postuler maintenant</Button>

@@ -37,7 +37,7 @@ const Partners: React.FC = () => {
           <img 
             src="https://images.unsplash.com/photo-1497366216548-37526070297c?auto=format&fit=crop&q=80&w=2000" 
             alt="Collaboration Institutionnelle" 
-            className="w-full h-full object-cover grayscale brightness-[0.25]"
+            className="w-full h-full object-cover brightness-[0.25]"
           />
           {/* Overlay simple pour contraste du texte */}
           <div className="absolute inset-0 bg-nova-black/45" />

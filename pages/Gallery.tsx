@@ -66,7 +66,7 @@ const Gallery: React.FC = () => {
           <img 
             src="https://images.unsplash.com/photo-1511578314322-379afb476865?auto=format&fit=crop&q=80&w=2000" 
             alt="Archives Visuelles" 
-            className="w-full h-full object-cover grayscale brightness-[0.2]"
+            className="w-full h-full object-cover brightness-[0.2]"
           />
           <div className="absolute inset-0 bg-gradient-to-b from-nova-black/60 via-nova-black/40 to-white/10" />
         </motion.div>
