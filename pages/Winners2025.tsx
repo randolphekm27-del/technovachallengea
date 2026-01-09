@@ -27,7 +27,7 @@ const Winners2025: React.FC = () => {
       names: "BOKO Béoula & NTCHA Siméon",
       school: "ENSET Lokossa – Fabrication Mécanique 1ère année",
       project: "Motopompe Diesel Intelligente pour l'Irrigation Rurale",
-      src: "https://images.unsplash.com/photo-1581092918056-0c4c3acd3789?auto=format&fit=crop&q=80&w=800",
+      src: "https://i.postimg.cc/g2vWrmTp/FINALISTE_PREMIER.jpg",
       desc: "Une motopompe diesel repensée avec un système de contrôle automatique de débit et de consommation, spécialement conçue pour les petits agriculteurs des zones rurales. Elle permet une irrigation autonome, réduit les coûts de carburant de 30% et augmente l'efficacité d'arrosage.",
       impacts: [
         "Réduction des coûts d'irrigation",
@@ -43,7 +43,7 @@ const Winners2025: React.FC = () => {
       names: "ISSAKA Awa & FOLARIN Mourchid",
       school: "INSTI Lokossa – Froid & Climatisation / Informatique & Télécommunications",
       project: "Système de Conservation Thermique pour l'Agroalimentaire",
-      src: "https://images.unsplash.com/photo-1573164713988-8665fc963095?auto=format&fit=crop&q=80&w=800",
+      src: "https://i.postimg.cc/nc9ZbvKs/FINALISTE_2EME.jpg",
       desc: "Une innovation thermique qui améliore la conservation et la transformation des produits agricoles locaux. Le système utilise des matériaux à changement de phase pour maintenir une température stable, réduisant ainsi les pertes post-récolte.",
       impacts: [
         "Réduction du gaspillage alimentaire",
@@ -59,7 +59,7 @@ const Winners2025: React.FC = () => {
       names: "ROUFAI Aïssatou & ZANVO Prince Horeb",
       school: "ENSET Lokossa – Froid & Climatisation 1ère année",
       project: "ELEVATE – Plateforme d'Orientation",
-      src: "https://images.unsplash.com/photo-1519389950473-47ba0277781c?auto=format&fit=crop&q=80&w=800",
+      src: "https://i.postimg.cc/bwQhdpBY/FINALISTE_3EME.jpg",
       desc: "Une application mobile qui centralise les parcours éducatifs, les opportunités de bourses, les conseils professionnels et les programmes de mentorat pour les jeunes Béninois de 16 à 25 ans.",
       impacts: [
         "Réduction du décrochage scolaire",
@@ -93,11 +93,11 @@ const Winners2025: React.FC = () => {
           className="absolute inset-0"
         >
           <img 
-            src="https://images.unsplash.com/photo-1531482615713-2afd69097998?auto=format&fit=crop&q=80&w=2000" 
+            src="https://i.postimg.cc/tg28VTdM/BON_FINALISTES.jpg" 
             alt="Palmarès 2025" 
-            className="w-full h-full object-cover brightness-50"
+            className="w-full h-full object-cover brightness-[0.35]"
           />
-          <div className="absolute inset-0 bg-nova-black/60 backdrop-blur-[2px]" />
+          <div className="absolute inset-0 bg-nova-black/60 backdrop-blur-[1.5px]" />
         </motion.div>
         
         <div className="container mx-auto px-6 max-w-6xl relative z-10 text-center">
@@ -225,7 +225,7 @@ const Winners2025: React.FC = () => {
 
                   {/* PORTRAIT DU LAURÉAT */}
                   <div className="lg:col-span-5 w-full">
-                    <div className="relative aspect-[4/5] md:aspect-square bg-white rounded-[3rem] overflow-hidden group shadow-2xl">
+                    <div className="relative aspect-[4/5] md:aspect-square bg-white rounded-[3rem] overflow-hidden group shadow-2xl border border-gray-100">
                        <img 
                         src={w.src} 
                         alt={w.names}
