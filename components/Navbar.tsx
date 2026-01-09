@@ -44,7 +44,7 @@ const Navbar: React.FC = () => {
     { name: 'Partenaires', path: '/partenaires' },
   ];
 
-  const logoSrc = "https://lh3.googleusercontent.com/d/1unzmI9yrKSgdAupyyrxAHRKCcB1ak_Z7";
+  const logoSrc = "https://i.postimg.cc/pdGN9ZKD/logotncf.png";
 
   return (
     <>
