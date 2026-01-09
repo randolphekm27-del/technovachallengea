@@ -219,7 +219,7 @@ const About: React.FC = () => {
       {/* 6. IMAGE INTERMÉDIAIRE LARGE */}
       <section className="h-[60vh] relative overflow-hidden">
         <img 
-          src="https://images.unsplash.com/photo-1522071820081-009f0129c71c?auto=format&fit=crop&q=80&w=2000" 
+          src="https://i.postimg.cc/bwMWB6L0/travaille-equipe.png" 
           alt="Équipe en action" 
           className="w-full h-full object-cover"
         />
