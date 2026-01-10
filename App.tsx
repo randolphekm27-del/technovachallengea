@@ -1,10 +1,8 @@
-
 import React, { useEffect } from 'react';
 import { Routes, Route, useLocation, Navigate } from 'react-router-dom';
 import { AnimatePresence, motion } from 'framer-motion';
 import Navbar from './components/Navbar';
 import Home from './pages/Home';
-import About from './pages/About';
 import Participate from './pages/Participate';
 import Edition2026 from './pages/Edition2026';
 import Winners2025 from './pages/Winners2025';
@@ -39,8 +37,7 @@ const App: React.FC = () => {
         <AnimatePresence mode="wait">
           <Routes location={location} key={location.pathname}>
             <Route path="/" element={<PageWrapper><Home /></PageWrapper>} />
-            <Route path="/about" element={<PageWrapper><About /></PageWrapper>} />
-            <Route path="/edition-2026" element={<PageWrapper><Edition2026 /></PageWrapper>} />
+            <Route path="/deroulement" element={<PageWrapper><Edition2026 /></PageWrapper>} />
             <Route path="/laureats-2025" element={<PageWrapper><Winners2025 /></PageWrapper>} />
             <Route path="/galerie" element={<PageWrapper><Gallery /></PageWrapper>} />
             <Route path="/partenaires" element={<PageWrapper><Partners /></PageWrapper>} />
@@ -73,9 +70,9 @@ const App: React.FC = () => {
               <h4 className="text-[11px] font-black uppercase tracking-[0.5em] text-nova-violet mb-10">Exploration</h4>
               <ul className="space-y-6 text-sm font-light text-gray-400">
                 <li><a href="/" className="hover:text-nova-red transition-all duration-300">Accueil</a></li>
-                <li><a href="#/about" className="hover:text-nova-red transition-all duration-300">À propos</a></li>
-                <li><a href="#/edition-2026" className="hover:text-nova-red transition-all duration-300">Édition 2026</a></li>
+                <li><a href="#/deroulement" className="hover:text-nova-red transition-all duration-300">Déroulement</a></li>
                 <li><a href="#/laureats-2025" className="hover:text-nova-red transition-all duration-300">Lauréats 2025</a></li>
+                <li><a href="#/galerie" className="hover:text-nova-red transition-all duration-300">Galerie</a></li>
               </ul>
             </div>
             <div>

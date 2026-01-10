@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
@@ -11,6 +10,8 @@ const Navbar: React.FC = () => {
   const [scrolled, setScrolled] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
+
+  const isHomePage = location.pathname === '/';
 
   useEffect(() => {
     const handleScroll = () => setScrolled(window.scrollY > 20);
@@ -34,8 +35,7 @@ const Navbar: React.FC = () => {
 
   const navLinks = [
     { name: 'Accueil', path: '/' },
-    { name: 'À propos', path: '/about' },
-    { name: 'Édition 2026', path: '/edition-2026' },
+    { name: 'Déroulement', path: '/deroulement' },
     { name: 'Lauréats 2025', path: '/laureats-2025' },
     { name: 'Galerie', path: '/galerie' },
     { name: 'Partenaires', path: '/partenaires' },
@@ -51,7 +51,9 @@ const Navbar: React.FC = () => {
           animate={{ y: 0, opacity: 1 }}
           className={`
             flex items-center justify-between px-8 md:px-10 py-3 
-            ${scrolled ? 'w-[94%] md:w-auto bg-white/90 backdrop-blur-2xl rounded-full border border-black/5 shadow-2xl' : 'w-full max-w-7xl rounded-none border-transparent'} 
+            ${scrolled 
+              ? 'w-[96%] md:w-auto bg-white rounded-full border border-black/10 shadow-2xl' 
+              : 'w-full max-w-7xl rounded-none border-transparent'} 
             transition-all duration-700 ease-in-out
           `}
         >
@@ -60,7 +62,7 @@ const Navbar: React.FC = () => {
             <img 
               src={logoSrc} 
               alt="Tech Nova Challenge" 
-              className={`h-10 md:h-11 w-auto object-contain transition-all duration-500 rounded-xl p-1 bg-white`}
+              className={`h-10 md:h-11 w-auto object-contain transition-all duration-500 rounded-xl p-1 bg-white shadow-sm`}
             />
           </Link>
 
@@ -70,13 +72,15 @@ const Navbar: React.FC = () => {
               <Link
                 key={link.path}
                 to={link.path}
-                className={`text-[9px] uppercase tracking-[0.2em] font-black transition-all duration-300 relative py-2 ${
-                  isActive(link.path) ? 'text-nova-violet' : 'text-nova-black/40 hover:text-nova-black'
+                className={`text-[10px] uppercase tracking-[0.25em] font-black transition-all duration-300 relative py-2 ${
+                  isActive(link.path) 
+                    ? 'text-nova-red' 
+                    : (isHomePage && !scrolled ? 'text-white hover:text-white/80 drop-shadow-md' : 'text-nova-black hover:text-nova-red')
                 }`}
               >
                 {link.name}
                 {isActive(link.path) && (
-                  <motion.div layoutId="activeNav" className="absolute -bottom-1 left-0 right-0 h-px bg-nova-violet" />
+                  <motion.div layoutId="activeNav" className={`absolute -bottom-1 left-0 right-0 h-0.5 ${isHomePage && !scrolled ? 'bg-white' : 'bg-nova-red'}`} />
                 )}
               </Link>
             ))}
@@ -108,7 +112,7 @@ const Navbar: React.FC = () => {
             
             <button 
               onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-              className={`lg:hidden p-3 rounded-full transition-all duration-500 bg-nova-gray border border-black/5 text-nova-black`}
+              className={`lg:hidden p-3 rounded-full transition-all duration-500 ${isHomePage && !scrolled ? 'bg-white/20 text-white border-white/40' : 'bg-nova-gray border border-black/10 text-nova-black'}`}
             >
               {mobileMenuOpen ? <X size={20} /> : <Menu size={20} />}
             </button>
@@ -137,7 +141,7 @@ const Navbar: React.FC = () => {
                       to={link.path}
                       onClick={() => setMobileMenuOpen(false)}
                       className={`block py-3 border-b border-black/5 transition-all ${
-                        isActive(link.path) ? 'text-nova-violet' : 'text-nova-black/40'
+                        isActive(link.path) ? 'text-nova-red' : 'text-nova-black'
                       }`}
                     >
                       <span className="text-4xl font-black uppercase tracking-tighter">
@@ -148,7 +152,7 @@ const Navbar: React.FC = () => {
                 ))}
               </nav>
               <div className="mt-16">
-                <Button size="lg" className="w-full" onClick={() => { setMobileMenuOpen(false); navigate(isLoggedIn ? '/dashboard' : '/participate'); }}>
+                <Button size="lg" variant="accent" className="w-full" onClick={() => { setMobileMenuOpen(false); navigate(isLoggedIn ? '/dashboard' : '/participate'); }}>
                   {isLoggedIn ? 'Mon Espace' : 'Postuler 2026'}
                 </Button>
               </div>
