@@ -178,34 +178,34 @@ const Edition2026: React.FC = () => {
         </div>
       </section>
 
-      {/* ÉTAPE 3 : FORMATION IMMERSIVE */}
-      <section className="py-48 px-6 bg-nova-black text-white relative overflow-hidden">
+      {/* ÉTAPE 3 : FORMATION IMMERSIVE - FOND BLEU PUR */}
+      <section className="py-48 px-6 bg-[#0000FF] text-white relative overflow-hidden shadow-[inset_0_0_100px_rgba(0,0,0,0.2)]">
         <div className="container mx-auto max-w-6xl relative z-10">
           <div className="grid lg:grid-cols-2 gap-24 items-center">
             <MuseumBlock>
               <div className="flex items-center gap-4 mb-8">
-                <div className="w-12 h-12 rounded-2xl bg-nova-violet text-white flex items-center justify-center font-black text-xl">3</div>
-                <span className="text-nova-violet font-black tracking-[0.4em] uppercase text-xs">Accompagnement Élite</span>
+                <div className="w-12 h-12 rounded-2xl bg-white text-[#0000FF] flex items-center justify-center font-black text-xl shadow-xl">3</div>
+                <span className="text-white/80 font-black tracking-[0.4em] uppercase text-xs">Accompagnement Élite</span>
               </div>
-              <h2 className="text-4xl md:text-6xl font-black uppercase tracking-tighter mb-10 leading-none">
+              <h2 className="text-4xl md:text-6xl font-black uppercase tracking-tighter mb-10 leading-none drop-shadow-lg">
                 Formation immersive et accompagnement
               </h2>
-              <p className="text-xl text-gray-400 font-light leading-relaxed mb-12">
-                Les finalistes intègrent un <span className="text-white font-black italic">parcours d’accompagnement unique</span> au Bénin. Tech Nova Challenge offre une période immersive mêlant découverte de terrain et perfectionnement technique de haut niveau.
+              <p className="text-xl text-blue-100 font-light leading-relaxed mb-12">
+                Les finalistes intègrent un <span className="text-white font-black italic underline decoration-nova-violet underline-offset-8">parcours d’accompagnement unique</span> au Bénin. Tech Nova Challenge offre une période immersive mêlant découverte de terrain et perfectionnement technique de haut niveau.
               </p>
               
               <div className="space-y-8">
-                 <div className="flex gap-6 p-10 bg-white/5 rounded-[2.5rem] border border-white/10 group hover:bg-white/10 transition-all">
-                    <MapPin className="text-nova-violet flex-shrink-0" size={28} />
+                 <div className="flex gap-6 p-10 bg-white/10 backdrop-blur-md rounded-[2.5rem] border border-white/20 group hover:bg-white/20 transition-all">
+                    <MapPin className="text-white flex-shrink-0" size={28} />
                     <p className="text-base font-medium leading-relaxed">
-                      <strong className="text-white block mb-2 uppercase tracking-widest text-[10px]">Visites Stratégiques</strong>
-                      Immersion au <span className="text-nova-violet">SCOP de Sèmè City</span>, laboratoire d’innovation de pointe au Bénin, pour explorer les ateliers de prototypage et de fabrication électronique.
+                      <strong className="text-white block mb-2 uppercase tracking-widest text-[10px] opacity-70">Visites Stratégiques</strong>
+                      Immersion au <span className="text-white font-black">SCOP de Sèmè City</span>, laboratoire d’innovation de pointe au Bénin, pour explorer les ateliers de prototypage et de fabrication électronique.
                     </p>
                  </div>
-                 <div className="flex gap-6 p-10 bg-white/5 rounded-[2.5rem] border border-white/10 group hover:bg-white/10 transition-all">
-                    <GraduationCap className="text-nova-violet flex-shrink-0" size={28} />
+                 <div className="flex gap-6 p-10 bg-white/10 backdrop-blur-md rounded-[2.5rem] border border-white/20 group hover:bg-white/20 transition-all">
+                    <GraduationCap className="text-white flex-shrink-0" size={28} />
                     <p className="text-base font-medium leading-relaxed">
-                      <strong className="text-white block mb-2 uppercase tracking-widest text-[10px]">Parcours de Savoir</strong>
+                      <strong className="text-white block mb-2 uppercase tracking-widest text-[10px] opacity-70">Parcours de Savoir</strong>
                       Modules intensifs sur l’art oratoire, l’entrepreneuriat numérique, le prototypage rapide et l'innovation responsable.
                     </p>
                  </div>
@@ -215,18 +215,19 @@ const Edition2026: React.FC = () => {
             <MuseumBlock delay={0.3}>
                <div className="relative aspect-video rounded-[3rem] overflow-hidden shadow-2xl group cursor-pointer" onClick={() => navigate('/galerie')}>
                   <img src="https://i.postimg.cc/wvzcHcs3/visite_scop1.jpg" alt="Expérience Immersion" className="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-105" />
-                  <div className="absolute inset-0 bg-black/30" />
-                  <div className="absolute bottom-10 right-10 w-12 h-12 bg-white/95 rounded-full flex items-center justify-center text-nova-black shadow-lg">
+                  <div className="absolute inset-0 bg-[#0000FF]/20" />
+                  <div className="absolute bottom-10 right-10 w-12 h-12 bg-white/95 rounded-full flex items-center justify-center text-[#0000FF] shadow-lg">
                      <Maximize2 size={20} />
                   </div>
                </div>
-               <p className="mt-8 text-center text-gray-500 font-serif italic text-lg leading-relaxed">
+               <p className="mt-8 text-center text-blue-100 font-serif italic text-lg leading-relaxed opacity-80">
                   L'archive 2025 : un moment charnière où la théorie a rencontré la matière au SCOP de Sèmè City.
                </p>
             </MuseumBlock>
           </div>
         </div>
-        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[120vw] h-[120vw] bg-nova-violet/5 blur-[150px] rounded-full pointer-events-none" />
+        {/* Cercles décoratifs pour la profondeur sur fond bleu */}
+        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[120vw] h-[120vw] bg-white/5 blur-[150px] rounded-full pointer-events-none" />
       </section>
 
       {/* ÉTAPE 4 : FINALE & PRIX */}
