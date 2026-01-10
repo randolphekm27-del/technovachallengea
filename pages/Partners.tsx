@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { motion } from 'framer-motion';
 import { Building2, GraduationCap, Globe, ArrowDown } from 'lucide-react';
@@ -48,7 +47,7 @@ const Partners: React.FC = () => {
       <section className="relative h-screen w-full flex items-center justify-center overflow-hidden">
         <div className="absolute inset-0">
           <img 
-            src="https://images.unsplash.com/photo-1497366216548-37526070297c?auto=format&fit=crop&q=80&w=2000" 
+            src="https://i.postimg.cc/7Z2R6LcL/les-laureats-a-ingco-pour-des-bons.jpg" 
             alt="Collaboration Institutionnelle" 
             className="w-full h-full object-cover brightness-[0.25]"
           />
@@ -66,7 +65,7 @@ const Partners: React.FC = () => {
               <span className="text-nova-violet italic font-light">CONFIANCE.</span>
             </h1>
             <p className="text-xl text-gray-200 font-light max-w-2xl mx-auto leading-relaxed">
-              Le Tech Nova Challenge repose sur une coopération étroite entre l'excellence académique, le secteur industriel et les appuis institutionnels.
+              Le Tech Nova Challenge repose sur une coopération étroite entre l'excellence académique, le secteur industriel et les appuis institutionnels majeurs du Bénin.
             </p>
           </motion.div>
         </div>
@@ -145,7 +144,7 @@ const Partners: React.FC = () => {
               <span className="text-nova-violet italic font-light">RÉSEAU.</span>
            </h2>
            <p className="text-lg text-gray-400 font-light mb-16 max-w-xl mx-auto leading-relaxed">
-             Participez à l’émergence de la nouvelle génération technologique au Bénin. Intégrez l'écosystème pour l'édition 2026.
+             Participez activement à l’émergence d’une génération technologique souveraine. Intégrez notre écosystème pour l'édition 2026.
            </p>
            <div className="flex flex-col md:flex-row justify-center items-center gap-8">
               <Button size="md" onClick={() => navigate('/contact')}>Devenir Partenaire</Button>

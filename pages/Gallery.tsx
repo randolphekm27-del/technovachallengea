@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { 
@@ -70,9 +69,9 @@ const Gallery: React.FC = () => {
           className="absolute inset-0"
         >
           <img 
-            src="https://images.unsplash.com/photo-1511578314322-379afb476865?auto=format&fit=crop&q=80&w=2000" 
+            src="https://i.postimg.cc/fLsjZj0N/visite_scop.jpg" 
             alt="Archives Visuelles" 
-            className="w-full h-full object-cover brightness-[0.2]"
+            className="w-full h-full object-cover brightness-[0.25]"
           />
           <div className="absolute inset-0 bg-gradient-to-b from-nova-black/60 via-nova-black/40 to-white/10" />
         </motion.div>
@@ -91,7 +90,7 @@ const Gallery: React.FC = () => {
               <span className="text-nova-violet italic font-light">EN IMAGES.</span>
             </h1>
             <p className="text-xl md:text-2xl text-gray-300 font-light max-w-3xl mx-auto leading-relaxed">
-              Explorez les moments forts, l'engagement et l'excellence qui définissent le Tech Nova Challenge.
+              Explorez les moments charnières, l'engagement et l'excellence qui forgent l'identité du Tech Nova Challenge.
             </p>
           </motion.div>
         </div>
@@ -170,11 +169,11 @@ const Gallery: React.FC = () => {
               <span className="text-nova-violet italic font-light">EST PROCHE.</span>
            </h2>
            <p className="text-xl text-gray-400 font-light mb-16 max-w-2xl mx-auto leading-relaxed">
-             Rejoignez l'édition 2026 et faites partie de l'histoire visuelle de l'innovation au Bénin.
+             Rejoignez l'édition 2026 et inscrivez votre nom dans l'histoire technologique du Bénin.
            </p>
            <div className="flex flex-col md:flex-row justify-center gap-8">
               <Button size="lg" onClick={() => navigate('/participate')}>Candidater pour 2026</Button>
-              <Button variant="outline" size="lg" onClick={() => navigate('/edition-2026')}>Voir le programme</Button>
+              <Button variant="outline" size="lg" onClick={() => navigate('/deroulement')}>Voir le programme</Button>
            </div>
         </div>
       </section>

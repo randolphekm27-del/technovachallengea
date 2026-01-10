@@ -11,10 +11,8 @@ const Navbar: React.FC = () => {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
 
-  const isHomePage = location.pathname === '/';
-
   useEffect(() => {
-    const handleScroll = () => setScrolled(window.scrollY > 20);
+    const handleScroll = () => setScrolled(window.scrollY > 50);
     window.addEventListener('scroll', handleScroll);
     
     const checkLogin = () => {
@@ -52,8 +50,8 @@ const Navbar: React.FC = () => {
           className={`
             flex items-center justify-between px-8 md:px-10 py-3 
             ${scrolled 
-              ? 'w-[96%] md:w-auto bg-white rounded-full border border-black/10 shadow-2xl' 
-              : 'w-full max-w-7xl rounded-none border-transparent'} 
+              ? 'w-[96%] md:w-auto bg-white/95 backdrop-blur-md rounded-full border border-black/10 shadow-2xl' 
+              : 'w-[96%] md:w-auto bg-black/40 backdrop-blur-sm rounded-full border border-white/10 shadow-lg'} 
             transition-all duration-700 ease-in-out
           `}
         >
@@ -62,7 +60,7 @@ const Navbar: React.FC = () => {
             <img 
               src={logoSrc} 
               alt="Tech Nova Challenge" 
-              className={`h-10 md:h-11 w-auto object-contain transition-all duration-500 rounded-xl p-1 bg-white shadow-sm`}
+              className={`h-9 md:h-10 w-auto object-contain transition-all duration-500 rounded-lg p-1 bg-white shadow-sm`}
             />
           </Link>
 
@@ -74,13 +72,13 @@ const Navbar: React.FC = () => {
                 to={link.path}
                 className={`text-[10px] uppercase tracking-[0.25em] font-black transition-all duration-300 relative py-2 ${
                   isActive(link.path) 
-                    ? 'text-nova-red' 
-                    : (isHomePage && !scrolled ? 'text-white hover:text-white/80 drop-shadow-md' : 'text-nova-black hover:text-nova-red')
+                    ? (scrolled ? 'text-nova-red' : 'text-white underline decoration-nova-violet decoration-2 underline-offset-8') 
+                    : (scrolled ? 'text-nova-black hover:text-nova-red' : 'text-white/90 hover:text-white drop-shadow-md')
                 }`}
               >
                 {link.name}
-                {isActive(link.path) && (
-                  <motion.div layoutId="activeNav" className={`absolute -bottom-1 left-0 right-0 h-0.5 ${isHomePage && !scrolled ? 'bg-white' : 'bg-nova-red'}`} />
+                {isActive(link.path) && scrolled && (
+                  <motion.div layoutId="activeNav" className="absolute -bottom-1 left-0 right-0 h-0.5 bg-nova-red" />
                 )}
               </Link>
             ))}
@@ -94,7 +92,7 @@ const Navbar: React.FC = () => {
                   key="dashboard-btn"
                   size="sm" 
                   onClick={() => navigate('/dashboard')}
-                  className="hidden md:inline-flex"
+                  className={`hidden md:inline-flex ${!scrolled ? 'border-white/20' : ''}`}
                 >
                   <LayoutDashboard size={14} className="mr-2" /> Espace
                 </Button>
@@ -103,7 +101,7 @@ const Navbar: React.FC = () => {
                   key="participate-btn"
                   size="sm" 
                   onClick={() => navigate('/participate')}
-                  className="hidden md:inline-flex"
+                  className={`hidden md:inline-flex ${!scrolled ? '!bg-white !text-nova-black shadow-none border-none' : ''}`}
                 >
                   Postuler
                 </Button>
@@ -112,9 +110,9 @@ const Navbar: React.FC = () => {
             
             <button 
               onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-              className={`lg:hidden p-3 rounded-full transition-all duration-500 ${isHomePage && !scrolled ? 'bg-white/20 text-white border-white/40' : 'bg-nova-gray border border-black/10 text-nova-black'}`}
+              className={`lg:hidden p-2.5 rounded-full transition-all duration-500 ${scrolled ? 'bg-nova-gray border border-black/5 text-nova-black' : 'bg-white/20 text-white border border-white/20'}`}
             >
-              {mobileMenuOpen ? <X size={20} /> : <Menu size={20} />}
+              {mobileMenuOpen ? <X size={18} /> : <Menu size={18} />}
             </button>
           </div>
         </motion.div>
@@ -144,7 +142,7 @@ const Navbar: React.FC = () => {
                         isActive(link.path) ? 'text-nova-red' : 'text-nova-black'
                       }`}
                     >
-                      <span className="text-4xl font-black uppercase tracking-tighter">
+                      <span className="text-3xl font-black uppercase tracking-tighter">
                         {link.name}
                       </span>
                     </Link>
