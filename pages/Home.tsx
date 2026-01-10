@@ -1,92 +1,65 @@
 
-import React, { useRef, useEffect } from 'react';
-import { motion, useScroll, useTransform, useInView, AnimatePresence } from 'framer-motion';
+import React, { useRef } from 'react';
+import { motion, useScroll, useTransform, useSpring, useInView } from 'framer-motion';
 import { useNavigate } from 'react-router-dom';
 import { 
-  Trophy, Users, ShieldCheck, 
-  ArrowRight, GraduationCap, Building2, 
-  Target, Zap, BookOpen, Scale, Award,
-  CheckCircle2, Rocket, HeartHandshake, Sparkles, ChevronDown
+  ArrowRight, Globe, Target, Zap, Rocket, Users, Award, ShieldCheck, Microscope, Cpu
 } from 'lucide-react';
 import Button from '../components/Button';
-import GlassCard from '../components/GlassCard';
 
-const RevealText: React.FC<{ children?: React.ReactNode, className?: string, delay?: number }> = ({ children, className = "", delay = 0 }) => {
-  const textContent = typeof children === 'string' ? children : (React.Children.toArray(children).join(''));
-  const words = textContent.split(" ");
+const LetterReveal: React.FC<{ text: string, delay?: number, className?: string }> = ({ text, delay = 0, className = "" }) => {
+  const letters = text.split("");
   return (
-    <p className={`${className} overflow-hidden flex flex-wrap justify-center`}>
-      {words.map((word, i) => (
+    <h1 className={`${className} flex flex-wrap justify-center overflow-hidden`}>
+      {letters.map((char, i) => (
         <motion.span
           key={i}
-          initial={{ y: "100%", opacity: 0 }}
-          whileInView={{ y: 0, opacity: 1 }}
-          viewport={{ once: true }}
+          initial={{ y: "100%", opacity: 0, rotate: 10 }}
+          whileInView={{ y: 0, opacity: 1, rotate: 0 }}
+          viewport={{ once: false }}
           transition={{ 
-            duration: 0.8, 
-            delay: delay + (i * 0.05), 
+            duration: 1, 
+            delay: delay + (i * 0.03), 
             ease: [0.16, 1, 0.3, 1] 
           }}
-          className="mr-[0.3em]"
+          className="inline-block whitespace-pre"
         >
-          {word}
+          {char}
         </motion.span>
       ))}
-    </p>
+    </h1>
   );
 };
 
-const PatronageCard = ({ label, name, sub, img, delay }: { label: string, name: string, sub: string, img: string, delay: number }) => {
+const MuseumBlock: React.FC<{ children: React.ReactNode, delay?: number }> = ({ children, delay = 0 }) => {
   return (
-    <div className="relative pt-24 pb-12 px-2 md:px-0">
-      <motion.div
-        initial={{ opacity: 0, y: 40 }}
-        whileInView={{ opacity: 1, y: 0 }}
-        viewport={{ once: true, margin: "-100px" }}
-        transition={{ duration: 1.2, delay, ease: [0.16, 1, 0.3, 1] }}
-        className="relative flex items-center group cursor-default w-full"
-      >
-        <motion.div
-          whileHover={{ scale: 0.98 }}
-          className="relative z-10 ml-12 md:ml-32 w-full bg-white/95 backdrop-blur-2xl rounded-[2.5rem] md:rounded-[3rem] p-10 md:p-16 border-[0.5px] border-nova-violet/20 shadow-2xl shadow-nova-black/5 overflow-hidden"
-        >
-          <div className="flex flex-col pl-16 md:pl-20">
-            <motion.span 
-              initial={{ opacity: 0, x: -10 }}
-              whileInView={{ opacity: 1, x: 0 }}
-              transition={{ delay: delay + 0.3 }}
-              className="text-nova-violet font-black uppercase tracking-[0.4em] text-[9px] md:text-[10px] mb-4 md:mb-6"
-            >
-              {label}
-            </motion.span>
-            <h3 className="text-nova-black font-black text-xl md:text-4xl uppercase tracking-tighter leading-tight mb-2 md:mb-4">
-              {name}
-            </h3>
-            <span className="text-gray-400 font-bold text-[8px] md:text-xs uppercase tracking-[0.25em] opacity-70">
-              {sub}
-            </span>
-          </div>
-          <div className="absolute top-0 right-0 w-32 h-32 bg-nova-violet/5 rounded-full blur-3xl -mr-16 -mt-16" />
-        </motion.div>
-
-        <motion.div
-          whileHover={{ scale: 1.05, rotate: -2 }}
-          transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
-          className="absolute left-0 top-1/2 -translate-y-1/2 z-20 w-32 h-44 md:w-64 md:h-80 -ml-4 md:-ml-12"
-        >
-          <div className="w-full h-full rounded-2xl md:rounded-[2rem] overflow-hidden border-4 md:border-8 border-white shadow-2xl shadow-nova-black/20 bg-gray-100 relative">
-            <img
-              src={img}
-              alt={name}
-              className="w-full h-full object-cover transition-all duration-700"
-            />
-            <div className="absolute inset-0 shadow-[inset_0_0_40px_rgba(0,0,0,0.1)] pointer-events-none" />
-          </div>
-        </motion.div>
-      </motion.div>
-    </div>
+    <motion.div
+      initial={{ opacity: 0, y: 30, filter: "blur(5px)" }}
+      whileInView={{ opacity: 1, y: 0, filter: "blur(0px)" }}
+      viewport={{ once: false, margin: "-10%" }}
+      transition={{ duration: 1.2, delay, ease: [0.16, 1, 0.3, 1] }}
+      className="relative z-10"
+    >
+      {children}
+    </motion.div>
   );
 };
+
+const ObjectiveCard: React.FC<{ text: string, idx: number }> = ({ text, idx }) => (
+  <MuseumBlock delay={idx * 0.1}>
+    <motion.div
+      whileHover={{ y: -8, scale: 1.01 }}
+      className="museum-glass p-10 rounded-[2.5rem] h-full flex flex-col justify-between border border-black/5 group transition-all duration-700"
+    >
+      <div className="w-10 h-10 rounded-xl bg-nova-black text-white flex items-center justify-center mb-8 group-hover:bg-nova-violet transition-colors">
+        <Target size={18} />
+      </div>
+      <p className="text-sm font-bold leading-relaxed uppercase tracking-tight text-nova-black">
+        {text}
+      </p>
+    </motion.div>
+  </MuseumBlock>
+);
 
 const Home: React.FC = () => {
   const navigate = useNavigate();
@@ -97,331 +70,291 @@ const Home: React.FC = () => {
     offset: ["start start", "end end"]
   });
 
-  const heroScale = useTransform(scrollYProgress, [0, 0.2], [1, 1.2]);
-  const heroOpacity = useTransform(scrollYProgress, [0, 0.2], [1, 0]);
-  const heroTranslateY = useTransform(scrollYProgress, [0, 0.2], [0, 200]);
-
-  const heroImageUrl = "https://images.unsplash.com/photo-1517245386807-bb43f82c33c4?auto=format&fit=crop&q=80&w=2400";
+  const smoothProgress = useSpring(scrollYProgress, { stiffness: 100, damping: 30 });
 
   return (
-    <div ref={containerRef} className="relative w-full bg-white selection:bg-nova-red selection:text-white overflow-x-hidden">
+    <div ref={containerRef} className="relative w-full bg-white grid-blueprint">
       
-      {/* SESSION 1 : HERO */}
-      <section className="relative h-screen flex items-center justify-center overflow-hidden">
+      {/* SECTION 1 : HERO IMMERSIF */}
+      <section className="relative h-screen flex items-center justify-center overflow-hidden border-b border-black/5">
         <motion.div 
-          style={{ scale: heroScale, opacity: heroOpacity, y: heroTranslateY }}
-          className="absolute inset-0 z-0"
+          style={{ y: useTransform(smoothProgress, [0, 0.2], [0, 150]) }}
+          className="absolute inset-0 z-0 opacity-[0.03] pointer-events-none"
         >
-          <img 
-            src={heroImageUrl} 
-            alt="Innovation" 
-            className="w-full h-full object-cover brightness-[0.3]" 
+          <div className="absolute top-0 left-0 w-full h-full grid-blueprint" />
+          <motion.div 
+            animate={{ rotate: 360 }}
+            transition={{ duration: 60, repeat: Infinity, ease: "linear" }}
+            className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[120vw] h-[120vw] border border-black/10 rounded-full"
           />
-          <div className="absolute inset-0 bg-gradient-to-b from-nova-black/80 via-nova-black/40 to-white/10" />
         </motion.div>
 
-        <motion.div 
-          animate={{ scale: [1, 1.2, 1], opacity: [0.3, 0.5, 0.3] }}
-          transition={{ duration: 10, repeat: Infinity }}
-          className="absolute top-1/3 left-1/4 w-[50vw] h-[50vw] bg-nova-violet/20 blur-[150px] rounded-full pointer-events-none" 
-        />
-        
         <div className="container mx-auto px-6 max-w-7xl relative z-10">
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ duration: 2 }}
-            className="text-center"
-          >
-            <div className="mb-14 perspective-card">
-              <motion.h1 
-                initial={{ opacity: 0, scale: 0.95, y: 50 }}
-                animate={{ opacity: 1, scale: 1, y: 0 }}
-                transition={{ delay: 0.8, duration: 1.4, ease: [0.16, 1, 0.3, 1] }}
-                className="editorial-title text-[clamp(2.5rem,7vw,7rem)] font-black text-white leading-[0.9] tracking-tighter"
-              >
-                BIENVENUE AU <br />
-                <span className="text-nova-violet italic font-light drop-shadow-[0_10px_30px_rgba(124,58,237,0.3)]">TECH NOVA CHALLENGE !</span>
-              </motion.h1>
-            </div>
-
-            <div className="max-w-4xl mx-auto mb-16">
-              <RevealText delay={1.2} className="text-xl md:text-2xl text-gray-200 font-light leading-relaxed">
-                Le premier concours de référence pour l'innovation technologique des jeunes au Bénin pour bâtir demain aujourd'hui.
-              </RevealText>
-            </div>
-
-            <motion.div 
-              initial={{ opacity: 0, y: 30 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 1.8, duration: 1 }}
-              className="flex flex-col md:flex-row items-center justify-center gap-10"
-            >
-              <Button size="lg" variant="accent" onClick={() => navigate('/edition-2026')}>
-                L'ÉDITION 2026
-              </Button>
-              <button 
-                onClick={() => navigate('/about')}
-                className="group flex items-center gap-4 text-[11px] font-black uppercase tracking-[0.5em] text-white/50 hover:text-white transition-all duration-500"
-              >
-                Vision Institutionnelle 
-                <motion.div whileHover={{ x: 10 }} transition={{ type: "spring", stiffness: 400 }}><ArrowRight size={18} /></motion.div>
-              </button>
-            </motion.div>
-          </motion.div>
-        </div>
-      </section>
-
-      {/* SESSION 2 : DÉFINITION */}
-      <section className="py-64 px-6 bg-white relative overflow-hidden">
-        <div className="absolute -left-40 top-40 w-[60vw] h-[60vw] bg-nova-violet/5 blur-[150px] rounded-full pointer-events-none" />
-
-        <div className="container mx-auto max-w-5xl relative z-10">
-          <motion.div 
-            initial={{ opacity: 0, y: 60 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, margin: "-100px" }}
-            transition={{ duration: 1.2, ease: [0.16, 1, 0.3, 1] }}
-            className="text-center mb-40"
-          >
-            <span className="text-nova-violet font-bold tracking-[0.6em] uppercase text-[11px] block mb-14">Le Programme</span>
-            <h2 className="text-4xl md:text-6xl font-black uppercase tracking-tighter text-nova-black mb-20 leading-tight">
-              Qu'est ce que le <br />
-              <span className="text-nova-violet italic font-light uppercase underline decoration-nova-violet/20 underline-offset-12">TECH NOVA CHALLENGE ?</span>
-            </h2>
-            <div className="text-2xl md:text-3xl text-gray-400 font-light leading-relaxed space-y-16">
-              <RevealText delay={0.2}>
-                Le TNC est un concours national d’innovation technologique qui accompagne les jeunes talents universitaires vers des solutions concrètes.
-              </RevealText>
-              
+          <div className="text-center space-y-12">
+            <LetterReveal 
+              text="Et c'est reparti pour TECH NOVA CHALLENGE" 
+              className="editorial-title text-[clamp(2rem,9vw,9rem)]"
+            />
+            
+            <MuseumBlock delay={0.8}>
               <motion.div 
-                initial={{ opacity: 0, scale: 0.95 }}
-                whileInView={{ opacity: 1, scale: 1 }}
-                viewport={{ once: true }}
-                transition={{ delay: 0.6 }}
-                className="text-nova-black font-medium border-l-[6px] border-nova-violet pl-14 text-left py-4"
-              >
-               Il accompagne les porteurs de projets tout au long du processus, de l’idée à la concrétisation, avec un suivi, du mentorat et un soutien financier.
-              </motion.div>
-            </div>
-          </motion.div>
-        </div>
-      </section>
+                style={{ scaleX: useTransform(smoothProgress, [0, 0.1], [0, 1]) }}
+                className="h-px bg-nova-black/10 w-48 mx-auto mb-12"
+              />
+              <p className="text-lg md:text-2xl text-nova-black font-medium tracking-tight max-w-2xl mx-auto text-balance">
+                Premier concours de référence pour l'innovation technologique des jeunes au Bénin.
+              </p>
+            </MuseumBlock>
 
-      {/* SESSION 3 : ANCRAGE INSTITUTIONNEL */}
-      <section className="py-64 px-6 bg-gray-50 border-y border-gray-100 relative overflow-visible">
-        <div className="container mx-auto max-w-6xl">
-          <div className="grid lg:grid-cols-12 gap-24 md:gap-32 items-start">
-            <motion.div 
-              initial={{ opacity: 0, x: -60 }}
-              whileInView={{ opacity: 1, x: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 1.4, ease: [0.16, 1, 0.3, 1] }}
-              className="lg:col-span-5 sticky top-32"
-            >
-              <span className="text-nova-violet font-bold tracking-[0.6em] uppercase text-[11px] block mb-14">Ancrage Institutionnel</span>
-              <h2 className="text-5xl md:text-7xl font-black uppercase tracking-tighter text-nova-black leading-none mb-16">
-                UN SOUTIEN <br /><span className="text-nova-violet">D'EXCEPTION.</span>
-              </h2>
-              <div className="space-y-14 text-xl text-gray-500 font-light leading-relaxed">
-                <p>
-                  Le TECH NOVA CHALLENGE bénéficie du patronage officiel des plus prestigieuses universités scientifiques du Bénin et d'un soutien institutionnel fort pour valoriser l'excellence.
-                </p>
-                <motion.div 
-                  whileHover={{ scale: 1.05, y: -5 }}
-                  className="p-12 bg-white rounded-[3rem] border border-nova-violet/10 flex items-center gap-10 group shadow-lg transition-all shine-container"
-                >
-                  <div className="w-20 h-20 bg-nova-violet/5 rounded-3xl flex items-center justify-center text-nova-violet">
-                    <HeartHandshake size={40} />
-                  </div>
-                  <div>
-                    <span className="text-[11px] font-black uppercase tracking-widest text-nova-violet">Partenaire Officiel</span>
-                    <div className="text-3xl font-black text-nova-black mt-1 uppercase">WISANE (INGCO)</div>
-                  </div>
-                </motion.div>
-              </div>
-            </motion.div>
-
-            <div className="lg:col-span-7 space-y-12 md:space-y-32 pt-20 lg:pt-0">
-               <PatronageCard 
-                 label="VISIONNAIRE"
-                 name="Samuel OGOUGNION"
-                 sub="PROMOTEUR DU TECH NOVA CHALLENGE"
-                 img="https://i.postimg.cc/y8D8YkMQ/promoteur-tnc.jpg"
-                 delay={0.1}
-               />
-
-               <PatronageCard 
-                 label="PARRAINAGE"
-                 name="Prof. Gustave DJEDATIN"
-                 sub="DIRECTEUR DE L'ENSET"
-                 img="https://i.postimg.cc/R0DLtgv0/Directeur_ENSET.jpg"
-                 delay={0.3}
-               />
-               
-               <PatronageCard 
-                 label="MARRAINAGE"
-                 name="Prof. Clotilde GUIDI TOGNON"
-                 sub="DIRECTRICE DE L'INSTI"
-                 img="https://i.postimg.cc/d0Pq0Yyq/DIRECTRICE_INSTI.jpg"
-                 delay={0.5}
-               />
-
-               <PatronageCard 
-                 label="AMBASSADRICE"
-                 name="Mlle Victoire AÏNA"
-                 sub="AMBASSADRICE DE L'INNOVATION TNC"
-                 img="https://i.postimg.cc/2yyxXQtb/embassadrice_de_TNC.jpg"
-                 delay={0.7}
-               />
-            </div>
+            <MuseumBlock delay={1.2}>
+              <Button size="lg" onClick={() => navigate('/edition-2026')}>DÉCOUVRIR LE DÉFI</Button>
+            </MuseumBlock>
           </div>
         </div>
       </section>
 
-      {/* SESSION 4 : CIBLE */}
-      <section className="py-64 px-6 bg-white overflow-hidden relative">
-        <div className="container mx-auto max-w-5xl">
-          <header className="text-center mb-40">
-            <span className="text-nova-violet font-bold tracking-[0.6em] uppercase text-[11px] block mb-10">Éligibilité</span>
-            <h2 className="text-5xl md:text-8xl font-black uppercase tracking-tighter text-nova-black">À qui s'adresse <br /><span className="text-nova-violet italic font-light">ce défi ?</span></h2>
-          </header>
-
-          <div className="space-y-24 text-2xl md:text-3xl font-light text-gray-500 leading-relaxed">
-            <motion.div 
-              initial={{ opacity: 0, y: 30 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              className="flex items-start gap-12 group"
-            >
-              <div className="mt-3 text-nova-violet p-4 bg-nova-violet/5 rounded-3xl group-hover:bg-nova-violet group-hover:text-white transition-all duration-700">
-                <Users size={48} />
-              </div>
-              <span>
-                Le <strong className="text-nova-black font-black">Tech Nova Challenge</strong> vise les jeunes talents béninois passionnés par la technique et l'innovation, âgés de <strong className="text-nova-black">15 à 25 ans</strong>.
-              </span>
-            </motion.div>
-
-            <motion.div 
-              initial={{ opacity: 0, y: 30 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ delay: 0.2 }}
-              className="flex items-start gap-12 group"
-            >
-              <div className="mt-3 text-nova-violet p-4 bg-nova-violet/5 rounded-3xl group-hover:bg-nova-violet group-hover:text-white transition-all duration-700">
-                <Zap size={48} />
-              </div>
-              <span>
-                La participation se fait exclusivement <strong className="text-nova-black">en binôme</strong>. L'interdisciplinarité entre inventeur et gestionnaire est la clé du succès.
-              </span>
-            </motion.div>
-
-            <GlassCard className="mt-32 mx-4 p-8 md:p-24 border-gray-100 bg-gray-50/50 md:mx-auto md:max-w-[90%]">
-              <div className="text-[11px] font-black uppercase tracking-[0.4em] text-nova-violet mb-12">
-                Un parcours structuré en 3 étapes clés
-              </div>
-              <div className="grid md:grid-cols-3 gap-12 md:gap-16">
-                {[
-                  {
-                    title: "Sélection",
-                    desc: "Les candidats soumettent un dossier technique solide accompagné d'une vidéo de pitch."
-                  },
-                  {
-                    title: "Immersion",
-                    desc: "Les équipes retenues bénéficient d'une formation intensive de 3 jours."
-                  },
-                  {
-                    title: "Apothéose",
-                    desc: "Les projets finalistes sont présentés lors d'une finale publique devant un jury d'experts."
-                  }
-                ].map((step, idx) => (
-                  <motion.div
-                    key={idx}
-                    className="space-y-6"
-                    initial={{ opacity: 0, y: 20 }}
-                    whileInView={{ opacity: 1, y: 0 }}
-                    transition={{ delay: 0.4 + idx * 0.1 }}
-                  >
-                    <h4 className="text-nova-black font-black uppercase text-base">
-                      {idx + 1}. {step.title}
-                    </h4>
-                    <p className="text-base leading-relaxed text-gray-400 font-light">
-                      {step.desc}
-                    </p>
-                  </motion.div>
-                ))}
-              </div>
-            </GlassCard>
-          </div>
-
-          <motion.div 
-            initial={{ opacity: 0, scale: 0.98 }}
-            whileInView={{ opacity: 1, scale: 1 }}
-            viewport={{ once: true }}
-            className="mt-40 p-16 md:p-32 bg-nova-black text-white rounded-[5rem] relative overflow-hidden text-center shadow-3xl"
-          >
-            <motion.h3 
-              animate={{ y: [0, -5, 0] }}
-              transition={{ duration: 4, repeat: Infinity }}
-              className="text-4xl md:text-5xl font-black uppercase tracking-tighter mb-16 relative z-10"
-            >
-              Rejoignez l'élite technologique
-            </motion.h3>
-            <div className="flex justify-center relative z-10">
-              <Button size="lg" variant="accent" onClick={() => navigate('/participate')}>Postuler maintenant</Button>
-            </div>
-            <div className="absolute inset-0 bg-gradient-to-br from-nova-violet/20 via-transparent to-nova-red/10 pointer-events-none" />
-          </motion.div>
-        </div>
-      </section>
-
-      {/* SESSION 7 : PERSPECTIVES 2026 */}
-      <section className="py-80 px-6 bg-gray-50 text-center relative overflow-hidden">
+      {/* SECTION 2 : CONTEXTE & OUVERTURE NATIONALE */}
+      <section className="py-20 px-6 bg-white border-b border-black/5 relative overflow-hidden">
         <div className="container mx-auto max-w-5xl relative z-10">
-          <span className="text-nova-violet font-bold tracking-[0.6em] uppercase text-[11px] block mb-14">Futur & Horizons</span>
-          <h2 className="editorial-title text-[clamp(3rem,12vw,14rem)] text-nova-black mb-20 leading-[0.8]">
-            HORIZON <br />
-            <span className="text-nova-violet italic font-light">2026.</span>
-          </h2>
+          <MuseumBlock>
+            <p className="text-2xl md:text-4xl text-nova-black font-light leading-[1.6] tracking-tight">
+              Pour cette édition 2026, le plus grand concours d'innovation Tech, <span className="font-black text-nova-violet">TECH NOVA CHALLENGE</span>, s'ouvre à tout le Bénin. Ce rendez-vous incontournable de l’ingéniosité étudiante élargit son horizon et invite toutes les universités et écoles techniques du pays à participer à cette aventure collective. Mais avant tout, clarifions les concepts qui fondent cette compétition unique en son genre.
+            </p>
+          </MuseumBlock>
+        </div>
+        
+        {/* Abstract Benin Map Parallax */}
+        <motion.div 
+          style={{ 
+            y: useTransform(smoothProgress, [0.1, 0.3], [100, -100]),
+            opacity: useTransform(smoothProgress, [0.1, 0.2, 0.3], [0, 0.1, 0])
+          }}
+          className="absolute right-0 top-0 h-full pointer-events-none"
+        >
+          <svg viewBox="0 0 400 600" className="h-full w-auto text-nova-violet fill-none stroke-current stroke-[0.5]">
+             <path d="M150,50 L200,80 L250,150 L280,300 L250,500 L180,550 L120,520 L80,400 L100,200 Z" />
+          </svg>
+        </motion.div>
+      </section>
 
-          <div className="grid md:grid-cols-3 gap-10 mb-32 text-left">
-             {[
-               { price: "500.000 FCFA", sub: "1er Prix + Excellence", icon: <Award size={48} className="text-nova-red" /> },
-               { price: "300.000 FCFA", sub: "2e Prix + Mérite", icon: <Award size={48} className="text-nova-violet" /> },
-               { price: "200.000 FCFA", sub: "3e Prix + Distinction", icon: <Award size={48} className="text-gray-300" /> }
-             ].map((item, i) => (
-               <motion.div 
-                 key={i}
-                 initial={{ opacity: 0, y: 40 }}
-                 whileInView={{ opacity: 1, y: 0 }}
-                 viewport={{ once: true }}
-                 transition={{ delay: i * 0.15, duration: 1, ease: [0.16, 1, 0.3, 1] }}
-                 className="p-12 bg-white rounded-[3.5rem] border border-gray-100 shadow-xl hover:shadow-2xl transition-all duration-700"
-               >
-                  <motion.div 
-                    animate={{ rotate: [0, 5, -5, 0] }}
-                    transition={{ duration: 6, repeat: Infinity }}
-                    className="mb-10"
-                  >
-                    {item.icon}
-                  </motion.div>
-                  <div className="text-3xl font-black text-nova-black mb-2">{item.price}</div>
-                  <div className="text-[11px] uppercase font-bold tracking-[0.4em] text-gray-400">{item.sub}</div>
-               </motion.div>
-             ))}
+      {/* SECTION 3 : DÉFINITION DU CONCEPT */}
+      <section className="py-20 px-6 bg-nova-gray/20 relative border-b border-black/5">
+        <div className="container mx-auto max-w-6xl">
+          <div className="grid lg:grid-cols-2 gap-20 items-center">
+            <MuseumBlock>
+              <h2 className="editorial-title text-5xl md:text-8xl mb-12">
+                C'est quoi le <br />
+                <span className="text-nova-violet italic font-light">TECH NOVA CHALLENGE ?</span>
+              </h2>
+            </MuseumBlock>
+            <MuseumBlock delay={0.2}>
+              <div className="museum-glass p-12 rounded-[4rem] text-lg md:text-xl font-medium leading-relaxed space-y-8">
+                <p>
+                  Le TECH NOVA CHALLENGE est une compétition innovante conçue pour promouvoir les talents, l’innovation et la créativité parmi les jeunes ayant suivi une formation technique ou professionnelle dans les domaines des sciences et techniques. 
+                </p>
+                <p>
+                  Il s'agit d'une première au Bénin, offrant une plateforme inédite pour encourager et célébrer l’ingéniosité des jeunes esprits. Le nom même de l’événement résume son ambition : <strong className="font-black uppercase">TECH</strong> pour la technologie, <strong className="font-black uppercase">NOVA</strong> pour la nouveauté et l’éclat des idées, et <strong className="font-black uppercase">CHALLENGE</strong> pour l’esprit de défi et de compétition qu’il incarne.
+                </p>
+              </div>
+            </MuseumBlock>
+          </div>
+        </div>
+      </section>
+
+      {/* SECTION 4 : BUT DU TECH NOVA CHALLENGE */}
+      <section className="py-20 px-6 bg-white border-b border-black/5">
+        <div className="container mx-auto max-w-4xl text-center">
+          <MuseumBlock>
+            <motion.div 
+              style={{ width: useTransform(smoothProgress, [0.3, 0.4], ["0%", "100%"]) }}
+              className="h-px bg-nova-black/10 mx-auto mb-20"
+            />
+            <h2 className="editorial-title text-4xl md:text-6xl mb-16 leading-tight">Le but du TECH NOVA CHALLENGE</h2>
+            <p className="text-xl md:text-2xl text-nova-black font-light leading-relaxed italic border-l-4 border-nova-violet pl-10 text-left">
+              Le but fondamental de cette compétition est de promouvoir l’esprit d’équipe, l’innovation technologique et l’excellence dans le domaine des sciences et techniques industrielles, ainsi que dans les disciplines littéraires chez les jeunes Béninois. L’événement cherche à inspirer ces derniers à explorer et développer des solutions techniques novatrices ayant un impact positif et concret sur la société.
+            </p>
+          </MuseumBlock>
+        </div>
+      </section>
+
+      {/* SECTION 5 : OBJECTIFS 2026 */}
+      <section className="py-20 px-6 bg-white">
+        <div className="container mx-auto max-w-7xl">
+          <MuseumBlock>
+            <h2 className="editorial-title text-4xl md:text-8xl mb-24 text-center">Nos objectifs pour 2026</h2>
+          </MuseumBlock>
+          
+          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+            <ObjectiveCard idx={1} text="Encourager l’innovation en stimulant la créativité des jeunes et en leur offrant une tribune pour exposer leurs projets les plus audacieux." />
+            <ObjectiveCard idx={2} text="Favoriser l’apprentissage et la collaboration en créant un environnement d’échange, de formation gratuite et de travail d’équipe." />
+            <ObjectiveCard idx={3} text="Reconnaître les talents émergents en récompensant officiellement l’ingéniosité et l’engagement des meilleurs binômes." />
+            <ObjectiveCard idx={4} text="Promouvoir l’entrepreneuriat en accompagnant les participants dans la transformation de leurs idées en projets concrets et viables." />
+            <ObjectiveCard idx={5} text="Renforcer les compétences techniques en offrant aux jeunes des formations complémentaires pour exceller dans leur parcours professionnel." />
+          </div>
+        </div>
+      </section>
+
+      {/* SECTION 6 : SOUTIENS INSTITUTIONNELS */}
+      <section className="py-20 px-6 bg-nova-gray/10 border-y border-black/5 overflow-hidden">
+        <div className="container mx-auto max-w-6xl">
+          {/* Fix: museum-reveal typo corrected to MuseumBlock */}
+          <MuseumBlock>
+            <h3 className="text-xl md:text-3xl font-black uppercase tracking-tighter leading-none mb-24 text-center max-w-4xl mx-auto">
+              TECH NOVA CHALLENGE est grandement soutenu par de très grandes écoles et universités techniques du Bénin.
+            </h3>
+          </MuseumBlock>
+
+          <div className="grid lg:grid-cols-2 gap-12 mb-32">
+            <MuseumBlock delay={0.1}>
+              <div className="museum-glass p-12 rounded-[3.5rem] h-full">
+                <p className="text-nova-black font-medium leading-relaxed">
+                  En effet, pour l’édition 2025 – la première édition – TECH NOVA CHALLENGE a bénéficié du parrainage officiel du Professeur Titulaire <strong className="text-nova-violet">Gustave DJEDATIN</strong>, Directeur de l’École Nationale Supérieure d’Enseignement Technique (ENSET), et de la Professeur Titulaire <strong className="text-nova-violet">Clotilde GUIDI TOGNON</strong>, Directrice de l’Institut National Supérieur de Technologie Industrielle (INSTI). Leur implication institutionnelle et personnelle a donné un rayonnement exceptionnel à ce projet étudiant.
+                </p>
+              </div>
+            </MuseumBlock>
+            <MuseumBlock delay={0.2}>
+              <div className="museum-glass p-12 rounded-[3.5rem] h-full">
+                <p className="text-nova-black font-medium leading-relaxed">
+                  De plus, le concours a reçu le soutien indéfectible de la société de vente d’équipements techniques <strong className="font-black">WISANE (INGCO)</strong>, partenaire officiel de l’événement. Loin d’être de simples sponsors, ces acteurs ont prouvé à quel point investir dans les jeunes, c’est investir dans l’avenir ; à quel point cette compétition constitue un atout majeur pour le développement technologique, l’employabilité et l’émergence d’une culture de l’innovation chez les étudiants béninois.
+                </p>
+              </div>
+            </MuseumBlock>
           </div>
           
-          <div className="max-w-3xl mx-auto space-y-16">
-            <RevealText className="text-2xl text-gray-500 font-light leading-relaxed">
-              La deuxième édition, qui se déroulera de janvier à mai 2026, s’ouvre à tous les talents du Bénin !
-            </RevealText>
-            <div className="flex flex-col md:flex-row justify-center gap-8">
-               <Button size="lg" variant="accent" onClick={() => navigate('/participate')}>Postuler pour 2026</Button>
-               <Button variant="outline" size="lg" onClick={() => navigate('/edition-2026')}>Voir le Programme</Button>
-            </div>
+          <div className="flex flex-wrap justify-center gap-12">
+             {["ENSET", "INSTI", "INGCO", "SÈMÈ CITY"].map((partner, i) => (
+               <MuseumBlock key={partner} delay={i * 0.1}>
+                 <div className="px-12 py-6 rounded-full border border-black/5 bg-white/50 backdrop-blur-md grayscale hover:grayscale-0 transition-all duration-700 flex items-center gap-4">
+                    {partner === "INGCO" && <img src="https://i.postimg.cc/6qhn75My/ingco_logo_png.png" className="h-5" alt="Ingco" />}
+                    <span className="text-[10px] font-black uppercase tracking-[0.4em]">{partner}</span>
+                 </div>
+               </MuseumBlock>
+             ))}
           </div>
         </div>
+      </section>
+
+      {/* SECTION 7 : ALBUM PARALLAX 2025 */}
+      <section className="relative h-[120vh] bg-white overflow-hidden py-32 border-b border-black/5">
+        <MuseumBlock>
+           <h3 className="text-center text-nova-violet font-black tracking-[0.8em] uppercase text-[10px] mb-24">Archives — Édition 2025</h3>
+        </MuseumBlock>
+        
+        <div className="container mx-auto max-w-7xl relative h-full">
+          {/* Layer 1 - Deep Background */}
+          <motion.div 
+            style={{ y: useTransform(smoothProgress, [0.6, 0.8], [200, -200]) }}
+            className="absolute left-[5%] top-[10%] w-64 h-80 rounded-[3rem] overflow-hidden border border-black/5 shadow-xl opacity-60"
+          >
+            <img src="https://i.postimg.cc/VNY36Mt9/formation.jpg" className="w-full h-full object-cover" alt="Formation" />
+          </motion.div>
+
+          {/* Layer 2 - Mid Left */}
+          <motion.div 
+            style={{ y: useTransform(smoothProgress, [0.6, 0.8], [0, -350]) }}
+            className="absolute left-[25%] top-[5%] w-80 h-[500px] rounded-[4rem] overflow-hidden border border-black/10 z-20 shadow-2xl"
+          >
+            <img src="https://i.postimg.cc/XJvS2F7Y/FINALE_PRESElection.jpg" className="w-full h-full object-cover" alt="Finale" />
+          </motion.div>
+
+          {/* Layer 3 - Main Center */}
+          <motion.div 
+            style={{ 
+              y: useTransform(smoothProgress, [0.6, 0.8], [400, -100]),
+              scale: useTransform(smoothProgress, [0.65, 0.75], [0.95, 1.05])
+            }}
+            className="absolute left-1/2 -translate-x-1/2 top-[15%] w-[80%] md:w-[600px] h-[700px] rounded-[5rem] overflow-hidden border-2 border-nova-violet/10 z-30 shadow-3xl group cursor-pointer"
+          >
+            <img src="https://i.postimg.cc/tg28VTdM/BON_FINALISTES.jpg" className="w-full h-full object-cover" alt="Vainqueurs" />
+            <div className="absolute inset-0 bg-nova-black/20 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
+               <div className="w-16 h-16 rounded-full bg-white/90 flex items-center justify-center text-nova-black"><Globe size={24} /></div>
+            </div>
+          </motion.div>
+
+          {/* Layer 4 - Right Float */}
+          <motion.div 
+            style={{ y: useTransform(smoothProgress, [0.6, 0.8], [600, 0]) }}
+            className="absolute right-[5%] top-[30%] w-72 h-[450px] rounded-[3.5rem] overflow-hidden border border-black/5 z-20"
+          >
+            <img src="https://i.postimg.cc/fLsjZj0N/visite_scop.jpg" className="w-full h-full object-cover" alt="Visite SCOP" />
+          </motion.div>
+
+          {/* Layer 5 - Bottom Right Foreground */}
+          <motion.div 
+            style={{ y: useTransform(smoothProgress, [0.6, 0.8], [800, 200]) }}
+            className="absolute right-[20%] top-[60%] w-56 h-72 rounded-[2.5rem] overflow-hidden border border-black/5 z-40 opacity-40 blur-[1px]"
+          >
+            <img src="https://i.postimg.cc/BZk9gXrw/récré.jpg" className="w-full h-full object-cover" alt="Échanges" />
+          </motion.div>
+        </div>
+      </section>
+
+      {/* SECTION 8 : MISSION */}
+      <section className="py-24 px-6 bg-white border-b border-black/5">
+        <div className="container mx-auto max-w-4xl text-center">
+          <MuseumBlock>
+             <h2 className="editorial-title text-5xl md:text-8xl mb-12">Mission :</h2>
+             <p className="text-xl md:text-3xl text-nova-black font-light leading-[1.8] text-balance">
+               La mission de <span className="font-black text-nova-violet">TECH NOVA CHALLENGE</span> est de stimuler le potentiel des jeunes techniciens béninois en leur offrant une plateforme pour développer et présenter des projets techniques innovants. En facilitant l’accès à la formation, au mentorat et à la reconnaissance, l’événement aspire à former une nouvelle génération de professionnels créatifs et entreprenants, prêts à relever les défis technologiques et socio-économiques du pays.
+             </p>
+          </MuseumBlock>
+        </div>
+      </section>
+
+      {/* SECTION 9 : VISION */}
+      <section className="py-24 px-6 bg-nova-gray/5 border-b border-black/5">
+        <div className="container mx-auto max-w-4xl text-center">
+          <MuseumBlock>
+             <h2 className="editorial-title text-5xl md:text-8xl mb-12">Vision :</h2>
+             <p className="text-xl md:text-3xl text-nova-black font-light leading-[1.8] text-balance">
+               Notre vision est de faire du <span className="font-black text-nova-violet">TECH NOVA CHALLENGE</span> le premier événement de référence pour l’innovation technique chez les jeunes au Bénin. Nous visons à en faire un catalyseur durable de l’innovation, un accélérateur de carrières et un creuset de collaborations entre le monde académique et l’industrie, contribuant activement au développement technologique et économique national.
+             </p>
+          </MuseumBlock>
+        </div>
+      </section>
+
+      {/* SECTION 10 : PUBLIC CIBLE */}
+      <section className="py-32 px-6 bg-white relative">
+        <div className="container mx-auto max-w-5xl">
+          <MuseumBlock>
+            <h2 className="editorial-title text-5xl md:text-8xl mb-24 text-center">Public cible :</h2>
+            <div className="p-12 md:p-24 bg-nova-gray/20 rounded-[4rem] border border-black/5 relative overflow-hidden">
+               <div className="absolute top-0 right-0 w-64 h-64 bg-nova-violet/5 blur-[100px] -mr-32 -mt-32" />
+               
+               <div className="space-y-12">
+                 <p className="text-2xl md:text-4xl text-nova-black font-bold leading-[1.4] tracking-tighter">
+                   Le <span className="text-nova-violet">TECH NOVA CHALLENGE</span> s’adresse aux jeunes talents béninois âgés de 16 à 23 ans, actuellement inscrits en cycle de licence (ou équivalent) dans n’importe quelle filière ou institution universitaire du Bénin. 
+                 </p>
+                 
+                 <div className="h-px bg-nova-black/10 w-full" />
+                 
+                 <div className="space-y-8 text-lg md:text-xl font-medium text-nova-black/70 leading-relaxed">
+                    <p>
+                      La compétition est volontairement ouverte à tous les domaines d’études – scientifiques, techniques, professionnels, voire littéraires – à condition que les projets soumis mettent en avant une innovation technologique et démontrent une faisabilité technique. 
+                    </p>
+                    <p>
+                      Les participants doivent former des binômes et partager la même passion pour l’innovation, la création de valeur et l’impact social.
+                    </p>
+                 </div>
+               </div>
+               
+               <div className="mt-20 pt-12 border-t border-black/5 flex flex-col md:flex-row items-center justify-between gap-12">
+                  <div className="flex items-center gap-6">
+                     <div className="w-12 h-12 rounded-full bg-nova-violet/5 flex items-center justify-center text-nova-violet"><Users size={24} /></div>
+                     <span className="text-[10px] font-black uppercase tracking-widest">Binômes de Talents</span>
+                  </div>
+                  <Button size="lg" onClick={() => navigate('/participate')}>Postuler maintenant</Button>
+               </div>
+            </div>
+          </MuseumBlock>
+        </div>
+      </section>
+
+      {/* FINAL SILENCE — MUSEUM CLOSURE */}
+      <section className="py-24 text-center border-t border-black/5 bg-white">
+         <p className="text-[10px] font-black tracking-[0.6em] text-nova-black/20 uppercase">
+            Tech Nova Challenge — Éducation, Innovation, Futur.
+         </p>
       </section>
     </div>
   );

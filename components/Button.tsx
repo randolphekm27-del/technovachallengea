@@ -20,22 +20,22 @@ const Button: React.FC<ButtonProps> = ({
   disabled = false
 }) => {
   const sizeClasses = {
-    sm: 'px-5 py-2 text-[9px]',
+    sm: 'px-6 py-2.5 text-[10px]',
     md: 'px-8 py-3.5 text-[10px]',
-    lg: 'px-12 py-5 text-sm font-black',
+    lg: 'px-12 py-5 text-xs font-black',
   };
 
-  const baseClasses = "relative inline-flex items-center justify-center rounded-full transition-all duration-700 uppercase tracking-[0.3em] outline-none select-none overflow-hidden group";
+  const baseClasses = "relative inline-flex items-center justify-center rounded-full transition-all duration-500 uppercase tracking-[0.25em] outline-none select-none overflow-hidden group font-black";
   
   const getVariantClasses = () => {
-    if (disabled) return 'opacity-40 grayscale shadow-none';
+    if (disabled) return 'opacity-30 grayscale shadow-none cursor-not-allowed';
     
     switch (variant) {
       case 'primary':
       case 'accent':
-        return 'bg-nova-red text-white shadow-[0_6px_0_0_#800800] active:shadow-none active:translate-y-[6px]';
+        return 'bg-nova-black text-white shadow-[0_8px_30px_rgba(0,0,0,0.2)] hover:shadow-nova-violet/20 hover:bg-nova-violet active:translate-y-[2px] active:shadow-none';
       case 'outline':
-        return 'border border-nova-black text-nova-black hover:bg-nova-black hover:text-white';
+        return 'border border-black/10 text-nova-black hover:bg-nova-black hover:text-white hover:border-nova-black';
       default:
         return '';
     }
@@ -44,31 +44,25 @@ const Button: React.FC<ButtonProps> = ({
   return (
     <motion.button
       whileHover={!disabled ? { 
-        scale: 1.02, 
-        y: -2,
-        transition: { type: "spring", stiffness: 400, damping: 15 } 
+        y: -3,
+        transition: { type: "spring", stiffness: 400, damping: 20 } 
       } : {}}
-      whileTap={!disabled ? { scale: 0.98, y: 0 } : {}}
+      whileTap={!disabled ? { scale: 0.97, y: 0 } : {}}
       onClick={disabled ? undefined : onClick}
       disabled={disabled}
-      className={`${baseClasses} ${sizeClasses[size]} ${getVariantClasses()} ${disabled ? 'cursor-not-allowed pointer-events-none' : ''} ${className}`}
+      className={`${baseClasses} ${sizeClasses[size]} ${getVariantClasses()} ${className}`}
     >
-      <motion.span 
-        className="relative z-10 flex items-center gap-2"
-        initial={false}
-      >
+      <span className="relative z-10 flex items-center gap-2">
         {children}
-      </motion.span>
+      </span>
       
       {!disabled && (variant === 'primary' || variant === 'accent') && (
-        <>
-          <motion.div 
-            initial={{ left: '-100%' }}
-            whileHover={{ left: '100%' }}
-            transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
-            className="absolute top-0 w-2/3 h-full bg-gradient-to-r from-transparent via-white/30 to-transparent skew-x-[30deg] z-0"
-          />
-        </>
+        <motion.div 
+          initial={{ left: '-100%' }}
+          whileHover={{ left: '100%' }}
+          transition={{ duration: 0.6, ease: "easeInOut" }}
+          className="absolute top-0 w-full h-full bg-gradient-to-r from-transparent via-white/10 to-transparent skew-x-[30deg] z-0"
+        />
       )}
     </motion.button>
   );
