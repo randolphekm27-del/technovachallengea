@@ -1,6 +1,6 @@
 import React from 'react';
 import { motion } from 'framer-motion';
-import { Building2, GraduationCap, Globe, ArrowDown } from 'lucide-react';
+import { Building2, GraduationCap, Globe, ArrowDown, ExternalLink } from 'lucide-react';
 import Button from '../components/Button';
 import { useNavigate } from 'react-router-dom';
 
@@ -11,7 +11,7 @@ const Partners: React.FC = () => {
   const sections = [
     {
       title: "Secteur Industriel & Entreprises",
-      icon: <Building2 size={20} className="text-nova-violet" />,
+      icon: <Building2 size={24} className="text-nova-violet" />,
       partners: [
         { name: "INGCO", logo: "https://i.postimg.cc/6qhn75My/ingco_logo_png.png" },
         { name: "NSIA BANQUE", logo: "https://i.postimg.cc/d0QXDLnj/NSIA_BANQUE.jpg" },
@@ -22,7 +22,7 @@ const Partners: React.FC = () => {
     },
     {
       title: "Institutions Académiques & Scientifiques",
-      icon: <GraduationCap size={20} className="text-nova-violet" />,
+      icon: <GraduationCap size={24} className="text-nova-violet" />,
       partners: [
         { name: "ENSET LOKOSSA", logo: "https://i.postimg.cc/tgRf7YDZ/ENSET.png" },
         { name: "INSTI LOKOSSA", logo: "https://i.postimg.cc/s2f81vKG/INSTI_LOKOSSA.png" }
@@ -30,7 +30,7 @@ const Partners: React.FC = () => {
     },
     {
       title: "Écosystème & Appuis Stratégiques",
-      icon: <Globe size={20} className="text-nova-violet" />,
+      icon: <Globe size={24} className="text-nova-violet" />,
       partners: [
         { name: "ONG ESPOIR PLURIEL", logo: "https://i.postimg.cc/SKQ5jJVz/ONG_PLURIEL.png" },
         { name: "SÈMÈ CITY (SCOP)", logo: "https://i.postimg.cc/W49yZTf0/SCOP.png" },
@@ -44,14 +44,15 @@ const Partners: React.FC = () => {
     <div className="bg-white min-h-screen selection:bg-nova-violet selection:text-white">
       
       {/* SECTION 1 : INTRODUCTION INSTITUTIONNELLE */}
-      <section className="relative h-screen w-full flex items-center justify-center overflow-hidden">
+      <section className="relative h-screen w-full flex items-center justify-center overflow-hidden px-4">
         <div className="absolute inset-0">
+          {/* Nouvelle image demandée et opacité réduite : brightness 0.8 */}
           <img 
-            src="https://i.postimg.cc/7Z2R6LcL/les-laureats-a-ingco-pour-des-bons.jpg" 
+            src="https://i.postimg.cc/2SV8Hg6q/paretenaire_oficle.jpg" 
             alt="Collaboration Institutionnelle" 
-            className="w-full h-full object-cover brightness-[0.25]"
+            className="w-full h-full object-cover brightness-[0.8]"
           />
-          <div className="absolute inset-0 bg-nova-black/45" />
+          <div className="absolute inset-0 bg-nova-black/10" />
         </div>
 
         <div className="container mx-auto px-6 max-w-6xl relative z-10 text-center">
@@ -60,12 +61,12 @@ const Partners: React.FC = () => {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 1.2, ease: [0.16, 1, 0.3, 1] }}
           >
-            <h1 className="editorial-title text-[clamp(2.5rem,7vw,7rem)] text-white leading-none mb-12">
-              ILS NOUS ONT FAIT <br />
-              <span className="text-nova-violet italic font-light">CONFIANCE.</span>
+            <h1 className="editorial-title text-[clamp(2.5rem,7vw,7rem)] text-white leading-none mb-12 drop-shadow-[0_4px_15px_rgba(0,0,0,0.4)]">
+              L'ALLIANCE DE <br />
+              <span className="text-nova-violet italic font-light">L'EXCELLENCE.</span>
             </h1>
-            <p className="text-xl text-gray-200 font-light max-w-2xl mx-auto leading-relaxed">
-              Le Tech Nova Challenge repose sur une coopération étroite entre l'excellence académique, le secteur industriel et les appuis institutionnels majeurs du Bénin.
+            <p className="text-lg md:text-2xl text-gray-100 font-light max-w-3xl mx-auto leading-relaxed drop-shadow-[0_2px_10px_rgba(0,0,0,0.6)]">
+              Nous fédérons les forces vives de la nation pour bâtir l'infrastructure technologique de demain.
             </p>
           </motion.div>
         </div>
@@ -73,62 +74,84 @@ const Partners: React.FC = () => {
         <motion.div 
           animate={{ y: [0, 10, 0] }}
           transition={{ duration: 2, repeat: Infinity }}
-          className="absolute bottom-12 left-1/2 -translate-x-1/2 text-white/30"
+          className="absolute bottom-12 left-1/2 -translate-x-1/2 text-white/40"
         >
            <ArrowDown size={32} />
         </motion.div>
       </section>
 
-      {/* SECTION 2 : RÉPERTOIRE DES PARTENAIRES AVEC LOGOS */}
-      <section className="py-32 px-6 bg-white">
-        <div className="container mx-auto max-w-6xl">
-          <div className="space-y-40">
+      {/* SECTION 2 : RÉPERTOIRE DES PARTENAIRES */}
+      <section className="py-20 md:py-48 px-6 bg-[#FAFAFB]">
+        <div className="container mx-auto max-w-7xl">
+          <div className="space-y-24 md:space-y-56">
             {sections.map((section, idx) => (
               <motion.div 
                 key={idx}
                 initial={{ opacity: 0, y: 30 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
-                transition={{ duration: 0.8, delay: idx * 0.1 }}
+                transition={{ duration: 0.8 }}
               >
-                <div className="flex items-center gap-4 mb-16 border-b border-gray-100 pb-8">
-                  {section.icon}
-                  <h2 className="text-xs font-black uppercase tracking-[0.3em] text-nova-black">
-                    {section.title}
-                  </h2>
+                <div className="flex flex-col md:flex-row md:items-center justify-between gap-6 md:gap-8 mb-12 md:mb-20 border-b border-gray-200 pb-8 md:pb-12">
+                  <div className="flex items-center gap-4 md:gap-6">
+                    <div className="w-12 h-12 md:w-16 md:h-16 bg-white rounded-2xl flex items-center justify-center text-nova-violet shadow-sm border border-gray-100">
+                      {section.icon}
+                    </div>
+                    <h2 className="text-lg md:text-3xl font-black uppercase tracking-tighter text-nova-black">
+                      {section.title}
+                    </h2>
+                  </div>
+                  <span className="text-[8px] md:text-[10px] font-black uppercase tracking-[0.4em] text-nova-black/30">
+                    {section.partners.length} Partenaires actifs
+                  </span>
                 </div>
                 
-                <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 md:gap-10">
+                <div className="grid grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 md:gap-8">
                   {section.partners.map((partner, pIdx) => (
                     <motion.div 
                       key={pIdx}
-                      whileHover={{ y: -5, scale: 1.02 }}
-                      className="aspect-[3/2] bg-white rounded-3xl flex flex-col items-center justify-center p-8 border border-gray-100 shadow-sm hover:shadow-xl hover:border-nova-violet/20 transition-all duration-500 group overflow-hidden"
+                      whileHover={{ y: -8, scale: 1.01 }}
+                      className="group relative bg-white rounded-[1.5rem] md:rounded-[2.5rem] p-6 md:p-12 flex flex-col items-center justify-center border border-gray-100 shadow-sm hover:shadow-2xl hover:border-nova-violet/10 transition-all duration-700"
                     >
-                      <div className="w-full h-full flex items-center justify-center mb-4">
+                      <div className="w-full h-24 md:h-40 flex items-center justify-center mb-6 md:mb-8">
+                        {/* Retrait complet du filtre grayscale */}
                         <img 
                           src={partner.logo} 
                           alt={partner.name}
-                          className="max-w-full max-h-full object-contain transition-transform duration-700 group-hover:scale-110"
+                          className="max-w-[85%] max-h-full object-contain transition-all duration-1000 group-hover:scale-110"
                         />
                       </div>
-                      <span className="text-[8px] font-black uppercase tracking-widest text-gray-400 group-hover:text-nova-violet text-center transition-colors">
-                        {partner.name}
-                      </span>
+                      <div className="text-center">
+                        <h4 className="text-[10px] md:text-xs font-black uppercase tracking-widest text-nova-black mb-2 opacity-0 group-hover:opacity-100 transition-opacity">
+                          {partner.name}
+                        </h4>
+                        <div className="flex items-center justify-center gap-2 text-nova-violet opacity-0 group-hover:opacity-100 transition-opacity">
+                          <span className="text-[7px] md:text-[8px] font-black uppercase tracking-widest">Voir le profil</span>
+                          <ExternalLink size={10} />
+                        </div>
+                      </div>
+                      
+                      {/* Decorative Element */}
+                      <div className="absolute bottom-4 left-1/2 -translate-x-1/2 w-6 h-1 bg-gray-50 rounded-full group-hover:bg-nova-violet transition-colors" />
                     </motion.div>
                   ))}
                   
-                  {/* Bouton pour devenir partenaire si la section est courte */}
-                  {section.partners.length < 4 && (
-                    <div 
-                      onClick={() => navigate('/contact')}
-                      className="aspect-[3/2] border-2 border-dashed border-gray-100 rounded-3xl flex flex-col items-center justify-center cursor-pointer group hover:border-nova-violet/30 transition-all"
-                    >
-                      <span className="text-[9px] font-black text-gray-300 uppercase tracking-widest group-hover:text-nova-violet/50">
-                        + Devenir Partenaire
-                      </span>
+                  {/* Join Section */}
+                  <motion.div 
+                    onClick={() => navigate('/contact')}
+                    whileHover={{ scale: 0.98 }}
+                    className="aspect-square md:aspect-auto border-4 border-dashed border-gray-100 rounded-[1.5rem] md:rounded-[2.5rem] flex flex-col items-center justify-center cursor-pointer group hover:bg-nova-violet/[0.05] hover:border-nova-violet/40 transition-all p-6 md:p-10 text-center"
+                  >
+                    <div className="w-12 h-12 md:w-16 md:h-16 bg-white rounded-full flex items-center justify-center mb-4 md:mb-6 shadow-xl group-hover:bg-nova-violet group-hover:text-white transition-all">
+                      <ExternalLink size={20} className="text-nova-violet group-hover:text-white md:w-6 md:h-6" />
                     </div>
-                  )}
+                    <span className="text-[10px] md:text-xs font-black text-nova-black uppercase tracking-widest group-hover:text-nova-violet transition-colors">
+                      Devenir Partenaire
+                    </span>
+                    <p className="mt-4 text-[8px] md:text-[10px] text-gray-400 font-medium leading-relaxed hidden sm:block">
+                      Propulsez l'innovation béninoise à nos côtés.
+                    </p>
+                  </motion.div>
                 </div>
               </motion.div>
             ))}
@@ -137,23 +160,35 @@ const Partners: React.FC = () => {
       </section>
 
       {/* SECTION 3 : COOPÉRATION STRATÉGIQUE (CTA) */}
-      <section className="py-40 bg-nova-black text-white px-6 text-center relative overflow-hidden">
+      <section className="py-24 md:py-48 bg-nova-black text-white px-6 text-center relative overflow-hidden">
         <div className="container mx-auto max-w-4xl relative z-10">
-           <h2 className="editorial-title text-[clamp(2rem,6vw,6rem)] leading-none mb-12">
-              REJOINDRE LE <br />
-              <span className="text-nova-violet italic font-light">RÉSEAU.</span>
+           <span className="text-nova-violet font-black tracking-[0.6em] uppercase text-[9px] md:text-[10px] block mb-8 md:mb-12">Engagement Industriel</span>
+           <h2 className="editorial-title text-[clamp(2rem,7vw,7rem)] leading-none mb-8 md:mb-12">
+              FORGEONS LE <br />
+              <span className="text-nova-violet italic font-light">FUTUR.</span>
            </h2>
-           <p className="text-lg text-gray-400 font-light mb-16 max-w-xl mx-auto leading-relaxed">
-             Participez activement à l’émergence d’une génération technologique souveraine. Intégrez notre écosystème pour l'édition 2026.
+           <p className="text-base md:text-2xl text-gray-400 font-light mb-12 md:mb-16 max-w-2xl mx-auto leading-relaxed">
+             Participez activement à l’émergence d’une génération technologique souveraine et audacieuse.
            </p>
-           <div className="flex flex-col md:flex-row justify-center items-center gap-8">
-              <Button size="md" onClick={() => navigate('/contact')}>Devenir Partenaire</Button>
-              <span className="text-[9px] font-black uppercase tracking-[0.4em] text-white/30">
-                Contact@technovabenin.com
-              </span>
+           <div className="flex flex-col md:flex-row justify-center items-center gap-8 md:gap-10">
+              <Button 
+                size="lg" 
+                variant="accent"
+                className="shadow-[0_0_60px_rgba(157,10,0,0.7)] scale-110 !px-12 md:!px-16 w-full md:w-auto"
+                onClick={() => navigate('/contact')}
+              >
+                Devenir Partenaire Officiel
+              </Button>
+              <div className="flex flex-col items-center md:items-start">
+                <span className="text-[8px] md:text-[10px] font-black uppercase tracking-[0.4em] text-white/30 mb-2">Service Partenariat</span>
+                <span className="text-xs md:text-sm font-bold tracking-widest text-nova-violet">Contact@technovabenin.com</span>
+              </div>
            </div>
         </div>
-        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full h-full bg-nova-violet/5 blur-[120px] rounded-full" />
+        
+        {/* Decorative Circles */}
+        <div className="absolute top-0 right-0 w-[50vw] h-[50vw] bg-nova-violet/5 blur-[120px] rounded-full" />
+        <div className="absolute bottom-0 left-0 w-[40vw] h-[40vw] bg-nova-red/5 blur-[100px] rounded-full" />
       </section>
 
     </div>

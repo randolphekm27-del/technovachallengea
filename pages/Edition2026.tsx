@@ -39,12 +39,14 @@ const Edition2026: React.FC = () => {
           transition={{ duration: 2 }}
           className="absolute inset-0"
         >
+          {/* Opacité fortement diminuée : brightness de 0.1 à 0.8 */}
           <img 
             src="https://i.postimg.cc/d1VNnfZx/les_trophées.jpg" 
             alt="Tech Nova Challenge 2026" 
-            className="w-full h-full object-cover brightness-[0.35]"
+            className="w-full h-full object-cover brightness-[0.8]"
           />
-          <div className="absolute inset-0 bg-gradient-to-b from-black/60 via-transparent to-white" />
+          {/* Overlay allégé */}
+          <div className="absolute inset-0 bg-black/10" />
         </motion.div>
         
         <div className="container mx-auto px-6 max-w-7xl relative z-10 text-center">
@@ -119,9 +121,10 @@ const Edition2026: React.FC = () => {
             
             <MuseumBlock delay={0.2} className="hidden lg:block">
                <div className="relative aspect-[3/4] rounded-[4rem] overflow-hidden shadow-2xl">
+                  {/* Mise à jour de l'image de la Phase de Synergie */}
                   <img 
-                    src="https://i.postimg.cc/05CMTdyK/FINAL-PR2eselection.jpg" 
-                    alt="Processus de sélection" 
+                    src="https://i.postimg.cc/3xVrz94V/binome.jpg" 
+                    alt="Phase de Synergie" 
                     className="w-full h-full object-cover"
                   />
                   <div className="absolute inset-0 bg-nova-violet/10" />
