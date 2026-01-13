@@ -121,9 +121,9 @@ const Edition2026: React.FC = () => {
             
             <MuseumBlock delay={0.2} className="hidden lg:block">
                <div className="relative aspect-[3/4] rounded-[4rem] overflow-hidden shadow-2xl">
-                  {/* Photo de binôme en formation - MISE A JOUR */}
+                  {/* Photo de binôme - MISE A JOUR demandée : équipe_tnc_4 */}
                   <img 
-                    src="https://i.postimg.cc/05CMTdyK/FINAL-PR2eselection.jpg" 
+                    src="https://i.postimg.cc/QM52yRZ0/equipe_tnc_4.jpg" 
                     alt="Phase de Synergie" 
                     className="w-full h-full object-cover"
                   />
@@ -134,7 +134,6 @@ const Edition2026: React.FC = () => {
         </div>
       </section>
 
-      {/* ... reste du composant (Etape 2, 3, 4) ... */}
       {/* ÉTAPE 2 : ANALYSE & SÉLECTION */}
       <section className="py-48 px-6 bg-white">
         <div className="container mx-auto max-w-6xl">
@@ -215,15 +214,15 @@ const Edition2026: React.FC = () => {
             
             <MuseumBlock delay={0.3}>
                <div className="relative aspect-video rounded-[3rem] overflow-hidden shadow-2xl group cursor-pointer" onClick={() => navigate('/galerie')}>
-                  {/* Photo de salle électronique SCOP */}
-                  <img src="https://i.postimg.cc/jj7TrDPq/scop_salle_elctronique.jpg" alt="Expérience Immersion" className="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-105" />
+                  {/* Photo demandée : formation_des_finalistes4 */}
+                  <img src="https://i.postimg.cc/TwjXpBkg/formation_des_finalistes4.jpg" alt="Accompagnement Élite" className="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-105" />
                   <div className="absolute inset-0 bg-[#0000FF]/20" />
                   <div className="absolute bottom-10 right-10 w-12 h-12 bg-white/95 rounded-full flex items-center justify-center text-[#0000FF] shadow-lg">
                      <Maximize2 size={20} />
                   </div>
                </div>
                <p className="mt-8 text-center text-blue-100 font-serif italic text-lg leading-relaxed opacity-80">
-                  Immersion totale dans les ateliers technologiques du SCOP de Sèmè City.
+                  Immersion totale et perfectionnement technique intensif.
                </p>
             </MuseumBlock>
           </div>
