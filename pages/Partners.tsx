@@ -44,13 +44,13 @@ const Partners: React.FC = () => {
     <div className="bg-white min-h-screen selection:bg-nova-violet selection:text-white">
       
       {/* SECTION 1 : INTRODUCTION INSTITUTIONNELLE */}
-      <section className="relative h-screen w-full flex items-center justify-center overflow-hidden px-4">
+      <section className="relative h-screen w-full flex items-center justify-center overflow-hidden px-4 bg-black">
         <div className="absolute inset-0">
-          {/* Nouvelle image demandée et opacité réduite : brightness 0.8 */}
+          {/* Ajustement luminosité : 0.90 (10% de filtre noir) */}
           <img 
             src="https://i.postimg.cc/2SV8Hg6q/paretenaire_oficle.jpg" 
             alt="Collaboration Institutionnelle" 
-            className="w-full h-full object-cover brightness-[0.8]"
+            className="w-full h-full object-cover brightness-[0.90]"
           />
           <div className="absolute inset-0 bg-nova-black/10" />
         </div>
@@ -61,11 +61,11 @@ const Partners: React.FC = () => {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 1.2, ease: [0.16, 1, 0.3, 1] }}
           >
-            <h1 className="editorial-title text-[clamp(2.5rem,7vw,7rem)] text-white leading-none mb-12 drop-shadow-[0_4px_15px_rgba(0,0,0,0.4)]">
+            <h1 className="editorial-title text-[clamp(2.5rem,7vw,7rem)] text-white leading-none mb-12">
               L'ALLIANCE DE <br />
               <span className="text-nova-violet italic font-light">L'EXCELLENCE.</span>
             </h1>
-            <p className="text-lg md:text-2xl text-gray-100 font-light max-w-3xl mx-auto leading-relaxed drop-shadow-[0_2px_10px_rgba(0,0,0,0.6)]">
+            <p className="text-lg md:text-2xl text-white font-light max-w-3xl mx-auto leading-relaxed drop-shadow-[0_4px_20px_rgba(0,0,0,1)]">
               Nous fédérons les forces vives de la nation pour bâtir l'infrastructure technologique de demain.
             </p>
           </motion.div>
@@ -142,7 +142,7 @@ const Partners: React.FC = () => {
                     whileHover={{ scale: 0.98 }}
                     className="aspect-square md:aspect-auto border-4 border-dashed border-gray-100 rounded-[1.5rem] md:rounded-[2.5rem] flex flex-col items-center justify-center cursor-pointer group hover:bg-nova-violet/[0.05] hover:border-nova-violet/40 transition-all p-6 md:p-10 text-center"
                   >
-                    <div className="w-12 h-12 md:w-16 md:h-16 bg-white rounded-full flex items-center justify-center mb-4 md:mb-6 shadow-xl group-hover:bg-nova-violet group-hover:text-white transition-all">
+                    <div className="w-12 h-12 md:w-16 h-16 bg-white rounded-full flex items-center justify-center mb-4 md:mb-6 shadow-xl group-hover:bg-nova-violet group-hover:text-white transition-all">
                       <ExternalLink size={20} className="text-nova-violet group-hover:text-white md:w-6 md:h-6" />
                     </div>
                     <span className="text-[10px] md:text-xs font-black text-nova-black uppercase tracking-widest group-hover:text-nova-violet transition-colors">

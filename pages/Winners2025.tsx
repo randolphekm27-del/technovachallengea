@@ -109,21 +109,21 @@ const Winners2025: React.FC = () => {
       <Lightbox src={selectedImage} onClose={() => setSelectedImage(null)} />
       
       {/* SECTION 1: HERO */}
-      <section className="relative h-screen w-full flex items-center justify-center overflow-hidden">
+      <section className="relative h-screen w-full flex items-center justify-center overflow-hidden bg-black">
         <motion.div 
           initial={{ scale: 1.1 }}
           animate={{ scale: 1 }}
           transition={{ duration: 2 }}
           className="absolute inset-0"
         >
-          {/* Opacité très faible : brightness 0.8 */}
+          {/* Ajustement luminosité : 0.90 (10% de filtre noir) */}
           <img 
             src="https://i.postimg.cc/X7vxZvrR/vue_d_ensemble_a_scop.jpg" 
             alt="Palmarès 2025" 
-            className="w-full h-full object-cover brightness-[0.8]"
+            className="w-full h-full object-cover brightness-[0.90]"
           />
           {/* Overlay minimal */}
-          <div className="absolute inset-0 bg-nova-black/20" />
+          <div className="absolute inset-0 bg-nova-black/10" />
         </motion.div>
         
         <div className="container mx-auto px-6 max-w-6xl relative z-10 text-center">
@@ -132,11 +132,11 @@ const Winners2025: React.FC = () => {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 1.2, ease: [0.16, 1, 0.3, 1] }}
           >
-            <h1 className="editorial-title text-[clamp(2.2rem,8vw,8rem)] text-white leading-[0.85] mb-8 md:mb-12 drop-shadow-2xl">
+            <h1 className="editorial-title text-[clamp(2.2rem,8vw,8rem)] text-white leading-[0.85] mb-8 md:mb-12">
              L'HÉRITAGE DES <br />
               <span className="text-nova-violet italic font-light uppercase">PIONNIERS 2025.</span>
             </h1>
-            <p className="text-lg md:text-3xl text-gray-100 font-light max-w-4xl mx-auto leading-relaxed drop-shadow-[0_2px_10px_rgba(0,0,0,0.6)] font-serif italic">
+            <p className="text-lg md:text-3xl text-white font-light max-w-4xl mx-auto leading-relaxed drop-shadow-[0_4px_20px_rgba(0,0,0,1)] font-serif italic">
               Célébration des talents audacieux qui ont redéfini les frontières de l'innovation lors de notre édition inaugurale.
             </p>
           </motion.div>

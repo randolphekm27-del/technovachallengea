@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { motion } from 'framer-motion';
 import { Mail, Phone, MapPin, ArrowDown, MessageCircle, Facebook, Linkedin } from 'lucide-react';
@@ -31,13 +30,15 @@ const Contact: React.FC = () => {
     <div className="bg-white min-h-screen selection:bg-nova-violet selection:text-white">
       
       {/* HEADER PLEIN ÉCRAN */}
-      <section className="relative h-screen w-full flex items-center justify-center overflow-hidden">
+      <section className="relative h-screen w-full flex items-center justify-center overflow-hidden bg-black">
+        {/* Ajustement luminosité : 0.90 (10% de filtre noir) */}
         <img 
           src="https://images.unsplash.com/photo-1497215728101-856f4ea42174?auto=format&fit=crop&q=80&w=2000" 
           alt="Canaux Officiels" 
-          className="absolute inset-0 w-full h-full object-cover"
+          className="absolute inset-0 w-full h-full object-cover brightness-[0.90]"
         />
-        <div className="absolute inset-0 bg-nova-black/80 backdrop-blur-[2px]" />
+        {/* Overlay pour lisibilité maximale */}
+        <div className="absolute inset-0 bg-nova-black/10 backdrop-blur-[1px]" />
         
         <div className="container mx-auto px-6 max-w-6xl relative z-10 text-center">
           <motion.div
@@ -45,14 +46,14 @@ const Contact: React.FC = () => {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 1 }}
           >
-            <span className="text-nova-violet font-black tracking-[0.6em] uppercase text-[10px] block mb-8">
+            <span className="text-nova-violet font-black tracking-[0.6em] uppercase text-[10px] block mb-8 drop-shadow-lg">
               Service aux Candidats et Partenaires
             </span>
             <h1 className="editorial-title text-[clamp(2.5rem,8vw,8rem)] text-white leading-[0.85] mb-12">
               CANAUX DE <br />
               <span className="text-nova-violet italic font-light">COMMUNICATION.</span>
             </h1>
-            <p className="text-xl md:text-2xl text-gray-300 font-light max-w-3xl mx-auto leading-relaxed">
+            <p className="text-xl md:text-2xl text-white font-light max-w-3xl mx-auto leading-relaxed drop-shadow-[0_4px_24px_rgba(0,0,0,1)]">
               Pour toute demande d'information officielle ou sollicitation de partenariat, veuillez utiliser les coordonnées ci-dessous.
             </p>
           </motion.div>

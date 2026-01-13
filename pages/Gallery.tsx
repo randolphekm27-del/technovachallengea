@@ -56,7 +56,6 @@ const Gallery: React.FC = () => {
   const [selectedImage, setSelectedImage] = useState<string | null>(null);
 
   const images: GalleryImage[] = [
-    // NEW IMAGES - Added and categorized
     { id: 101, category: 'Finale', src: 'https://i.postimg.cc/kGV1PtcF/vue_d_ensemble_des_finaliste_(_les_deuxiemes_).jpg' },
     { id: 102, category: 'Finale', src: 'https://i.postimg.cc/66cY5ZpR/deuxieme_laur-ats.jpg' },
     { id: 103, category: 'Finale', src: 'https://i.postimg.cc/7hCsrTVV/prise_de_la_directrice_de_l_insti_et_du_dg_enset.jpg' },
@@ -66,8 +65,6 @@ const Gallery: React.FC = () => {
     { id: 107, category: 'Finale', src: 'https://i.postimg.cc/VsrJZQbz/prise_d_ensemble_finale.jpg' },
     { id: 108, category: 'Finale', src: 'https://i.postimg.cc/MZMn32jq/embassadrice_eddition_2025_avec_les_sponsors.jpg' },
     { id: 109, category: 'Finale', src: 'https://i.postimg.cc/wBHGRMq1/les_finalistes_et_l_equipe_tnc.jpg' },
-
-    // PREVIOUS IMAGES (Filtered: Removed first 4 as requested, keeping relevant ones)
     { id: 5, category: 'Finale', src: 'https://i.postimg.cc/XJvS2F7Y/FINALE_PRESElection.jpg' },
     { id: 21, category: 'Finale', src: 'https://i.postimg.cc/kGGyhQHK/COUPE_OU_TROPHEE.jpg' },
     { id: 22, category: 'Finale', src: 'https://i.postimg.cc/2yyxXQtb/embassadrice_de_TNC.jpg' },
@@ -95,21 +92,21 @@ const Gallery: React.FC = () => {
       <Lightbox src={selectedImage} onClose={() => setSelectedImage(null)} />
       
       {/* SECTION 1 : HERO */}
-      <section className="relative h-screen w-full flex items-center justify-center overflow-hidden">
+      <section className="relative h-screen w-full flex items-center justify-center overflow-hidden bg-black">
         <motion.div 
           initial={{ scale: 1.1 }}
           animate={{ scale: 1 }}
           transition={{ duration: 2 }}
           className="absolute inset-0"
         >
-          {/* Opacité fortement diminuée : brightness de 0.1 à 0.8 */}
+          {/* Ajustement luminosité : 0.90 (10% de filtre noir) */}
           <img 
             src="https://i.postimg.cc/fLsjZj0N/visite_scop.jpg" 
             alt="Archives Visuelles" 
-            className="w-full h-full object-cover brightness-[0.8]"
+            className="w-full h-full object-cover brightness-[0.90]"
           />
-          {/* Overlay allégé */}
-          <div className="absolute inset-0 bg-nova-black/20" />
+          {/* Overlay minimal */}
+          <div className="absolute inset-0 bg-nova-black/10" />
         </motion.div>
         
         <div className="container mx-auto px-6 max-w-6xl relative z-10 text-center">
@@ -118,14 +115,14 @@ const Gallery: React.FC = () => {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 1.2, ease: [0.16, 1, 0.3, 1] }}
           >
-            <span className="text-nova-violet font-black tracking-[0.6em] uppercase text-[10px] block mb-8">
+            <span className="text-nova-violet font-black tracking-[0.6em] uppercase text-[10px] block mb-8 drop-shadow-lg">
               Médiathèque Officielle
             </span>
             <h1 className="editorial-title text-[clamp(2.5rem,10vw,12rem)] text-white leading-[0.85] mb-12">
               L'HISTOIRE <br />
               <span className="text-nova-violet italic font-light">EN IMAGES.</span>
             </h1>
-            <p className="text-xl md:text-2xl text-gray-300 font-light max-w-3xl mx-auto leading-relaxed">
+            <p className="text-xl md:text-2xl text-white font-light max-w-3xl mx-auto leading-relaxed drop-shadow-[0_4px_20px_rgba(0,0,0,1)]">
               Explorez les moments charnières, l'engagement et l'excellence qui forgent l'identité du Tech Nova Challenge.
             </p>
           </motion.div>
@@ -134,7 +131,7 @@ const Gallery: React.FC = () => {
         <motion.div 
           animate={{ y: [0, 10, 0] }}
           transition={{ duration: 2, repeat: Infinity }}
-          className="absolute bottom-12 left-1/2 -translate-x-1/2 text-white/30"
+          className="absolute bottom-12 left-1/2 -translate-x-1/2 text-white/40"
         >
            <ArrowDown size={32} />
         </motion.div>
@@ -216,7 +213,7 @@ const Gallery: React.FC = () => {
       {/* SECTION 3 : CTA */}
       <section className="py-48 bg-gray-50 border-t border-gray-100 px-6 text-center">
         <div className="container mx-auto max-w-4xl">
-           <h2 className="editorial-title text-[clamp(2.5rem,8vw,8rem)] text-nova-black mb-12 leading-[0.85]">
+           <h2 className="editorial-title text-[clamp(2.5rem,8vw,8rem)] text-nova-black mb-12 leading-[0.85] !text-shadow-none">
               VOTRE MOMENT <br />
               <span className="text-nova-violet italic font-light">EST PROCHE.</span>
            </h2>

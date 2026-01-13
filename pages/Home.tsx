@@ -152,14 +152,15 @@ const Home: React.FC = () => {
           style={{ scale: heroImageScale, opacity: heroOpacity }}
           className="absolute inset-0 z-0"
         >
+          {/* Ajustement luminosité : 0.90 (10% de filtre noir) */}
           <img 
             src="https://i.postimg.cc/tgyMnJq1/belle_vue_d_ensemble_des_lauréats_avec_le_dg.jpg"
             alt="Tech Nova Challenge Team"
-            className="w-full h-full object-cover brightness-[0.85] saturate-[1.1]"
+            className="w-full h-full object-cover brightness-[0.90] saturate-[1.1]"
           />
         </motion.div>
 
-        <div className="absolute inset-0 bg-black/10 z-[1]" />
+        <div className="absolute inset-0 bg-black/20 z-[1]" />
         <div className="absolute inset-0 grid-blueprint z-[2]" />
         
         <div className="container mx-auto max-w-7xl relative z-10">
@@ -170,15 +171,15 @@ const Home: React.FC = () => {
             />
             
             <MuseumBlock delay={0.8}>
-              <p className="text-base md:text-2xl text-white font-medium tracking-tight max-w-3xl mx-auto font-serif italic px-4 leading-relaxed drop-shadow-[0_2px_10px_rgba(0,0,0,0.8)]">
+              <p className="text-base md:text-2xl text-white font-medium tracking-tight max-w-3xl mx-auto font-serif italic px-4 leading-relaxed drop-shadow-[0_4px_16px_rgba(0,0,0,1)]">
                 L'excellence technologique béninoise se donne à nouveau rendez-vous pour une édition 2026 mémorable.
               </p>
             </MuseumBlock>
 
             <MuseumBlock delay={1}>
               <div className="flex flex-col sm:flex-row justify-center items-center gap-4 md:gap-6 pt-4">
-                <Button size="lg" variant="accent" onClick={() => navigate('/participate')} className="w-full sm:w-auto">POSTULER MAINTENANT</Button>
-                <Button size="lg" variant="outline" onClick={() => navigate('/deroulement')} className="w-full sm:w-auto !border-white/60 !text-white hover:!bg-white hover:!text-black backdrop-blur-md">LE PROGRAMME</Button>
+                <Button size="lg" variant="accent" onClick={() => navigate('/participate')} className="w-full sm:w-auto shadow-[0_10px_30px_rgba(0,0,0,0.3)]">POSTULER MAINTENANT</Button>
+                <Button size="lg" variant="outline" onClick={() => navigate('/deroulement')} className="w-full sm:w-auto !border-white/60 !text-white hover:!bg-white hover:!text-black backdrop-blur-md shadow-[0_10px_30px_rgba(0,0,0,0.3)]">LE PROGRAMME</Button>
               </div>
             </MuseumBlock>
           </div>
@@ -219,7 +220,7 @@ const Home: React.FC = () => {
         <div className="container mx-auto max-w-6xl">
           <div className="grid lg:grid-cols-2 gap-16 md:gap-24 items-center">
             <MuseumBlock>
-              <h2 className="editorial-title !text-nova-black text-4xl md:text-7xl mb-8 md:mb-12 !tracking-tight !normal-case text-center lg:text-left leading-tight md:leading-none">
+              <h2 className="editorial-title !text-nova-black text-4xl md:text-7xl mb-8 md:mb-12 !tracking-tight !normal-case text-center lg:text-left leading-tight md:leading-none !text-shadow-none">
                 C'est quoi le <br />
                 <span className="text-nova-violet italic font-light">TECH NOVA CHALLENGE ?</span>
               </h2>
@@ -286,7 +287,7 @@ const Home: React.FC = () => {
           
           {/* Introduction de la section */}
           <MuseumBlock className="mb-32 text-center max-w-5xl mx-auto">
-            <h2 className="editorial-title !text-nova-black text-center text-3xl md:text-6xl !tracking-tighter !normal-case leading-tight md:leading-none mb-12">
+            <h2 className="editorial-title !text-nova-black text-center text-3xl md:text-6xl !tracking-tighter !normal-case leading-tight md:leading-none mb-12 !text-shadow-none">
               L'ENGAGEMENT DE NOS <br />
               <span className="text-nova-violet italic font-light">PARRAINS ACADÉMIQUES.</span>
             </h2>
@@ -405,7 +406,7 @@ const Home: React.FC = () => {
             </div>
           </div>
 
-          {/* Soutien Industriel Stratégique (Titre mis à jour pour cohérence) */}
+          {/* Soutien Industriel Stratégique */}
           <div className="grid lg:grid-cols-12 gap-12 md:gap-16 mb-24 md:mb-48 items-center border-t border-black/5 pt-24">
              <div className="lg:col-span-5 order-last lg:order-first">
                <MuseumBlock delay={0.4}>

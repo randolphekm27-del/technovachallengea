@@ -32,30 +32,30 @@ const Edition2026: React.FC = () => {
     <div className="bg-white min-h-screen selection:bg-nova-violet selection:text-white">
       
       {/* HEADER CINÉMATIQUE */}
-      <section className="relative h-screen w-full flex items-center justify-center overflow-hidden">
+      <section className="relative h-screen w-full flex items-center justify-center overflow-hidden bg-black">
         <motion.div 
           initial={{ scale: 1.1 }}
           animate={{ scale: 1 }}
           transition={{ duration: 2 }}
           className="absolute inset-0"
         >
-          {/* Opacité fortement diminuée : brightness de 0.1 à 0.8 */}
+          {/* Ajustement luminosité : 0.90 (10% de filtre noir) */}
           <img 
             src="https://i.postimg.cc/d1VNnfZx/les_trophées.jpg" 
             alt="Tech Nova Challenge 2026" 
-            className="w-full h-full object-cover brightness-[0.8]"
+            className="w-full h-full object-cover brightness-[0.90]"
           />
-          {/* Overlay allégé */}
+          {/* Overlay additionnel pour lisibilité */}
           <div className="absolute inset-0 bg-black/10" />
         </motion.div>
         
         <div className="container mx-auto px-6 max-w-7xl relative z-10 text-center">
           <MuseumBlock>
-            <h1 className="editorial-title text-[clamp(2.5rem,7vw,7rem)] text-white leading-[0.85] mb-12 drop-shadow-2xl">
+            <h1 className="editorial-title text-[clamp(2.5rem,7vw,7rem)] text-white leading-[0.85] mb-12">
               LE PARCOURS VERS <br />
               <span className="text-nova-violet italic font-light">L'EXCELLENCE 2026.</span>
             </h1>
-            <p className="text-xl md:text-3xl text-gray-200 font-light max-w-4xl mx-auto leading-relaxed drop-shadow-lg font-serif italic">
+            <p className="text-xl md:text-3xl text-white font-light max-w-4xl mx-auto leading-relaxed drop-shadow-[0_4px_16px_rgba(0,0,0,1)] font-serif italic">
               Une odyssée en quatre actes, méticuleusement orchestrée pour transformer l'ingéniosité béninoise en solutions souveraines.
             </p>
           </MuseumBlock>
