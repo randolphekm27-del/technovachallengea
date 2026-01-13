@@ -47,16 +47,17 @@ const Partners: React.FC = () => {
       {/* SECTION 1 : INTRODUCTION INSTITUTIONNELLE */}
       <section className="relative h-screen w-full flex items-center justify-center overflow-hidden px-4 bg-black">
         <div className="absolute inset-0">
-          {/* Ajustement luminosité : 0.90 (10% de filtre noir) */}
+          {/* Image de fond : Lauréats chez Ingco - MISE A JOUR */}
           <img 
-            src="https://i.postimg.cc/2SV8Hg6q/paretenaire_oficle.jpg" 
+            src="https://i.postimg.cc/7Z2R6LcL/les-laureats-a-ingco-pour-des-bons.jpg" 
             alt="Collaboration Institutionnelle" 
-            className="w-full h-full object-cover brightness-[0.90]"
+            className="w-full h-full object-cover"
           />
-          <div className="absolute inset-0 bg-nova-black/10" />
+          {/* Filtre noir de 60% pour lisibilité absolue */}
+          <div className="absolute inset-0 bg-black/60 z-10" />
         </div>
 
-        <div className="container mx-auto px-6 max-w-6xl relative z-10 text-center">
+        <div className="container mx-auto px-6 max-w-6xl relative z-20 text-center">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
@@ -75,12 +76,13 @@ const Partners: React.FC = () => {
         <motion.div 
           animate={{ y: [0, 10, 0] }}
           transition={{ duration: 2, repeat: Infinity }}
-          className="absolute bottom-12 left-1/2 -translate-x-1/2 text-white/40"
+          className="absolute bottom-12 left-1/2 -translate-x-1/2 text-white/40 z-20"
         >
            <ArrowDown size={32} />
         </motion.div>
       </section>
 
+      {/* ... reste du composant Partners ... */}
       {/* SECTION 2 : RÉPERTOIRE DES PARTENAIRES */}
       <section className="py-20 md:py-48 px-6 bg-[#FAFAFB]">
         <div className="container mx-auto max-w-7xl">

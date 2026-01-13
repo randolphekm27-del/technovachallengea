@@ -116,17 +116,16 @@ const Winners2025: React.FC = () => {
           transition={{ duration: 2 }}
           className="absolute inset-0"
         >
-          {/* Ajustement luminosité : 0.90 (10% de filtre noir) */}
           <img 
             src="https://i.postimg.cc/X7vxZvrR/vue_d_ensemble_a_scop.jpg" 
             alt="Palmarès 2025" 
-            className="w-full h-full object-cover brightness-[0.90]"
+            className="w-full h-full object-cover"
           />
-          {/* Overlay minimal */}
-          <div className="absolute inset-0 bg-nova-black/10" />
+          {/* Filtre noir de 60% pour lisibilité absolue */}
+          <div className="absolute inset-0 bg-black/60 z-10" />
         </motion.div>
         
-        <div className="container mx-auto px-6 max-w-6xl relative z-10 text-center">
+        <div className="container mx-auto px-6 max-w-6xl relative z-20 text-center">
           <motion.div
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
@@ -145,7 +144,7 @@ const Winners2025: React.FC = () => {
         <motion.div 
           animate={{ y: [0, 10, 0] }}
           transition={{ duration: 2, repeat: Infinity }}
-          className="absolute bottom-12 left-1/2 -translate-x-1/2 text-white/40"
+          className="absolute bottom-12 left-1/2 -translate-x-1/2 text-white/40 z-20"
         >
            <ArrowDown size={32} />
         </motion.div>

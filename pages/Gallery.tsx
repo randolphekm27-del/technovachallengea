@@ -10,7 +10,7 @@ import {
 import Button from '../components/Button';
 import { useNavigate } from 'react-router-dom';
 
-type Category = 'Formation' | 'Visite' | 'Finale';
+type Category = 'Visite' | 'Formation' | 'Finale' | 'Equipe';
 
 interface GalleryImage {
   id: number;
@@ -52,10 +52,42 @@ const Lightbox: React.FC<{ src: string | null, onClose: () => void }> = ({ src, 
 
 const Gallery: React.FC = () => {
   const navigate = useNavigate();
-  const [activeCategory, setActiveCategory] = useState<Category | null>(null);
+  const [activeCategory, setActiveCategory] = useState<Category | null>('Visite');
   const [selectedImage, setSelectedImage] = useState<string | null>(null);
 
   const images: GalleryImage[] = [
+    // --- VISITE ---
+    { id: 201, category: 'Visite', src: 'https://i.postimg.cc/59qx0QGR/le_promoteur_de_tnc_a_scop.jpg' },
+    { id: 202, category: 'Visite', src: 'https://i.postimg.cc/6p7Jd8Hm/le_superviseur_en_chef_a_scop.jpg' },
+    { id: 203, category: 'Visite', src: 'https://i.postimg.cc/jj7TrDPq/scop_salle_elctronique.jpg' },
+    { id: 204, category: 'Visite', src: 'https://i.postimg.cc/8z3G3RJ5/scop_salle_électronique.jpg' },
+    { id: 205, category: 'Visite', src: 'https://i.postimg.cc/BbgswRH9/visite_des_finalistes_a_scop.jpg' },
+    { id: 206, category: 'Visite', src: 'https://i.postimg.cc/5Nsb5df1/visite_des_finalistes_a_scop_5.jpg' },
+    { id: 207, category: 'Visite', src: 'https://i.postimg.cc/Hs6d0DTQ/visite_des_finalistes_a_scop1.jpg' },
+    { id: 208, category: 'Visite', src: 'https://i.postimg.cc/vmVyd4fT/visite_des_finalistes_a_scop2.jpg' },
+    { id: 209, category: 'Visite', src: 'https://i.postimg.cc/gkzG6kFB/visite_des_finalistes_a_scop3.jpg' },
+    { id: 210, category: 'Visite', src: 'https://i.postimg.cc/J4rRB4CL/visite_des_finalistes_a_scop4.jpg' },
+    { id: 211, category: 'Visite', src: 'https://i.postimg.cc/RVg415v6/visite_des_finalistes_a_scop6.jpg' },
+    { id: 212, category: 'Visite', src: 'https://i.postimg.cc/SxjqDTK1/visite_des_finalistes_a_scop7.jpg' },
+    { id: 6, category: 'Visite', src: 'https://i.postimg.cc/5tTTmrGQ/visite_scopp.jpg' },
+    { id: 7, category: 'Visite', src: 'https://i.postimg.cc/wvzcHcs3/visite_scop1.jpg' },
+    { id: 8, category: 'Visite', src: 'https://i.postimg.cc/fLsjZj0N/visite_scop.jpg' },
+    { id: 23, category: 'Visite', src: 'https://i.postimg.cc/cLwBj4Dd/a_scop_s.jpg' },
+
+    // --- FORMATION ---
+    { id: 301, category: 'Formation', src: 'https://i.postimg.cc/tTdHY8BL/formation_des_finalistes.jpg' },
+    { id: 302, category: 'Formation', src: 'https://i.postimg.cc/rm2kyq9k/formation_des_finalistes1.jpg' },
+    { id: 303, category: 'Formation', src: 'https://i.postimg.cc/mD3GtKdR/formation_des_finalistes3.jpg' },
+    { id: 304, category: 'Formation', src: 'https://i.postimg.cc/TwjXpBkg/formation_des_finalistes4.jpg' },
+    { id: 15, category: 'Formation', src: 'https://i.postimg.cc/VNY36Mt9/formation.jpg' },
+    { id: 16, category: 'Formation', src: 'https://i.postimg.cc/SsP5Dvv2/formationsr.jpg' },
+    { id: 17, category: 'Formation', src: 'https://i.postimg.cc/j519ZF1V/formationss.jpg' },
+    { id: 18, category: 'Formation', src: 'https://i.postimg.cc/JnFgP22F/formationsss.jpg' },
+    { id: 19, category: 'Formation', src: 'https://i.postimg.cc/BZk9gXrw/r-cr-.jpg' },
+    { id: 20, category: 'Formation', src: 'https://i.postimg.cc/5yFrGmc1/fin_formation.jpg' },
+
+    // --- FINALE ---
+    { id: 401, category: 'Finale', src: 'https://i.postimg.cc/rsCF2DXX/finale_préselection.jpg' },
     { id: 101, category: 'Finale', src: 'https://i.postimg.cc/kGV1PtcF/vue_d_ensemble_des_finaliste_(_les_deuxiemes_).jpg' },
     { id: 102, category: 'Finale', src: 'https://i.postimg.cc/66cY5ZpR/deuxieme_laur-ats.jpg' },
     { id: 103, category: 'Finale', src: 'https://i.postimg.cc/7hCsrTVV/prise_de_la_directrice_de_l_insti_et_du_dg_enset.jpg' },
@@ -69,23 +101,25 @@ const Gallery: React.FC = () => {
     { id: 21, category: 'Finale', src: 'https://i.postimg.cc/kGGyhQHK/COUPE_OU_TROPHEE.jpg' },
     { id: 22, category: 'Finale', src: 'https://i.postimg.cc/2yyxXQtb/embassadrice_de_TNC.jpg' },
     { id: 24, category: 'Finale', src: 'https://i.postimg.cc/y8D8YkMQ/promoteur-tnc.jpg' },
-    { id: 6, category: 'Visite', src: 'https://i.postimg.cc/5tTTmrGQ/visite_scopp.jpg' },
-    { id: 7, category: 'Visite', src: 'https://i.postimg.cc/wvzcHcs3/visite_scop1.jpg' },
-    { id: 8, category: 'Visite', src: 'https://i.postimg.cc/fLsjZj0N/visite_scop.jpg' },
-    { id: 23, category: 'Visite', src: 'https://i.postimg.cc/cLwBj4Dd/a_scop_s.jpg' },
-    { id: 15, category: 'Formation', src: 'https://i.postimg.cc/VNY36Mt9/formation.jpg' },
-    { id: 16, category: 'Formation', src: 'https://i.postimg.cc/SsP5Dvv2/formationsr.jpg' },
-    { id: 17, category: 'Formation', src: 'https://i.postimg.cc/j519ZF1V/formationss.jpg' },
-    { id: 18, category: 'Formation', src: 'https://i.postimg.cc/JnFgP22F/formationsss.jpg' },
-    { id: 19, category: 'Formation', src: 'https://i.postimg.cc/BZk9gXrw/r-cr-.jpg' },
-    { id: 20, category: 'Formation', src: 'https://i.postimg.cc/5yFrGmc1/fin_formation.jpg' }
+
+    // --- EQUIPE ---
+    { id: 501, category: 'Equipe', src: 'https://i.postimg.cc/6QRkmDxG/equipe_tnc.jpg' },
+    { id: 502, category: 'Equipe', src: 'https://i.postimg.cc/Jn3WGSTH/equipe_tnc_1.jpg' },
+    { id: 503, category: 'Equipe', src: 'https://i.postimg.cc/BbqfDNyL/equipe_tnc_3.jpg' },
+    { id: 504, category: 'Equipe', src: 'https://i.postimg.cc/QM52yRZ0/equipe_tnc_4.jpg' },
+    { id: 505, category: 'Equipe', src: 'https://i.postimg.cc/TPmz4ZvQ/equipe_tnc_5.jpg' },
+    { id: 506, category: 'Equipe', src: 'https://i.postimg.cc/Kzh2cmDN/equipe_tnc_a_scop.jpg' },
+    { id: 507, category: 'Equipe', src: 'https://i.postimg.cc/kGdXHxHR/equipe_tnc_au_togo.jpg' },
+    { id: 508, category: 'Equipe', src: 'https://i.postimg.cc/wMdTrhr3/equipe_tnc_au_togo_presentation_du_projet.jpg' },
+    { id: 509, category: 'Equipe', src: 'https://i.postimg.cc/nrtcWvWD/equipe_tnc_au_togo_presentation_du_projet1.jpg' },
+    { id: 510, category: 'Equipe', src: 'https://i.postimg.cc/gjPk7v7x/equipe_tnc_au_togo_presentation_du_projet2.jpg' },
   ];
 
   const filteredImages = activeCategory 
     ? images.filter(img => img.category === activeCategory)
     : [];
 
-  const categories: Category[] = ['Formation', 'Visite', 'Finale'];
+  const categories: Category[] = ['Visite', 'Formation', 'Finale', 'Equipe'];
 
   return (
     <div className="bg-white min-h-screen selection:bg-nova-violet selection:text-white">
@@ -99,17 +133,17 @@ const Gallery: React.FC = () => {
           transition={{ duration: 2 }}
           className="absolute inset-0"
         >
-          {/* Ajustement luminosité : 0.90 (10% de filtre noir) */}
+          {/* Image de fond : Visite SCOP - MISE A JOUR */}
           <img 
             src="https://i.postimg.cc/fLsjZj0N/visite_scop.jpg" 
             alt="Archives Visuelles" 
-            className="w-full h-full object-cover brightness-[0.90]"
+            className="w-full h-full object-cover"
           />
-          {/* Overlay minimal */}
-          <div className="absolute inset-0 bg-nova-black/10" />
+          {/* Filtre noir de 60% pour lisibilité absolue */}
+          <div className="absolute inset-0 bg-black/60 z-10" />
         </motion.div>
         
-        <div className="container mx-auto px-6 max-w-6xl relative z-10 text-center">
+        <div className="container mx-auto px-6 max-w-6xl relative z-20 text-center">
           <motion.div
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
@@ -131,7 +165,7 @@ const Gallery: React.FC = () => {
         <motion.div 
           animate={{ y: [0, 10, 0] }}
           transition={{ duration: 2, repeat: Infinity }}
-          className="absolute bottom-12 left-1/2 -translate-x-1/2 text-white/40"
+          className="absolute bottom-12 left-1/2 -translate-x-1/2 text-white/40 z-20"
         >
            <ArrowDown size={32} />
         </motion.div>

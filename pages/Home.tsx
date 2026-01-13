@@ -152,15 +152,16 @@ const Home: React.FC = () => {
           style={{ scale: heroImageScale, opacity: heroOpacity }}
           className="absolute inset-0 z-0"
         >
-          {/* Ajustement luminosité : 0.90 (10% de filtre noir) */}
+          {/* Nouveau visuel Hero : Vue d'ensemble des lauréats avec le DG */}
           <img 
             src="https://i.postimg.cc/tgyMnJq1/belle_vue_d_ensemble_des_lauréats_avec_le_dg.jpg"
-            alt="Tech Nova Challenge Team"
-            className="w-full h-full object-cover brightness-[0.90] saturate-[1.1]"
+            alt="Tech Nova Challenge Lauréats"
+            className="w-full h-full object-cover saturate-[1.1]"
           />
         </motion.div>
 
-        <div className="absolute inset-0 bg-black/20 z-[1]" />
+        {/* Filtre noir de 60% pour lisibilité absolue */}
+        <div className="absolute inset-0 bg-black/60 z-[1]" />
         <div className="absolute inset-0 grid-blueprint z-[2]" />
         
         <div className="container mx-auto max-w-7xl relative z-10">
@@ -198,10 +199,10 @@ const Home: React.FC = () => {
           <MuseumBlock delay={0.3}>
             <div 
               className="relative w-full aspect-video md:aspect-[21/9] rounded-[2rem] md:rounded-[4rem] overflow-hidden shadow-2xl cursor-pointer group"
-              onClick={() => setSelectedImage("https://i.postimg.cc/bwMWB6L0/travaille_équipe.png")}
+              onClick={() => setSelectedImage("https://i.postimg.cc/Jn3WGSTH/equipe_tnc_1.jpg")}
             >
               <img 
-                src="https://i.postimg.cc/bwMWB6L0/travaille_équipe.png" 
+                src="https://i.postimg.cc/Jn3WGSTH/equipe_tnc_1.jpg" 
                 alt="Travail d'équipe Nova" 
                 className="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-105"
               />
@@ -212,6 +213,30 @@ const Home: React.FC = () => {
             </div>
             <p className="mt-6 text-center text-gray-400 font-serif italic font-light text-sm md:text-base">L'innovation est le fruit d'une synergie collective et de la passion d'agir.</p>
           </MuseumBlock>
+        </div>
+      </section>
+
+      {/* SECTION TRANSITION : TRAVAILLE ÉQUIPE */}
+      <section className="relative py-48 md:py-72 bg-black overflow-hidden">
+        <motion.div 
+          initial={{ opacity: 0 }}
+          whileInView={{ opacity: 1 }}
+          transition={{ duration: 1.5 }}
+          className="absolute inset-0"
+        >
+          <img 
+            src="https://i.postimg.cc/bwMWB6L0/travaille_équipe.png" 
+            alt="Transition Travail d'Equipe" 
+            className="w-full h-full object-cover"
+          />
+          {/* Filtre noir de 60% */}
+          <div className="absolute inset-0 bg-black/60" />
+        </motion.div>
+        <div className="container mx-auto px-6 relative z-10 text-center">
+           <MuseumBlock>
+              <h2 className="editorial-title text-white text-3xl md:text-6xl mb-8">L'AVENIR EST UNE <br /><span className="text-nova-violet italic font-light">ŒUVRE COLLECTIVE.</span></h2>
+              <p className="text-white/60 font-black uppercase tracking-[0.4em] text-[10px] md:text-xs">L'union des talents au service de la nation.</p>
+           </MuseumBlock>
         </div>
       </section>
 
@@ -245,7 +270,7 @@ const Home: React.FC = () => {
           <MuseumBlock>
              <h2 className="text-3xl md:text-7xl text-nova-black font-black uppercase tracking-tighter mb-12 md:mb-16 text-center">NOTRE RAISON D'ÊTRE</h2>
              <p className="text-lg md:text-3xl text-nova-black font-light leading-relaxed italic font-serif border-l-4 md:border-l-8 border-nova-violet pl-6 md:pl-16 text-left">
-               Notre but fondamental est de promouvoir l’esprit d’équipe et l’excellence technologique chez les jeunes Béninois. Nous cherchons à inspirer une nouvelle génération capable d'explorer et de développer des solutions techniques novatrices ayant un impact positif et concret sur la société.
+               Notre but fondamental est de promouvoir l’esprit d’équipe et l’excellence technologique chez les jeunes Béninois. Nous cherchons à inspirer une nouvelle génération capable d'explore et de développer des solutions techniques novatrices ayant un impact positif et concret sur la société.
              </p>
           </MuseumBlock>
         </div>

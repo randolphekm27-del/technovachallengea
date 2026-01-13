@@ -39,17 +39,17 @@ const Edition2026: React.FC = () => {
           transition={{ duration: 2 }}
           className="absolute inset-0"
         >
-          {/* Ajustement luminosité : 0.90 (10% de filtre noir) */}
+          {/* Image de fond : Les Trophées */}
           <img 
             src="https://i.postimg.cc/d1VNnfZx/les_trophées.jpg" 
             alt="Tech Nova Challenge 2026" 
-            className="w-full h-full object-cover brightness-[0.90]"
+            className="w-full h-full object-cover"
           />
-          {/* Overlay additionnel pour lisibilité */}
-          <div className="absolute inset-0 bg-black/10" />
+          {/* Filtre noir de 60% pour lisibilité absolue */}
+          <div className="absolute inset-0 bg-black/60 z-10" />
         </motion.div>
         
-        <div className="container mx-auto px-6 max-w-7xl relative z-10 text-center">
+        <div className="container mx-auto px-6 max-w-7xl relative z-20 text-center">
           <MuseumBlock>
             <h1 className="editorial-title text-[clamp(2.5rem,7vw,7rem)] text-white leading-[0.85] mb-12">
               LE PARCOURS VERS <br />
@@ -64,7 +64,7 @@ const Edition2026: React.FC = () => {
         <motion.div 
           animate={{ y: [0, 10, 0] }}
           transition={{ duration: 2, repeat: Infinity }}
-          className="absolute bottom-12 left-1/2 -translate-x-1/2 text-white/40"
+          className="absolute bottom-12 left-1/2 -translate-x-1/2 text-white/40 z-20"
         >
            <ArrowDown size={32} />
         </motion.div>
@@ -121,9 +121,9 @@ const Edition2026: React.FC = () => {
             
             <MuseumBlock delay={0.2} className="hidden lg:block">
                <div className="relative aspect-[3/4] rounded-[4rem] overflow-hidden shadow-2xl">
-                  {/* Mise à jour de l'image de la Phase de Synergie */}
+                  {/* Photo de binôme en formation - MISE A JOUR */}
                   <img 
-                    src="https://i.postimg.cc/3xVrz94V/binome.jpg" 
+                    src="https://i.postimg.cc/05CMTdyK/FINAL-PR2eselection.jpg" 
                     alt="Phase de Synergie" 
                     className="w-full h-full object-cover"
                   />
@@ -134,6 +134,7 @@ const Edition2026: React.FC = () => {
         </div>
       </section>
 
+      {/* ... reste du composant (Etape 2, 3, 4) ... */}
       {/* ÉTAPE 2 : ANALYSE & SÉLECTION */}
       <section className="py-48 px-6 bg-white">
         <div className="container mx-auto max-w-6xl">
@@ -178,7 +179,7 @@ const Edition2026: React.FC = () => {
         </div>
       </section>
 
-      {/* ÉTAPE 3 : FORMATION IMMERSIVE - FOND BLEU PUR */}
+      {/* ÉTAPE 3 : FORMATION IMMERSIVE */}
       <section className="py-48 px-6 bg-[#0000FF] text-white relative overflow-hidden shadow-[inset_0_0_100px_rgba(0,0,0,0.2)]">
         <div className="container mx-auto max-w-6xl relative z-10">
           <div className="grid lg:grid-cols-2 gap-24 items-center">
@@ -214,19 +215,19 @@ const Edition2026: React.FC = () => {
             
             <MuseumBlock delay={0.3}>
                <div className="relative aspect-video rounded-[3rem] overflow-hidden shadow-2xl group cursor-pointer" onClick={() => navigate('/galerie')}>
-                  <img src="https://i.postimg.cc/wvzcHcs3/visite_scop1.jpg" alt="Expérience Immersion" className="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-105" />
+                  {/* Photo de salle électronique SCOP */}
+                  <img src="https://i.postimg.cc/jj7TrDPq/scop_salle_elctronique.jpg" alt="Expérience Immersion" className="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-105" />
                   <div className="absolute inset-0 bg-[#0000FF]/20" />
                   <div className="absolute bottom-10 right-10 w-12 h-12 bg-white/95 rounded-full flex items-center justify-center text-[#0000FF] shadow-lg">
                      <Maximize2 size={20} />
                   </div>
                </div>
                <p className="mt-8 text-center text-blue-100 font-serif italic text-lg leading-relaxed opacity-80">
-                  L'archive 2025 : un moment charnière où la théorie a rencontré la matière au SCOP de Sèmè City.
+                  Immersion totale dans les ateliers technologiques du SCOP de Sèmè City.
                </p>
             </MuseumBlock>
           </div>
         </div>
-        {/* Cercles décoratifs pour la profondeur sur fond bleu */}
         <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[120vw] h-[120vw] bg-white/5 blur-[150px] rounded-full pointer-events-none" />
       </section>
 
@@ -262,54 +263,6 @@ const Edition2026: React.FC = () => {
                </MuseumBlock>
              ))}
           </div>
-
-          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
-             {["Innovation Féminine", "Impact Social", "Solution la plus Originale", "Meilleure Présentation Orale"].map((p, i) => (
-               <MuseumBlock key={i} delay={i * 0.1}>
-                 <div className="p-10 bg-nova-gray/10 rounded-[2.5rem] border border-black/5 text-center flex flex-col items-center group hover:bg-nova-black hover:text-white transition-all duration-500">
-                    <Award className="text-nova-violet mb-4 group-hover:scale-110 transition-transform" size={24} />
-                    <span className="text-[10px] font-black uppercase tracking-widest leading-relaxed">{p}</span>
-                 </div>
-               </MuseumBlock>
-             ))}
-          </div>
-        </div>
-      </section>
-
-      {/* BÉNÉFICES INSTITUTIONNELS */}
-      <section className="py-48 px-6 bg-nova-gray/10 relative overflow-hidden">
-        <div className="container mx-auto max-w-5xl">
-          <MuseumBlock className="mb-24 text-center">
-            <h2 className="text-4xl md:text-7xl font-black uppercase text-nova-black leading-none tracking-tighter">
-              Des bénéfices <br />
-              <span className="text-nova-violet italic font-light">fondés sur l'excellence.</span>
-            </h2>
-          </MuseumBlock>
-          
-          <div className="grid md:grid-cols-2 gap-16">
-            {[
-              { t: "Prise en charge Holistique", d: "Formation de 3 jours gratuite avec transport, hébergement et restauration d'exception pour tous les finalistes.", icon: <Plane /> },
-              { t: "Réseaux d'Élite", d: "Accès privilégié aux réseaux professionnels de nos partenaires industriels et potentiels investisseurs.", icon: <Briefcase /> },
-              { t: "Rayonnement National", d: "Une exposition médiatique d'envergure nationale valorisant votre génie et celui de votre institution d'origine.", icon: <Users /> },
-              { t: "Accélération de Projet", d: "Opportunités concrètes d'incubation ou de financement pour les solutions présentant le plus fort potentiel commercial.", icon: <Rocket /> },
-              { t: "Validation de Compétences", d: "Une attestation de mérite reconnue par les partenaires institutionnels pour booster votre employabilité.", icon: <CheckCircle2 /> },
-              { t: "Bien-être & Synergie", d: "Échanges privilégiés avec des mentors et des experts dans un cadre propice à l'émulation intellectuelle.", icon: <Coffee /> }
-            ].map((item, i) => (
-              <MuseumBlock key={i} delay={i * 0.1}>
-                <div className="flex gap-10 items-start group">
-                  <div className="w-16 h-16 bg-white rounded-3xl flex items-center justify-center text-nova-violet shadow-sm flex-shrink-0 group-hover:bg-nova-violet group-hover:text-white transition-all duration-700">
-                    {item.icon}
-                  </div>
-                  <div>
-                    <h4 className="text-xl font-black uppercase mb-3 text-nova-black tracking-tight">{item.t}</h4>
-                    <p className="text-lg text-nova-black/60 leading-relaxed font-medium">
-                      {item.d}
-                    </p>
-                  </div>
-                </div>
-              </MuseumBlock>
-            ))}
-          </div>
         </div>
       </section>
 
@@ -323,14 +276,13 @@ const Edition2026: React.FC = () => {
               </h2>
               <div className="flex flex-col md:flex-row justify-center gap-8">
                  <Button size="lg" onClick={() => navigate('/participate')}>Candidater maintenant</Button>
-                 <div className="text-nova-violet font-black uppercase tracking-[0.4em] text-[10px] flex items-center justify-center cursor-pointer border-b border-nova-violet/30 pb-1">Lire le règlement 2026</div>
+                 <div className="text-nova-violet font-black uppercase tracking-[0.4em] text-[10px] flex items-center justify-center cursor-pointer border-b border-nova-violet/30 pb-1" onClick={() => navigate('/reglement')}>Lire le règlement 2026</div>
               </div>
             </MuseumBlock>
          </div>
          <div className="absolute bottom-0 right-0 w-[50vw] h-[50vw] bg-nova-violet/5 blur-[120px] rounded-full" />
       </section>
 
-      {/* FOOTER SILENCE */}
       <footer className="py-24 text-center border-t border-black/5 bg-white">
          <p className="text-[10px] font-black tracking-[0.8em] text-nova-black/20 uppercase font-display">
             Tech Nova Challenge — Innovation, Excellence, Bénin.
