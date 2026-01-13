@@ -152,7 +152,6 @@ const Home: React.FC = () => {
           style={{ scale: heroImageScale, opacity: heroOpacity }}
           className="absolute inset-0 z-0"
         >
-          {/* Opacité très faible : brightness 0.9 */}
           <img 
             src="https://i.postimg.cc/tgyMnJq1/belle_vue_d_ensemble_des_lauréats_avec_le_dg.jpg"
             alt="Tech Nova Challenge Team"
@@ -160,7 +159,6 @@ const Home: React.FC = () => {
           />
         </motion.div>
 
-        {/* Overlay minimal pour le contraste du texte */}
         <div className="absolute inset-0 bg-black/10 z-[1]" />
         <div className="absolute inset-0 grid-blueprint z-[2]" />
         
@@ -282,60 +280,141 @@ const Home: React.FC = () => {
         </div>
       </section>
 
-      {/* SECTION 6 : SOUTIENS INSTITUTIONNELS */}
-      <section className="py-24 md:py-48 px-6 bg-nova-gray/10 border-y border-black/5 overflow-hidden">
+      {/* SECTION 6 : PARRAINAGE ACADÉMIQUE 2025 */}
+      <section className="py-24 md:py-48 px-6 bg-nova-gray/5 border-y border-black/5 overflow-hidden">
         <div className="container mx-auto max-w-7xl">
-          <MuseumBlock className="mb-20 md:mb-32">
+          
+          {/* Introduction de la section */}
+          <MuseumBlock className="mb-32 text-center max-w-5xl mx-auto">
             <h2 className="editorial-title !text-nova-black text-center text-3xl md:text-6xl !tracking-tighter !normal-case leading-tight md:leading-none mb-12">
-              UNE ALLIANCE POUR L'EXCELLENCE ACADÉMIQUE ET INDUSTRIELLE.
+              L'ENGAGEMENT DE NOS <br />
+              <span className="text-nova-violet italic font-light">PARRAINS ACADÉMIQUES.</span>
             </h2>
+            <div className="text-base md:text-xl text-nova-black/60 font-medium leading-relaxed space-y-6">
+              <p>
+                Le <span className="text-nova-black font-black">Tech Nova Challenge</span> ne serait pas ce qu'il est sans l'engagement fort et visionnaire de ses parrains académiques. Ces figures majeures de l'enseignement supérieur technique au Bénin incarnent la confiance institutionnelle et l'excellence qui donnent à notre compétition toute sa crédibilité et son envergure.
+              </p>
+              <p className="font-serif italic">
+                Ils ne sont pas de simples soutiens de façade, mais de véritables piliers qui partagent notre conviction profonde : l'avenir technologique du Bénin se construit aujourd'hui, par et pour sa jeunesse créative. Leur patronage est un sceau de qualité, garantissant que ce concours s'inscrit dans une démarche éducative rigoureuse et ambitieuse.
+              </p>
+              <p>
+                Nous sommes fiers et honorés de compter sur leur leadership inspirant pour guider cette aventure.
+              </p>
+            </div>
           </MuseumBlock>
 
-          {/* ACADÉMIQUE */}
-          <div className="grid lg:grid-cols-12 gap-12 md:gap-16 mb-24 md:mb-40 items-center">
+          {/* Profil 1 : ENSET (Directeur) - Texte Gauche, Image Droite, Slide Droite */}
+          <div className="grid lg:grid-cols-12 gap-12 md:gap-24 mb-40 items-center">
             <div className="lg:col-span-7">
-              <MuseumBlock>
-                <div className="flex items-center gap-4 md:gap-6 mb-8 md:mb-12">
-                  <div className="p-3 md:p-4 bg-nova-violet text-white rounded-2xl shadow-xl shadow-nova-violet/20">
-                    <GraduationCap size={24} className="md:w-8 md:h-8" />
-                  </div>
-                  <span className="text-[10px] font-black uppercase tracking-[0.4em] text-nova-violet">Parrainage Académique</span>
-                </div>
-                <div className="text-lg md:text-3xl font-light text-nova-black leading-relaxed italic font-serif border-l-4 border-nova-violet pl-6 md:pl-10 mb-8 md:mb-10">
-                  "TECH NOVA CHALLENGE bénéficie du parrainage officiel du <span className="text-nova-violet font-black">Professeur Gustave DJEDATIN</span> (ENSET) et de la <span className="text-nova-violet font-black">Professeur Clotilde GUIDI TOGNON</span> (INSTI)."
-                </div>
-                <p className="text-sm md:text-lg text-nova-black/60 leading-relaxed font-medium">
-                  Leur implication garantit un rayonnement institutionnel et ancre la compétition dans les plus hauts standards de l'éducation nationale.
+              <motion.div 
+                initial={{ opacity: 0, x: -50 }}
+                whileInView={{ opacity: 1, x: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 1, delay: 0.2 }}
+                className="space-y-6"
+              >
+                <h3 className="text-[10px] font-black uppercase tracking-[0.4em] text-nova-violet">Notre Parrain</h3>
+                <h2 className="text-3xl md:text-5xl font-black uppercase tracking-tighter text-nova-black leading-none">
+                  Professeur Titulaire <br /> Gustave DJEDATIN
+                </h2>
+                <p className="text-sm md:text-lg font-bold uppercase tracking-tight text-nova-violet">
+                  Directeur de l'École Nationale Supérieure d'Enseignement Technique (ENSET)
                 </p>
-              </MuseumBlock>
+                <div className="h-px bg-nova-violet/10 w-24" />
+                <p className="text-base md:text-xl text-nova-black/70 font-medium leading-relaxed italic border-l-2 border-nova-violet pl-6 font-serif">
+                  Son leadership et son engagement indéfectible en faveur de l'innovation pédagogique font de lui un guide essentiel pour notre concours. Son parrainage symbolise l'excellence académique et technique que nous cherchons à promouvoir auprès de chaque participant.
+                </p>
+              </motion.div>
             </div>
-            <div className="lg:col-span-5 grid grid-cols-2 gap-4 md:gap-6">
-              <MuseumBlock delay={0.2}>
-                 <div className="bg-white p-6 md:p-8 rounded-[1.5rem] md:rounded-[3rem] shadow-xl border border-black/5 flex items-center justify-center aspect-square group cursor-pointer" onClick={() => setSelectedImage("https://i.postimg.cc/tgRf7YDZ/ENSET.png")}>
-                    <img src="https://i.postimg.cc/tgRf7YDZ/ENSET.png" alt="ENSET" className="w-full h-full object-contain group-hover:scale-110 transition-transform duration-700" />
-                 </div>
-              </MuseumBlock>
-              <MuseumBlock delay={0.4}>
-                 <div className="bg-white p-6 md:p-8 rounded-[1.5rem] md:rounded-[3rem] shadow-xl border border-black/5 flex items-center justify-center aspect-square group cursor-pointer" onClick={() => setSelectedImage("https://i.postimg.cc/s2f81vKG/INSTI_LOKOSSA.png")}>
-                    <img src="https://i.postimg.cc/s2f81vKG/INSTI_LOKOSSA.png" alt="INSTI" className="w-full h-full object-contain group-hover:scale-110 transition-transform duration-700" />
-                 </div>
-              </MuseumBlock>
+            <div className="lg:col-span-5">
+              <motion.div
+                initial={{ x: "100%", opacity: 0 }}
+                whileInView={{ x: 0, opacity: 1 }}
+                viewport={{ once: true }}
+                animate={{ 
+                  brightness: [1, 1.05, 1],
+                  scale: [1, 1.01, 1] 
+                }}
+                transition={{ 
+                  x: { duration: 1.2, ease: [0.16, 1, 0.3, 1] },
+                  opacity: { duration: 1 },
+                  brightness: { duration: 4, repeat: Infinity, ease: "easeInOut" },
+                  scale: { duration: 4, repeat: Infinity, ease: "easeInOut" }
+                }}
+                className="relative aspect-[4/5] rounded-[3rem] overflow-hidden shadow-2xl bg-gray-100 group cursor-pointer"
+                onClick={() => setSelectedImage("https://i.postimg.cc/d1NHf98c/le_directeur_de_l_enset_a_la_phase_finale_prise_de_parole.jpg")}
+              >
+                <img 
+                  src="https://i.postimg.cc/d1NHf98c/le_directeur_de_l_enset_a_la_phase_finale_prise_de_parole.jpg" 
+                  alt="Professeur Gustave DJEDATIN" 
+                  className="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-105"
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-nova-black/40 via-transparent to-transparent pointer-events-none" />
+              </motion.div>
             </div>
           </div>
 
-          {/* INDUSTRIEL */}
-          <div className="grid lg:grid-cols-12 gap-12 md:gap-16 mb-24 md:mb-48 items-center">
+          {/* Profil 2 : INSTI (Directrice) - Image Gauche, Texte Droite, Slide Gauche */}
+          <div className="grid lg:grid-cols-12 gap-12 md:gap-24 mb-48 items-center">
+            <div className="lg:col-span-5">
+               <motion.div
+                  initial={{ x: "-100%", opacity: 0 }}
+                  whileInView={{ x: 0, opacity: 1 }}
+                  viewport={{ once: true }}
+                  animate={{ 
+                    brightness: [1, 1.03, 1],
+                    scale: [1, 1.01, 1] 
+                  }}
+                  transition={{ 
+                    x: { duration: 1.2, ease: [0.16, 1, 0.3, 1] },
+                    opacity: { duration: 1 },
+                    brightness: { duration: 4, repeat: Infinity, ease: "easeInOut", delay: 1 },
+                    scale: { duration: 4, repeat: Infinity, ease: "easeInOut", delay: 1 }
+                  }}
+                  className="relative aspect-[4/5] rounded-[3rem] overflow-hidden shadow-2xl bg-gray-100 group cursor-pointer"
+                  onClick={() => setSelectedImage("https://i.postimg.cc/d0Pq0Yyq/DIRECTRICE_INSTI.jpg")}
+                >
+                  <img 
+                    src="https://i.postimg.cc/d0Pq0Yyq/DIRECTRICE_INSTI.jpg" 
+                    alt="Professeur Clotilde GUIDI TOGNON" 
+                    className="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-105"
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-nova-black/40 via-transparent to-transparent pointer-events-none" />
+                </motion.div>
+            </div>
+            <div className="lg:col-span-7">
+              <motion.div 
+                initial={{ opacity: 0, x: 50 }}
+                whileInView={{ opacity: 1, x: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 1, delay: 0.3 }}
+                className="space-y-6"
+              >
+                <h3 className="text-[10px] font-black uppercase tracking-[0.4em] text-nova-violet">Notre Marraine</h3>
+                <h2 className="text-3xl md:text-5xl font-black uppercase tracking-tighter text-nova-black leading-none">
+                  Professeur Titulaire <br /> Clotilde GUIDI TOGNON
+                </h2>
+                <p className="text-sm md:text-lg font-bold uppercase tracking-tight text-nova-violet">
+                  Directrice de l'Institut National Supérieur de Technologie Industrielle (INSTI)
+                </p>
+                <div className="h-px bg-nova-violet/10 w-24" />
+                <p className="text-base md:text-xl text-nova-black/70 font-medium leading-relaxed italic border-l-2 border-nova-violet pl-6 font-serif">
+                  Son soutien actif et sa vision stratégique pour l'industrie technologique béninoise renforcent l'impact de Tech Nova Challenge. Son parrainage assure un ancrage solide dans la réalité du secteur industriel et ouvre aux lauréats des perspectives concrètes d'avenir.
+                </p>
+              </motion.div>
+            </div>
+          </div>
+
+          {/* Soutien Industriel Stratégique (Titre mis à jour pour cohérence) */}
+          <div className="grid lg:grid-cols-12 gap-12 md:gap-16 mb-24 md:mb-48 items-center border-t border-black/5 pt-24">
              <div className="lg:col-span-5 order-last lg:order-first">
-               <MuseumBlock delay={0.3}>
+               <MuseumBlock delay={0.4}>
                   <div className="relative aspect-square rounded-[2rem] md:rounded-[4rem] overflow-hidden shadow-2xl group cursor-pointer h-auto sm:h-[400px] md:h-[500px]">
                     <IndustrialSlideshow />
                     <div className="absolute inset-0 bg-gradient-to-t from-nova-black/40 via-transparent to-transparent pointer-events-none" />
                     <div className="absolute bottom-6 left-6 md:bottom-10 md:left-10 pointer-events-none">
                        <span className="text-white/80 text-[9px] md:text-[10px] uppercase font-black tracking-widest block mb-1 md:mb-2">Wisane (Ingco)</span>
                        <span className="text-white text-xl md:text-2xl font-black uppercase">Soutien Stratégique</span>
-                    </div>
-                    <div className="absolute top-6 right-6 md:top-10 md:right-10 w-10 h-10 md:w-12 md:h-12 rounded-full bg-white/20 backdrop-blur-md flex items-center justify-center text-white pointer-events-none">
-                       <Zap size={20} />
                     </div>
                   </div>
                </MuseumBlock>
