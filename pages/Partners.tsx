@@ -35,7 +35,8 @@ const Partners: React.FC = () => {
         { name: "ONG ESPOIR PLURIEL", logo: "https://i.postimg.cc/SKQ5jJVz/ONG_PLURIEL.png" },
         { name: "SÈMÈ CITY (SCOP)", logo: "https://i.postimg.cc/W49yZTf0/SCOP.png" },
         { name: "BENIN EXCELLENCE", logo: "https://i.postimg.cc/5t9Gj6p3/BENIN_EXCELLENCE.png" },
-        { name: "FEUA", logo: "https://i.postimg.cc/HLWKjV3Y/FEUA.jpg" }
+        { name: "FEUA", logo: "https://i.postimg.cc/HLWKjV3Y/FEUA.jpg" },
+        { name: "RFI FEUNSTIM", logo: "https://i.postimg.cc/q7mFK4Zw/RFI_FEUNSTIM.jpg" }
       ]
     }
   ];

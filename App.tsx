@@ -120,9 +120,7 @@ const App: React.FC = () => {
             <div className="text-gray-600 text-[9px] md:text-[10px] uppercase font-bold tracking-[0.4em] text-center md:text-left">
               © 2025-2026 Tech Nova Benin. L'excellence est notre seul standard.
             </div>
-            <div className="flex gap-12 text-[10px] font-black uppercase tracking-[0.5em] text-gray-500">
-              <Link to="/admin" className="hover:text-white transition-all duration-500">Accès Directoire</Link>
-            </div>
+            {/* Lien Admin retiré du footer pour plus de discrétion */}
           </div>
         </div>
       </footer>
