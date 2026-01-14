@@ -12,6 +12,7 @@ import Partners from './pages/Partners';
 import Contact from './pages/Contact';
 import Dashboard from './pages/Dashboard';
 import Admin from './pages/Admin';
+import Team2026 from './pages/Team2026';
 
 const PageWrapper: React.FC<{ children: React.ReactNode }> = ({ children }) => (
   <motion.div
@@ -40,6 +41,7 @@ const App: React.FC = () => {
             <Route path="/" element={<PageWrapper><Home /></PageWrapper>} />
             <Route path="/deroulement" element={<PageWrapper><Edition2026 /></PageWrapper>} />
             <Route path="/laureats-2025" element={<PageWrapper><Winners2025 /></PageWrapper>} />
+            <Route path="/equipe-2026" element={<PageWrapper><Team2026 /></PageWrapper>} />
             <Route path="/galerie" element={<PageWrapper><Gallery /></PageWrapper>} />
             <Route path="/partenaires" element={<PageWrapper><Partners /></PageWrapper>} />
             <Route path="/contact" element={<PageWrapper><Contact /></PageWrapper>} />
@@ -74,6 +76,7 @@ const App: React.FC = () => {
                 <li><Link to="/" className="hover:text-white transition-all duration-300">Accueil</Link></li>
                 <li><Link to="/deroulement" className="hover:text-white transition-all duration-300">Déroulement</Link></li>
                 <li><Link to="/laureats-2025" className="hover:text-white transition-all duration-300">Lauréats 2025</Link></li>
+                <li><Link to="/equipe-2026" className="hover:text-white transition-all duration-300">Équipe 2026</Link></li>
                 <li><Link to="/galerie" className="hover:text-white transition-all duration-300">Galerie</Link></li>
               </ul>
             </div>

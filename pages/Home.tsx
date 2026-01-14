@@ -357,14 +357,15 @@ const Home: React.FC = () => {
                 initial={{ x: "100%", opacity: 0 }}
                 whileInView={{ x: 0, opacity: 1 }}
                 viewport={{ once: true }}
+                /* Fix: brightness is not a valid Framer Motion property, use filter instead */
                 animate={{ 
-                  brightness: [1, 1.05, 1],
+                  filter: ["brightness(100%)", "brightness(105%)", "brightness(100%)"],
                   scale: [1, 1.01, 1] 
                 }}
                 transition={{ 
                   x: { duration: 1.2, ease: [0.16, 1, 0.3, 1] },
                   opacity: { duration: 1 },
-                  brightness: { duration: 4, repeat: Infinity, ease: "easeInOut" },
+                  filter: { duration: 4, repeat: Infinity, ease: "easeInOut" },
                   scale: { duration: 4, repeat: Infinity, ease: "easeInOut" }
                 }}
                 className="relative aspect-[4/5] rounded-[3rem] overflow-hidden shadow-2xl bg-gray-100 group cursor-pointer"
@@ -387,14 +388,15 @@ const Home: React.FC = () => {
                   initial={{ x: "-100%", opacity: 0 }}
                   whileInView={{ x: 0, opacity: 1 }}
                   viewport={{ once: true }}
+                  /* Fix: brightness is not a valid Framer Motion property, use filter instead */
                   animate={{ 
-                    brightness: [1, 1.03, 1],
+                    filter: ["brightness(100%)", "brightness(103%)", "brightness(100%)"],
                     scale: [1, 1.01, 1] 
                   }}
                   transition={{ 
                     x: { duration: 1.2, ease: [0.16, 1, 0.3, 1] },
                     opacity: { duration: 1 },
-                    brightness: { duration: 4, repeat: Infinity, ease: "easeInOut", delay: 1 },
+                    filter: { duration: 4, repeat: Infinity, ease: "easeInOut", delay: 1 },
                     scale: { duration: 4, repeat: Infinity, ease: "easeInOut", delay: 1 }
                   }}
                   className="relative aspect-[4/5] rounded-[3rem] overflow-hidden shadow-2xl bg-gray-100 group cursor-pointer"
