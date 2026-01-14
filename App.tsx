@@ -1,4 +1,3 @@
-
 import React, { useEffect } from 'react';
 import { Routes, Route, useLocation, Navigate, Link } from 'react-router-dom';
 import { AnimatePresence, motion } from 'framer-motion';
@@ -92,11 +91,11 @@ const App: React.FC = () => {
               <h4 className="text-[10px] font-black uppercase tracking-[0.4em] text-nova-violet mb-10">Réseaux</h4>
               <div className="flex flex-wrap gap-4">
                 <a 
-                  href="https://chat.whatsapp.com/Ef1uogHPWVU8ilVpjEcn4D" 
+                  href="https://wa.me/2290196313068?text=Bonjour%20Tech%20Nova%20Challenge%2C%20je%20vous%20contacte%20pour%20obtenir%20des%20informations%20relatives%20%C3%A0%20la%20comp%C3%A9tition%202026..." 
                   target="_blank" 
                   rel="noopener noreferrer" 
                   className="w-14 h-14 rounded-full bg-white/5 border border-white/10 flex items-center justify-center text-gray-400 hover:bg-green-500 hover:text-white hover:border-green-500 hover:scale-110 transition-all duration-300 shadow-lg"
-                  title="WhatsApp Groupe"
+                  title="WhatsApp"
                 >
                   <MessageCircle size={28} />
                 </a>
@@ -117,6 +116,23 @@ const App: React.FC = () => {
                   title="LinkedIn"
                 >
                   <Linkedin size={28} />
+                </a>
+                <a 
+                  href="https://www.tiktok.com/@tech.nova.challen?is_from_webapp=1&sender_device=pc" 
+                  target="_blank" 
+                  rel="noopener noreferrer" 
+                  className="w-14 h-14 rounded-full bg-white/5 border border-white/10 flex items-center justify-center text-gray-400 hover:bg-black hover:text-white hover:border-white/40 hover:scale-110 transition-all duration-300 shadow-lg"
+                  title="TikTok"
+                >
+                  <svg 
+                    viewBox="0 0 24 24" 
+                    width="28" 
+                    height="28" 
+                    fill="currentColor" 
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <path d="M12.525.02c1.31-.02 2.61-.01 3.91-.02.08 1.53.63 3.09 1.75 4.17 1.12 1.11 2.7 1.62 4.24 1.79v4.03c-1.44-.06-2.89-.35-4.2-.97-.57-.26-1.1-.59-1.62-.93-.01 2.92.01 5.84-.02 8.75-.08 1.4-.54 2.79-1.35 3.94-1.31 1.92-3.58 3.17-5.91 3.21-1.43.08-2.86-.31-4.08-1.03-2.02-1.19-3.44-3.37-3.59-5.71-.29-2.81 1.43-5.63 3.99-6.9 1.05-.53 2.25-.8 3.44-.76v4.04c-.45-.06-.91-.02-1.35.09-1.17.26-2.14 1.15-2.48 2.29-.46 1.42.16 3.12 1.46 3.88.76.47 1.68.61 2.56.41 1.06-.21 1.93-.99 2.28-1.99.11-.33.16-.68.16-1.03V.02z" />
+                  </svg>
                 </a>
                 <a 
                   href="https://www.youtube.com/@TechNovaChallenge" 
