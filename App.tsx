@@ -1,7 +1,8 @@
+
 import React, { useEffect } from 'react';
 import { Routes, Route, useLocation, Navigate, Link } from 'react-router-dom';
 import { AnimatePresence, motion } from 'framer-motion';
-import { Youtube, MessageCircle } from 'lucide-react';
+import { Youtube, MessageCircle, Facebook, Linkedin } from 'lucide-react';
 import Navbar from './components/Navbar';
 import Home from './pages/Home';
 import Participate from './pages/Participate';
@@ -89,38 +90,51 @@ const App: React.FC = () => {
 
             <div>
               <h4 className="text-[10px] font-black uppercase tracking-[0.4em] text-nova-violet mb-10">Réseaux</h4>
-              <ul className="space-y-5">
-                <li>
-                  <a 
-                    href="https://chat.whatsapp.com/Ef1uogHPWVU8ilVpjEcn4D" 
-                    target="_blank" 
-                    rel="noopener noreferrer" 
-                    className="flex items-center gap-3 text-sm font-bold uppercase tracking-widest text-gray-400 hover:text-green-500 transition-all duration-300"
-                  >
-                    <MessageCircle size={18} />
-                    <span>WhatsApp</span>
-                  </a>
-                </li>
-                <li>
-                  <a 
-                    href="https://www.youtube.com/@TechNovaChallenge" 
-                    target="_blank" 
-                    rel="noopener noreferrer" 
-                    className="flex items-center gap-3 text-sm font-bold uppercase tracking-widest text-gray-400 hover:text-red-600 transition-all duration-300"
-                  >
-                    <Youtube size={18} />
-                    <span>YouTube</span>
-                  </a>
-                </li>
-              </ul>
+              <div className="flex flex-wrap gap-4">
+                <a 
+                  href="https://chat.whatsapp.com/Ef1uogHPWVU8ilVpjEcn4D" 
+                  target="_blank" 
+                  rel="noopener noreferrer" 
+                  className="w-14 h-14 rounded-full bg-white/5 border border-white/10 flex items-center justify-center text-gray-400 hover:bg-green-500 hover:text-white hover:border-green-500 hover:scale-110 transition-all duration-300 shadow-lg"
+                  title="WhatsApp Groupe"
+                >
+                  <MessageCircle size={28} />
+                </a>
+                <a 
+                  href="https://www.facebook.com/profile.php?id=61574559687910" 
+                  target="_blank" 
+                  rel="noopener noreferrer" 
+                  className="w-14 h-14 rounded-full bg-white/5 border border-white/10 flex items-center justify-center text-gray-400 hover:bg-blue-600 hover:text-white hover:border-blue-600 hover:scale-110 transition-all duration-300 shadow-lg"
+                  title="Facebook"
+                >
+                  <Facebook size={28} />
+                </a>
+                <a 
+                  href="https://www.linkedin.com/in/tech-nova-challenge-44b10b359" 
+                  target="_blank" 
+                  rel="noopener noreferrer" 
+                  className="w-14 h-14 rounded-full bg-white/5 border border-white/10 flex items-center justify-center text-gray-400 hover:bg-blue-700 hover:text-white hover:border-blue-700 hover:scale-110 transition-all duration-300 shadow-lg"
+                  title="LinkedIn"
+                >
+                  <Linkedin size={28} />
+                </a>
+                <a 
+                  href="https://www.youtube.com/@TechNovaChallenge" 
+                  target="_blank" 
+                  rel="noopener noreferrer" 
+                  className="w-14 h-14 rounded-full bg-white/5 border border-white/10 flex items-center justify-center text-gray-400 hover:bg-red-600 hover:text-white hover:border-red-600 hover:scale-110 transition-all duration-300 shadow-lg"
+                  title="YouTube"
+                >
+                  <Youtube size={28} />
+                </a>
+              </div>
             </div>
           </div>
           
           <div className="pt-20 border-t border-white/5 flex flex-col md:flex-row justify-between items-center gap-10">
-            <div className="text-gray-600 text-[9px] md:text-[10px] uppercase font-bold tracking-[0.4em] text-center md:text-left">
-              © 2025-2026 Tech Nova Benin. L'excellence est notre seul standard.
+            <div className="text-gray-600 text-[9px] md:text-[10px] uppercase font-bold tracking-[0.4em] text-center md:text-left leading-relaxed">
+              © 2025-2026 Tech Nova Benin. <br className="md:hidden" /> L'excellence est notre seul standard.
             </div>
-            {/* Lien Admin retiré du footer pour plus de discrétion */}
           </div>
         </div>
       </footer>

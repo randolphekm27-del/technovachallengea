@@ -5,11 +5,16 @@ import GlassCard from '../components/GlassCard';
 import Button from '../components/Button';
 
 const Contact: React.FC = () => {
+  const whatsappNumber = "2290196313068";
+  const whatsappMessage = encodeURIComponent("Bonjour Tech Nova Challenge, je vous contacte pour obtenir des informations relatives à la compétition 2026...");
+  const whatsappUrl = `https://wa.me/${whatsappNumber}?text=${whatsappMessage}`;
+  const officialEmail = "technovachallenge@gmail.com";
+
   const socialLinks = [
     { 
       name: 'WhatsApp', 
       icon: <MessageCircle size={20} />, 
-      url: 'https://wa.me/22997204690?text=Salut%20!%20J%27ai%20une%20pr%C3%A9occupation...',
+      url: whatsappUrl,
       color: 'hover:text-green-500'
     },
     { 
@@ -31,14 +36,13 @@ const Contact: React.FC = () => {
       
       {/* HEADER PLEIN ÉCRAN */}
       <section className="relative h-screen w-full flex items-center justify-center overflow-hidden bg-black">
-        {/* Ajustement luminosité : 0.90 (10% de filtre noir) */}
+        {/* Image de fond avec filtre sombre pour lisibilité */}
         <img 
           src="https://images.unsplash.com/photo-1497215728101-856f4ea42174?auto=format&fit=crop&q=80&w=2000" 
           alt="Canaux Officiels" 
-          className="absolute inset-0 w-full h-full object-cover brightness-[0.90]"
+          className="absolute inset-0 w-full h-full object-cover brightness-[0.4]"
         />
-        {/* Overlay pour lisibilité maximale */}
-        <div className="absolute inset-0 bg-nova-black/10 backdrop-blur-[1px]" />
+        <div className="absolute inset-0 bg-nova-black/20 backdrop-blur-[1px]" />
         
         <div className="container mx-auto px-6 max-w-6xl relative z-10 text-center">
           <motion.div
@@ -76,7 +80,7 @@ const Contact: React.FC = () => {
                     </div>
                     <div>
                       <div className="text-[10px] font-black uppercase tracking-widest text-gray-400 mb-1">E-mail Officiel</div>
-                      <a href="mailto:contact@technovabenin.com" className="text-xl font-medium hover:text-nova-violet transition-colors">contact@technovabenin.com</a>
+                      <a href={`mailto:${officialEmail}`} className="text-xl font-medium hover:text-nova-violet transition-colors">{officialEmail}</a>
                     </div>
                   </div>
 
@@ -86,7 +90,7 @@ const Contact: React.FC = () => {
                     </div>
                     <div>
                       <div className="text-[10px] font-black uppercase tracking-widest text-gray-400 mb-1">Secrétariat</div>
-                      <a href="tel:+2290147335106" className="text-xl font-medium hover:text-nova-violet transition-colors">+229 01 47 33 51 06</a>
+                      <a href={`tel:+${whatsappNumber}`} className="text-xl font-medium hover:text-nova-violet transition-colors">+229 01 96 31 30 68</a>
                     </div>
                   </div>
 
@@ -96,7 +100,7 @@ const Contact: React.FC = () => {
                     </div>
                     <div>
                       <div className="text-[10px] font-black uppercase tracking-widest text-gray-400 mb-1">WhatsApp Direct</div>
-                      <a href="https://wa.me/22997204690?text=Salut%20!%20J%27ai%20une%20pr%C3%A9occupation..." target="_blank" rel="noopener noreferrer" className="text-xl font-medium hover:text-green-500 transition-colors">Démarrer une discussion</a>
+                      <a href={whatsappUrl} target="_blank" rel="noopener noreferrer" className="text-xl font-medium hover:text-green-500 transition-colors">Démarrer une discussion</a>
                     </div>
                   </div>
 

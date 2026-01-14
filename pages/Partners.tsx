@@ -1,42 +1,42 @@
 import React from 'react';
 import { motion } from 'framer-motion';
-import { Building2, GraduationCap, Globe, ArrowDown, ExternalLink } from 'lucide-react';
+import { Building2, GraduationCap, Radio, ArrowDown, ExternalLink, Maximize2 } from 'lucide-react';
 import Button from '../components/Button';
 import { useNavigate } from 'react-router-dom';
 
 const Partners: React.FC = () => {
   const navigate = useNavigate();
 
-  // Catégorisation institutionnelle avec les logos fournis
   const sections = [
     {
-      title: "Secteur Industriel & Entreprises",
+      title: "Les Entreprises",
       icon: <Building2 size={24} className="text-nova-violet" />,
       partners: [
         { name: "INGCO", logo: "https://i.postimg.cc/6qhn75My/ingco_logo_png.png" },
         { name: "NSIA BANQUE", logo: "https://i.postimg.cc/d0QXDLnj/NSIA_BANQUE.jpg" },
         { name: "PRO TECHNOLOGIE PLUS", logo: "https://i.postimg.cc/25HtWrXx/PRO_TECHNOLOGIE_PLUS.jpg" },
-        { name: "VDN", logo: "https://i.postimg.cc/XvNhXpxN/VDN.jpg" },
-        { name: "AMBITION CONCEPT", logo: "https://i.postimg.cc/R0C8qNGV/AMBITION_CONCEPT.jpg" }
+        { name: "AMBITION CONCEPT", logo: "https://i.postimg.cc/R0C8qNGV/AMBITION_CONCEPT.jpg" },
+        { name: "ONG ESPOIR PLURIEL", logo: "https://i.postimg.cc/SKQ5jJVz/ONG_PLURIEL.png" }
       ]
     },
     {
-      title: "Institutions Académiques & Scientifiques",
+      title: "Les Écoles & Institutions",
       icon: <GraduationCap size={24} className="text-nova-violet" />,
       partners: [
         { name: "ENSET LOKOSSA", logo: "https://i.postimg.cc/tgRf7YDZ/ENSET.png" },
-        { name: "INSTI LOKOSSA", logo: "https://i.postimg.cc/s2f81vKG/INSTI_LOKOSSA.png" }
+        { name: "INSTI LOKOSSA", logo: "https://i.postimg.cc/s2f81vKG/INSTI_LOKOSSA.png" },
+        { name: "SÈMÈ CITY (SCOP)", logo: "https://i.postimg.cc/W49yZTf0/SCOP.png" },
+        { name: "BENIN EXCELLENCE", logo: "https://i.postimg.cc/5t9Gj6p3/BENIN_EXCELLENCE.png" }
       ]
     },
     {
-      title: "Écosystème & Appuis Stratégiques",
-      icon: <Globe size={24} className="text-nova-violet" />,
+      title: "La Presse & Médias",
+      icon: <Radio size={24} className="text-nova-violet" />,
       partners: [
-        { name: "ONG ESPOIR PLURIEL", logo: "https://i.postimg.cc/SKQ5jJVz/ONG_PLURIEL.png" },
-        { name: "SÈMÈ CITY (SCOP)", logo: "https://i.postimg.cc/W49yZTf0/SCOP.png" },
-        { name: "BENIN EXCELLENCE", logo: "https://i.postimg.cc/5t9Gj6p3/BENIN_EXCELLENCE.png" },
+        { name: "VDN", logo: "https://i.postimg.cc/XvNhXpxN/VDN.jpg" },
+        { name: "RFI FEUNSTIM", logo: "https://i.postimg.cc/q7mFK4Zw/RFI_FEUNSTIM.jpg" },
         { name: "FEUA", logo: "https://i.postimg.cc/HLWKjV3Y/FEUA.jpg" },
-        { name: "RFI FEUNSTIM", logo: "https://i.postimg.cc/q7mFK4Zw/RFI_FEUNSTIM.jpg" }
+        { name: "COUVERTURE MÉDIATIQUE", logo: "https://i.postimg.cc/VN9vkxwg/presse.jpg" }
       ]
     }
   ];
@@ -47,7 +47,6 @@ const Partners: React.FC = () => {
       {/* SECTION 1 : INTRODUCTION INSTITUTIONNELLE */}
       <section className="relative h-screen w-full flex items-center justify-center overflow-hidden px-4 bg-black">
         <div className="absolute inset-0">
-          {/* Image de fond : Lauréats chez Ingco - MISE A JOUR */}
           <img 
             src="https://i.postimg.cc/7Z2R6LcL/les-laureats-a-ingco-pour-des-bons.jpg" 
             alt="Collaboration Institutionnelle" 
@@ -82,11 +81,10 @@ const Partners: React.FC = () => {
         </motion.div>
       </section>
 
-      {/* ... reste du composant Partners ... */}
       {/* SECTION 2 : RÉPERTOIRE DES PARTENAIRES */}
       <section className="py-20 md:py-48 px-6 bg-[#FAFAFB]">
         <div className="container mx-auto max-w-7xl">
-          <div className="space-y-24 md:space-y-56">
+          <div className="space-y-24 md:space-y-48">
             {sections.map((section, idx) => (
               <motion.div 
                 key={idx}
@@ -117,7 +115,6 @@ const Partners: React.FC = () => {
                       className="group relative bg-white rounded-[1.5rem] md:rounded-[2.5rem] p-6 md:p-12 flex flex-col items-center justify-center border border-gray-100 shadow-sm hover:shadow-2xl hover:border-nova-violet/10 transition-all duration-700"
                     >
                       <div className="w-full h-24 md:h-40 flex items-center justify-center mb-6 md:mb-8">
-                        {/* Retrait complet du filtre grayscale */}
                         <img 
                           src={partner.logo} 
                           alt={partner.name}
@@ -129,12 +126,10 @@ const Partners: React.FC = () => {
                           {partner.name}
                         </h4>
                         <div className="flex items-center justify-center gap-2 text-nova-violet opacity-0 group-hover:opacity-100 transition-opacity">
-                          <span className="text-[7px] md:text-[8px] font-black uppercase tracking-widest">Voir le profil</span>
+                          <span className="text-[7px] md:text-[8px] font-black uppercase tracking-widest">Partenaire Officiel</span>
                           <ExternalLink size={10} />
                         </div>
                       </div>
-                      
-                      {/* Decorative Element */}
                       <div className="absolute bottom-4 left-1/2 -translate-x-1/2 w-6 h-1 bg-gray-50 rounded-full group-hover:bg-nova-violet transition-colors" />
                     </motion.div>
                   ))}
@@ -152,7 +147,7 @@ const Partners: React.FC = () => {
                       Devenir Partenaire
                     </span>
                     <p className="mt-4 text-[8px] md:text-[10px] text-gray-400 font-medium leading-relaxed hidden sm:block">
-                      Propulsez l'innovation béninoise à nos côtés.
+                      Rejoignez l'écosystème Nova.
                     </p>
                   </motion.div>
                 </div>
@@ -180,18 +175,15 @@ const Partners: React.FC = () => {
                 className="shadow-[0_0_60px_rgba(157,10,0,0.7)] scale-110 !px-12 md:!px-16 w-full md:w-auto"
                 onClick={() => navigate('/contact')}
               >
-                Devenir Partenaire Officiel
+                Devenir Partenaire
               </Button>
-              <div className="flex flex-col items-center md:items-start">
+              <div className="flex flex-col items-center md:items-start text-center md:text-left">
                 <span className="text-[8px] md:text-[10px] font-black uppercase tracking-[0.4em] text-white/30 mb-2">Service Partenariat</span>
                 <span className="text-xs md:text-sm font-bold tracking-widest text-nova-violet">Contact@technovabenin.com</span>
               </div>
            </div>
         </div>
-        
-        {/* Decorative Circles */}
         <div className="absolute top-0 right-0 w-[50vw] h-[50vw] bg-nova-violet/5 blur-[120px] rounded-full" />
-        <div className="absolute bottom-0 left-0 w-[40vw] h-[40vw] bg-nova-red/5 blur-[100px] rounded-full" />
       </section>
 
     </div>
