@@ -292,10 +292,7 @@ const Team2026: React.FC = () => {
           transition={{ duration: 1.5, ease: [0.16, 1, 0.3, 1] }}
           className="container mx-auto max-w-7xl relative z-30 text-center px-6"
         >
-          <div className="inline-flex items-center gap-4 px-6 py-2 rounded-full border border-white/20 mb-10 backdrop-blur-md bg-white/5">
-            <Shield size={14} className="text-nova-violet" />
-            <span className="text-[10px] font-black uppercase tracking-[0.6em] text-white">Collectif Souverain 2026</span>
-          </div>
+          {/* Badge removed as requested */}
           
           <h1 className="editorial-title !text-white !text-[clamp(3rem,12vw,11rem)] !tracking-[-0.08em] !leading-[0.75] !text-shadow-none uppercase mb-12">
             UNE ÉQUIPE, <br />
@@ -309,7 +306,7 @@ const Team2026: React.FC = () => {
           </p>
         </motion.div>
 
-        {/* Scroll Indicator - No text as per request */}
+        {/* Scroll Indicator */}
         <motion.div 
           animate={{ y: [0, 12, 0] }}
           transition={{ duration: 2.5, repeat: Infinity, ease: "easeInOut" }}
