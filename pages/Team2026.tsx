@@ -21,7 +21,7 @@ const team: TeamMember[] = [
     firstName: "LE PROMOTEUR",
     role: "Promoteur",
     university: "Technicien Supérieur à l'ENSET Lokossa",
-    field: "", // Vide pour le promoteur
+    field: "", // Masqué pour le promoteur
     image: "https://i.postimg.cc/L6FT665y/le-promoteur.jpg",
     priority: 1
   },
@@ -196,7 +196,7 @@ const TeamMemberCard: React.FC<{ member: TeamMember }> = ({ member }) => {
       transition={{ duration: 1.2, ease: [0.16, 1, 0.3, 1] }}
       className="group flex flex-col md:flex-row bg-white border border-gray-100 rounded-[3rem] overflow-hidden shadow-sm hover:shadow-2xl transition-all duration-700 mb-20 md:mb-32"
     >
-      {/* Image Container with portrait aspect ratio (4/5) and top alignment */}
+      {/* Portrait aspect ratio (4/5) with top focus */}
       <div className="w-full md:w-[42%] aspect-[4/5] overflow-hidden bg-gray-50 relative">
         <motion.img
           initial={{ scale: 1.1 }}
@@ -210,10 +210,9 @@ const TeamMemberCard: React.FC<{ member: TeamMember }> = ({ member }) => {
         <div className="absolute inset-0 bg-gradient-to-r from-black/5 to-transparent pointer-events-none" />
       </div>
 
-      {/* Information Panel */}
+      {/* Info Panel */}
       <div className="w-full md:w-[58%] p-10 md:p-16 flex flex-col justify-center bg-white">
         <div className="space-y-10">
-          {/* Nom & Prénoms */}
           <div className="pb-8 border-b border-gray-100">
             <div className="flex items-center gap-4 mb-4">
               <span className="text-[10px] font-black uppercase tracking-[0.4em] text-nova-violet">Identité Digitale</span>
@@ -231,7 +230,6 @@ const TeamMemberCard: React.FC<{ member: TeamMember }> = ({ member }) => {
             </p>
           </div>
 
-          {/* Details Grid */}
           <div className="grid grid-cols-1 md:grid-cols-2 gap-10">
             <div>
               <span className="text-[10px] font-black uppercase tracking-[0.4em] text-nova-violet mb-3 block opacity-60">Structure / Institution</span>
@@ -240,7 +238,6 @@ const TeamMemberCard: React.FC<{ member: TeamMember }> = ({ member }) => {
               </p>
             </div>
             
-            {/* Afficher la filière seulement si elle n'est pas vide (caché pour le promoteur) */}
             {member.field && (
               <div>
                 <span className="text-[10px] font-black uppercase tracking-[0.4em] text-nova-violet mb-3 block opacity-60">Filière / Spécialité</span>
@@ -251,7 +248,6 @@ const TeamMemberCard: React.FC<{ member: TeamMember }> = ({ member }) => {
             )}
           </div>
 
-          {/* Rôle */}
           <div className="pt-6">
             <span className="text-[10px] font-black uppercase tracking-[0.4em] text-nova-violet mb-3 block opacity-60">Responsabilité</span>
             <div className="inline-block px-0 py-0 border-l-4 border-nova-violet pl-6">
@@ -276,17 +272,16 @@ const Team2026: React.FC = () => {
       
       {/* 1. HERO — FULLSCREEN IMMERSIVE HEADER */}
       <section className="relative h-screen w-full flex flex-col items-center justify-center overflow-hidden">
-        {/* Background Image with Parallax */}
+        {/* Background Image with Parallax & Dark Overlay */}
         <motion.div 
           style={{ y: yHero, opacity: opacityHero }}
           className="absolute inset-0 z-0"
         >
           <img 
-            src="https://images.unsplash.com/photo-1522071820081-009f0129c71c?auto=format&fit=crop&q=80&w=2000" 
+            src="https://i.postimg.cc/wBHGRMq1/les_finalistes_et_l_equipe_tnc.jpg" 
             alt="Team Vision Background" 
             className="w-full h-full object-cover"
           />
-          {/* Dark Overlay for contrast */}
           <div className="absolute inset-0 bg-black/75 z-10" />
           <div className="absolute inset-0 grid-blueprint z-20 opacity-10" />
         </motion.div>
@@ -314,25 +309,23 @@ const Team2026: React.FC = () => {
           </p>
         </motion.div>
 
-        {/* Scroll Indicator */}
+        {/* Scroll Indicator - No text as per request */}
         <motion.div 
           animate={{ y: [0, 12, 0] }}
           transition={{ duration: 2.5, repeat: Infinity, ease: "easeInOut" }}
           className="absolute bottom-12 left-1/2 -translate-x-1/2 text-white/30 z-30 flex flex-col items-center gap-4"
         >
-          <span className="text-[9px] font-black uppercase tracking-[0.4em]">Découvrir le collectif</span>
           <ArrowDown size={28} />
         </motion.div>
       </section>
 
-      {/* 2. EXHIBITION GALLERY — SIDE BY SIDE LIST */}
+      {/* 2. EXHIBITION GALLERY */}
       <section className="py-24 md:py-48 px-6 bg-white">
         <div className="container mx-auto max-w-6xl">
           {team.sort((a, b) => a.priority - b.priority).map((member) => (
             <TeamMemberCard key={member.id} member={member} />
           ))}
 
-          {/* Future Vision Slot */}
           <motion.div
             initial={{ opacity: 0 }}
             whileInView={{ opacity: 1 }}
@@ -359,7 +352,6 @@ const Team2026: React.FC = () => {
             <div className="h-px w-32 bg-nova-violet mx-auto mb-16" />
             <p className="text-[11px] font-black uppercase tracking-[1em] text-white/30">L'EXCELLENCE EST NOTRE SEUL STANDARD</p>
         </div>
-        {/* Glowing depth effect */}
         <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[80vw] h-[80vw] bg-nova-violet/10 blur-[150px] rounded-full pointer-events-none" />
       </section>
 
