@@ -46,19 +46,8 @@ const team: TeamMember[] = [
     university: "Haut Conseil TNC",
     field: "Surveillance Stratégique",
     image: "https://i.postimg.cc/g2nZrsz1/AKOTCHAYE_Raouf_Superviseur.jpg",
-    priority: 25,
+    priority: 21,
     bio: "Superviseur au sein du Haut Conseil TNC, il veille à la surveillance stratégique et au respect des standards d'excellence du challenge."
-  },
-  {
-    id: 17,
-    lastName: "ASSOGBA",
-    firstName: "Houéfa Doriane M. C.",
-    role: "Égérie de Tech Nova Challenge",
-    university: "INSTI/UNSTIM (Lokossa)",
-    field: "L3, Informatique et Télécommunications",
-    image: "https://i.postimg.cc/kgBbDsJ0/ASSOGBA_Houéfa_Doriane_Marie_Christnelle.jpg",
-    priority: 26,
-    bio: "Elle incarne l'élégance et l'excellence féminine du challenge, inspirant la nouvelle génération de femmes dans la tech."
   },
   {
     id: 3,
@@ -68,8 +57,30 @@ const team: TeamMember[] = [
     university: "FAST/UAC",
     field: "Énergies Renouvelables et Systèmes Énergétiques",
     image: "https://i.postimg.cc/g2Mr5nR1/Johannes_Ornel.jpg",
-    priority: 30,
+    priority: 22,
     bio: "Il seconde la coordination avec une expertise technique pointue en systèmes énergétiques et énergies renouvelables."
+  },
+  {
+    id: 21,
+    lastName: "AKOTCHAYE",
+    firstName: "Vicentia",
+    role: "Ambassadrice",
+    university: "ENSET/UNSTIM (Lokossa)",
+    field: "Mécanique Automobile",
+    image: "https://i.postimg.cc/VksdDjrQ/M_Vicentia.jpg",
+    priority: 23,
+    bio: "Elle représente fièrement les valeurs d'innovation et d'audace du challenge auprès de la jeunesse béninoise."
+  },
+  {
+    id: 22,
+    lastName: "DOSSA",
+    firstName: "Mahugnon Delphin",
+    role: "Ambassadeur",
+    university: "INSTI/UNSTIM (Lokossa)",
+    field: "Bâtiment travaux publics et construction durable (BTP - CD)",
+    image: "https://i.postimg.cc/qRDPHHQg/Mahugnon_Delphin.jpg",
+    priority: 24,
+    bio: "Il porte les couleurs du Tech Nova Challenge avec passion, promouvant l'excellence dans le secteur du bâtiment."
   },
   {
     id: 5,
@@ -160,6 +171,17 @@ const team: TeamMember[] = [
     bio: "Il soutient l'organisation logistique et technique avec une réactivité et un engagement exemplaires."
   },
   {
+    id: 17,
+    lastName: "ASSOGBA",
+    firstName: "Houéfa Doriane M. C.",
+    role: "Service Communication",
+    university: "INSTI/UNSTIM (Lokossa)",
+    field: "Informatique et Télécommunications",
+    image: "https://i.postimg.cc/kgBbDsJ0/ASSOGBA_Houéfa_Doriane_Marie_Christnelle.jpg",
+    priority: 119, // Placée juste avant le reste du service communication
+    bio: "Étudiante en Informatique et Télécommunications à l'INSTI Lokossa, elle assure le rayonnement médiatique et l'excellence visuelle du challenge."
+  },
+  {
     id: 18,
     lastName: "AHIZIGBE",
     firstName: "Sidoine",
@@ -202,28 +224,6 @@ const team: TeamMember[] = [
     image: "https://i.postimg.cc/qvBzj8hf/GNANSOUNOU_Afi_Isabelle_Joyce.jpg",
     priority: 123,
     bio: "Elle renforce l'équipe de communication par son dynamisme et son expertise terrain en infrastructures."
-  },
-  {
-    id: 21,
-    lastName: "AKOTCHAYE",
-    firstName: "Vicentia",
-    role: "Ambassadrice",
-    university: "ENSET/UNSTIM (Lokossa)",
-    field: "Mécanique Automobile",
-    image: "https://i.postimg.cc/VksdDjrQ/M_Vicentia.jpg",
-    priority: 140,
-    bio: "Elle représente fièrement les valeurs d'innovation et d'audace du challenge auprès de la jeunesse béninoise."
-  },
-  {
-    id: 22,
-    lastName: "DOSSA",
-    firstName: "Mahugnon Delphin",
-    role: "Ambassadeur",
-    university: "INSTI/UNSTIM (Lokossa)",
-    field: "Bâtiment travaux publics et construction durable (BTP - CD)",
-    image: "https://i.postimg.cc/qRDPHHQg/Mahugnon_Delphin.jpg",
-    priority: 141,
-    bio: "Il porte les couleurs du Tech Nova Challenge avec passion, promouvant l'excellence dans le secteur du bâtiment."
   },
   {
     id: 15,
