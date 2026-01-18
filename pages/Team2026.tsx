@@ -130,12 +130,12 @@ const team: TeamMember[] = [
     id: 9,
     lastName: "LENGHAM",
     firstName: "C. Abioud Wicham",
-    role: "Chef Service Technique",
+    role: "Service Technique",
     university: "ENSGEP/UNSTIM (Abomey)",
     field: "Génie énergétique et procédés",
     image: "https://i.postimg.cc/GmM9NHGb/Charone_Abioud_Wicham.jpg",
     priority: 90,
-    bio: "Il dirige les opérations techniques complexes avec une maîtrise exemplaire du génie énergétique et des procédés."
+    bio: "Il déploie son expertise en génie énergétique et procédés pour assurer la fiabilité des installations techniques du challenge."
   },
   {
     id: 10,
@@ -178,8 +178,8 @@ const team: TeamMember[] = [
     university: "INSTI/UNSTIM (Lokossa)",
     field: "Informatique et Télécommunications",
     image: "https://i.postimg.cc/kgBbDsJ0/ASSOGBA_Houéfa_Doriane_Marie_Christnelle.jpg",
-    priority: 119, // Placée juste avant le reste du service communication
-    bio: "Étudiante en Informatique et Télécommunications à l'INSTI Lokossa, elle assure le rayonnement médiatique et l'excellence visuelle du challenge."
+    priority: 119,
+    bio: "En tant que Chargée de Communication, elle orchestre le rayonnement médiatique et sublime l'image institutionnelle du Tech Nova Challenge."
   },
   {
     id: 18,
