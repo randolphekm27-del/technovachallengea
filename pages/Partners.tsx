@@ -1,4 +1,5 @@
-import React from 'react';
+
+import React, { useRef } from 'react';
 import { motion } from 'framer-motion';
 import { Building2, GraduationCap, Radio, ArrowDown, ExternalLink, Maximize2 } from 'lucide-react';
 import Button from '../components/Button';
@@ -12,7 +13,7 @@ const Partners: React.FC = () => {
       title: "Les Entreprises",
       icon: <Building2 size={24} className="text-nova-violet" />,
       partners: [
-        { name: "INGCO", logo: "https://i.postimg.cc/6qhn75My/ingco_logo_png.png" },
+        { name: "INGCO", logo: "https://i.postimg.cc/02J6zzfD/WISSAM-INGCO.jpg" },
         { name: "NSIA BANQUE", logo: "https://i.postimg.cc/d0QXDLnj/NSIA_BANQUE.jpg" },
         { name: "PRO TECHNOLOGIE PLUS", logo: "https://i.postimg.cc/25HtWrXx/PRO_TECHNOLOGIE_PLUS.jpg" },
         { name: "AMBITION CONCEPT", logo: "https://i.postimg.cc/R0C8qNGV/AMBITION_CONCEPT.jpg" },

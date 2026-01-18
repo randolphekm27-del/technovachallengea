@@ -1,3 +1,4 @@
+
 import React, { useRef, useState, useEffect } from 'react';
 import { createPortal } from 'react-dom';
 import { motion, useScroll, useTransform, useSpring, AnimatePresence } from 'framer-motion';
@@ -462,7 +463,7 @@ const Home: React.FC = () => {
                     "Investir dans les jeunes, c’est investir dans l’avenir de notre industrie technologique nationale."
                   </p>
                   <div className="h-px bg-nova-red/10 w-full mb-8 md:mb-10" />
-                  <img src="https://i.postimg.cc/6qhn75My/ingco_logo_png.png" alt="INGCO" className="h-10 md:h-16 w-auto object-contain opacity-60 hover:opacity-100 transition-opacity" />
+                  <img src="https://i.postimg.cc/02J6zzfD/WISSAM-INGCO.jpg" alt="INGCO" className="h-10 md:h-16 w-auto object-contain opacity-60 hover:opacity-100 transition-opacity" />
                </MuseumBlock>
              </div>
           </div>

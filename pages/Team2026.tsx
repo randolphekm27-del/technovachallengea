@@ -25,7 +25,7 @@ const team: TeamMember[] = [
     field: "",
     image: "https://i.postimg.cc/L6FT665y/le-promoteur.jpg",
     priority: 10,
-    bio: "Technicien Supérieur à l'ENSET Lokossa et Promoteur visionnaire, il insuffle l'élan technologique et la direction stratégique de la compétition."
+    bio: "Promoteur visionnaire, il insuffle l'élan technologique et la direction stratégique de la compétition."
   },
   {
     id: 2,
