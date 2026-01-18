@@ -21,7 +21,7 @@ const team: TeamMember[] = [
     lastName: "OGOUGNON",
     firstName: "Samuel Jawu",
     role: "Promoteur",
-    university: "Technicien Supérieur à l'ENSET Lokossa",
+    university: "Promoteur Tech Nova Challenge",
     field: "",
     image: "https://i.postimg.cc/L6FT665y/le-promoteur.jpg",
     priority: 10,
@@ -77,7 +77,7 @@ const team: TeamMember[] = [
     firstName: "Mahugnon Delphin",
     role: "Ambassadeur",
     university: "INSTI/UNSTIM (Lokossa)",
-    field: "Bâtiment travaux publics et construction durable (BTP - CD)",
+    field: "BTP - Construction Durable",
     image: "https://i.postimg.cc/qRDPHHQg/Mahugnon_Delphin.jpg",
     priority: 24,
     bio: "Il porte les couleurs du Tech Nova Challenge avec passion, promouvant l'excellence dans le secteur du bâtiment."
@@ -179,7 +179,7 @@ const team: TeamMember[] = [
     field: "Informatique et Télécommunications",
     image: "https://i.postimg.cc/kgBbDsJ0/ASSOGBA_Houéfa_Doriane_Marie_Christnelle.jpg",
     priority: 119,
-    bio: "En tant que Chargée de Communication, elle orchestre le rayonnement médiatique et sublime l'image institutionnelle du Tech Nova Challenge."
+    bio: "Elle orchestre le rayonnement médiatique et sublime l'image institutionnelle du Tech Nova Challenge."
   },
   {
     id: 18,
@@ -220,7 +220,7 @@ const team: TeamMember[] = [
     firstName: "Afi Isabelle",
     role: "Service de Communication",
     university: "INSTI/UNSTIM (Lokossa)",
-    field: "Bâtiment travaux publics et construction durable (BTP - CD)",
+    field: "BTP - Construction Durable",
     image: "https://i.postimg.cc/qvBzj8hf/GNANSOUNOU_Afi_Isabelle_Joyce.jpg",
     priority: 123,
     bio: "Elle renforce l'équipe de communication par son dynamisme et son expertise terrain en infrastructures."
@@ -401,18 +401,6 @@ const Team2026: React.FC = () => {
             </p>
           </motion.div>
         </div>
-      </section>
-
-      <section className="py-24 md:py-48 bg-nova-black text-white px-6 text-center relative overflow-hidden">
-        <div className="container mx-auto max-w-5xl relative z-10">
-            <h2 className="editorial-title text-[clamp(2.5rem,10vw,9rem)] leading-[0.8] mb-12 md:mb-16 text-white !text-shadow-none">
-              SOUVERAINETÉ <br />
-              <span className="text-nova-violet italic font-light uppercase tracking-tighter">ET AUDACE.</span>
-            </h2>
-            <div className="h-px w-24 md:w-32 bg-nova-violet mx-auto mb-12 md:mb-16" />
-            <p className="text-[9px] md:text-[11px] font-black uppercase tracking-[1em] text-white/30">L'EXCELLENCE EST NOTRE SEUL STANDARD</p>
-        </div>
-        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[80vw] h-[80vw] bg-nova-violet/10 blur-[150px] rounded-full pointer-events-none" />
       </section>
 
       <footer className="py-16 md:py-24 text-center border-t border-black/5 bg-white">

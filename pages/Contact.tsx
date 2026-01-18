@@ -1,3 +1,4 @@
+
 import React from 'react';
 import { motion } from 'framer-motion';
 import { Mail, Phone, MapPin, ArrowDown, MessageCircle, Facebook, Linkedin } from 'lucide-react';
@@ -20,7 +21,7 @@ const Contact: React.FC = () => {
     { 
       name: 'Facebook', 
       icon: <Facebook size={20} />, 
-      url: 'https://www.facebook.com/profile.php?id=61574559687910',
+      url: 'https://www.facebook.com/share/1Ei8G8HHvC/',
       color: 'hover:text-blue-600'
     },
     { 

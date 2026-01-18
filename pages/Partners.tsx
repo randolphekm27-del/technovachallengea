@@ -13,10 +13,12 @@ const Partners: React.FC = () => {
       title: "Les Entreprises",
       icon: <Building2 size={24} className="text-nova-violet" />,
       partners: [
-        { name: "INGCO", logo: "https://i.postimg.cc/02J6zzfD/WISSAM-INGCO.jpg" },
+        { name: "INGCO", logo: "https://i.postimg.cc/02J6zzfD/WISSAM-INGCO.jpg", secondLogo: "https://i.postimg.cc/6qhn75My/ingco_logo_png.png" },
         { name: "NSIA BANQUE", logo: "https://i.postimg.cc/d0QXDLnj/NSIA_BANQUE.jpg" },
         { name: "PRO TECHNOLOGIE PLUS", logo: "https://i.postimg.cc/25HtWrXx/PRO_TECHNOLOGIE_PLUS.jpg" },
         { name: "AMBITION CONCEPT", logo: "https://i.postimg.cc/R0C8qNGV/AMBITION_CONCEPT.jpg" },
+        { name: "BENINEDU", logo: "https://i.postimg.cc/yNfGRsrv/BENINEDU.jpg" },
+        { name: "CERME", logo: "https://i.postimg.cc/QMNPVHSq/CERME.jpg" },
         { name: "ONG ESPOIR PLURIEL", logo: "https://i.postimg.cc/SKQ5jJVz/ONG_PLURIEL.png" }
       ]
     },
@@ -45,7 +47,6 @@ const Partners: React.FC = () => {
   return (
     <div className="bg-white min-h-screen selection:bg-nova-violet selection:text-white">
       
-      {/* SECTION 1 : INTRODUCTION INSTITUTIONNELLE */}
       <section className="relative h-screen w-full flex items-center justify-center overflow-hidden px-4 bg-black">
         <div className="absolute inset-0">
           <img 
@@ -53,7 +54,6 @@ const Partners: React.FC = () => {
             alt="Collaboration Institutionnelle" 
             className="w-full h-full object-cover"
           />
-          {/* Filtre noir de 60% pour lisibilité absolue */}
           <div className="absolute inset-0 bg-black/60 z-10" />
         </div>
 
@@ -82,7 +82,6 @@ const Partners: React.FC = () => {
         </motion.div>
       </section>
 
-      {/* SECTION 2 : RÉPERTOIRE DES PARTENAIRES */}
       <section className="py-20 md:py-48 px-6 bg-[#FAFAFB]">
         <div className="container mx-auto max-w-7xl">
           <div className="space-y-24 md:space-y-48">
@@ -109,18 +108,25 @@ const Partners: React.FC = () => {
                 </div>
                 
                 <div className="grid grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 md:gap-8">
-                  {section.partners.map((partner, pIdx) => (
+                  {section.partners.map((partner: any, pIdx) => (
                     <motion.div 
                       key={pIdx}
                       whileHover={{ y: -8, scale: 1.01 }}
                       className="group relative bg-white rounded-[1.5rem] md:rounded-[2.5rem] p-6 md:p-12 flex flex-col items-center justify-center border border-gray-100 shadow-sm hover:shadow-2xl hover:border-nova-violet/10 transition-all duration-700"
                     >
-                      <div className="w-full h-24 md:h-40 flex items-center justify-center mb-6 md:mb-8">
+                      <div className="w-full h-24 md:h-40 flex items-center justify-center mb-6 md:mb-8 gap-4">
                         <img 
                           src={partner.logo} 
                           alt={partner.name}
-                          className="max-w-[85%] max-h-full object-contain transition-all duration-1000 group-hover:scale-110"
+                          className={`${partner.secondLogo ? 'max-w-[45%]' : 'max-w-[85%]'} max-h-full object-contain transition-all duration-1000 group-hover:scale-110`}
                         />
+                        {partner.secondLogo && (
+                           <img 
+                            src={partner.secondLogo} 
+                            alt={`${partner.name} secondary`}
+                            className="max-w-[45%] max-h-full object-contain transition-all duration-1000 group-hover:scale-110"
+                           />
+                        )}
                       </div>
                       <div className="text-center">
                         <h4 className="text-[10px] md:text-xs font-black uppercase tracking-widest text-nova-black mb-2 opacity-0 group-hover:opacity-100 transition-opacity">
@@ -135,7 +141,6 @@ const Partners: React.FC = () => {
                     </motion.div>
                   ))}
                   
-                  {/* Join Section */}
                   <motion.div 
                     onClick={() => navigate('/contact')}
                     whileHover={{ scale: 0.98 }}
@@ -147,9 +152,6 @@ const Partners: React.FC = () => {
                     <span className="text-[10px] md:text-xs font-black text-nova-black uppercase tracking-widest group-hover:text-nova-violet transition-colors">
                       Devenir Partenaire
                     </span>
-                    <p className="mt-4 text-[8px] md:text-[10px] text-gray-400 font-medium leading-relaxed hidden sm:block">
-                      Rejoignez l'écosystème Nova.
-                    </p>
                   </motion.div>
                 </div>
               </motion.div>
@@ -158,35 +160,11 @@ const Partners: React.FC = () => {
         </div>
       </section>
 
-      {/* SECTION 3 : COOPÉRATION STRATÉGIQUE (CTA) */}
-      <section className="py-24 md:py-48 bg-nova-black text-white px-6 text-center relative overflow-hidden">
-        <div className="container mx-auto max-w-4xl relative z-10">
-           <span className="text-nova-violet font-black tracking-[0.6em] uppercase text-[9px] md:text-[10px] block mb-8 md:mb-12">Engagement Industriel</span>
-           <h2 className="editorial-title text-[clamp(2rem,7vw,7rem)] leading-none mb-8 md:mb-12">
-              FORGEONS LE <br />
-              <span className="text-nova-violet italic font-light">FUTUR.</span>
-           </h2>
-           <p className="text-base md:text-2xl text-gray-400 font-light mb-12 md:mb-16 max-w-2xl mx-auto leading-relaxed">
-             Participez activement à l’émergence d’une génération technologique souveraine et audacieuse.
-           </p>
-           <div className="flex flex-col md:flex-row justify-center items-center gap-8 md:gap-10">
-              <Button 
-                size="lg" 
-                variant="accent"
-                className="shadow-[0_0_60px_rgba(157,10,0,0.7)] scale-110 !px-12 md:!px-16 w-full md:w-auto"
-                onClick={() => navigate('/contact')}
-              >
-                Devenir Partenaire
-              </Button>
-              <div className="flex flex-col items-center md:items-start text-center md:text-left">
-                <span className="text-[8px] md:text-[10px] font-black uppercase tracking-[0.4em] text-white/30 mb-2">Service Partenariat</span>
-                <span className="text-xs md:text-sm font-bold tracking-widest text-nova-violet">Contact@technovabenin.com</span>
-              </div>
-           </div>
-        </div>
-        <div className="absolute top-0 right-0 w-[50vw] h-[50vw] bg-nova-violet/5 blur-[120px] rounded-full" />
-      </section>
-
+      <footer className="py-16 md:py-24 text-center border-t border-black/5 bg-white">
+         <p className="text-[9px] md:text-[11px] font-black tracking-[1em] md:tracking-[1.5em] text-nova-black/10 uppercase font-display px-4">
+            Tech Nova Challenge — Un Collectif Visionnaire.
+         </p>
+      </footer>
     </div>
   );
 };

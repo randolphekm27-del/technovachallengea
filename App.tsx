@@ -1,3 +1,4 @@
+
 import React, { useEffect } from 'react';
 import { Routes, Route, useLocation, Navigate, Link } from 'react-router-dom';
 import { AnimatePresence, motion } from 'framer-motion';
@@ -13,6 +14,7 @@ import Contact from './pages/Contact';
 import Dashboard from './pages/Dashboard';
 import Admin from './pages/Admin';
 import Team2026 from './pages/Team2026';
+import LiveProgress from './pages/LiveProgress';
 
 const PageWrapper: React.FC<{ children: React.ReactNode }> = ({ children }) => (
   <motion.div
@@ -40,6 +42,7 @@ const App: React.FC = () => {
           <Routes location={location} key={location.pathname}>
             <Route path="/" element={<PageWrapper><Home /></PageWrapper>} />
             <Route path="/deroulement" element={<PageWrapper><Edition2026 /></PageWrapper>} />
+            <Route path="/etapes-en-cours" element={<PageWrapper><LiveProgress /></PageWrapper>} />
             <Route path="/laureats-2025" element={<PageWrapper><Winners2025 /></PageWrapper>} />
             <Route path="/equipe-2026" element={<PageWrapper><Team2026 /></PageWrapper>} />
             <Route path="/galerie" element={<PageWrapper><Gallery /></PageWrapper>} />
@@ -74,10 +77,10 @@ const App: React.FC = () => {
               <h4 className="text-[10px] font-black uppercase tracking-[0.4em] text-nova-violet mb-10">Exploration</h4>
               <ul className="space-y-5 text-sm font-bold uppercase tracking-widest text-gray-400">
                 <li><Link to="/" className="hover:text-white transition-all duration-300">Accueil</Link></li>
+                <li><Link to="/etapes-en-cours" className="hover:text-nova-red transition-all duration-300">Live Étapes</Link></li>
                 <li><Link to="/deroulement" className="hover:text-white transition-all duration-300">Déroulement</Link></li>
                 <li><Link to="/laureats-2025" className="hover:text-white transition-all duration-300">Lauréats 2025</Link></li>
                 <li><Link to="/equipe-2026" className="hover:text-white transition-all duration-300">Équipe 2026</Link></li>
-                <li><Link to="/galerie" className="hover:text-white transition-all duration-300">Galerie</Link></li>
               </ul>
             </div>
             
@@ -103,7 +106,7 @@ const App: React.FC = () => {
                   <MessageCircle size={28} />
                 </a>
                 <a 
-                  href="https://www.facebook.com/profile.php?id=61574559687910" 
+                  href="https://www.facebook.com/share/1Ei8G8HHvC/" 
                   target="_blank" 
                   rel="noopener noreferrer" 
                   className="w-14 h-14 rounded-full bg-white/5 border border-white/10 flex items-center justify-center text-gray-400 hover:bg-blue-600 hover:text-white hover:border-blue-600 hover:scale-110 transition-all duration-300 shadow-lg"

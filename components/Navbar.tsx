@@ -2,7 +2,7 @@
 import React, { useState, useEffect } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Menu, X, LayoutDashboard, Rocket, Bell } from 'lucide-react';
+import { Menu, X, LayoutDashboard, Rocket, Bell, Activity } from 'lucide-react';
 import Button from './Button';
 
 const Navbar: React.FC = () => {
@@ -22,15 +22,12 @@ const Navbar: React.FC = () => {
       setIsLoggedIn(!!user);
 
       if (user) {
-        // Calcul des notifications
         const broadcastsStr = localStorage.getItem('tnc_broadcasts');
         const lastRead = localStorage.getItem('tnc_last_read_colis') || '0';
         
         if (broadcastsStr) {
           const broadcasts = JSON.parse(broadcastsStr);
-          // On simule une vérification par ID ou timestamp (ici simplifié par la longueur vs dernier vu)
           const newItems = broadcasts.filter((b: any) => {
-            // Si le timestamp du broadcast est supérieur au dernier lu
             const bTime = new Date(b.timestamp).getTime();
             return bTime > parseInt(lastRead);
           });
@@ -54,6 +51,7 @@ const Navbar: React.FC = () => {
 
   const navLinks = [
     { name: 'Accueil', path: '/' },
+    { name: 'Live Étapes', path: '/etapes-en-cours' },
     { name: 'Déroulement', path: '/deroulement' },
     { name: 'Lauréats 2025', path: '/laureats-2025' },
     { name: 'Équipe 2026', path: '/equipe-2026' },

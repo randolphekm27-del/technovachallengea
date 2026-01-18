@@ -1,9 +1,10 @@
+
 import React, { useState } from 'react';
 import { createPortal } from 'react-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import { 
   Trophy, CheckCircle2, ArrowDown, 
-  Quote, Building2, Star, X, Maximize2
+  Quote, Star, X, Maximize2
 } from 'lucide-react';
 import GlassCard from '../components/GlassCard';
 import Button from '../components/Button';
@@ -167,9 +168,10 @@ const Winners2025: React.FC = () => {
                 "Près de 70 binômes ont porté avec fierté l'innovation béninoise, prouvant que le génie technique est le moteur de notre souveraineté future."
               </p>
               
-              <div className="flex items-center gap-4 md:gap-6 p-6 md:p-10 bg-gray-50 rounded-[2rem] md:rounded-[3rem] border border-gray-100 shadow-sm">
-                <div className="w-12 h-12 md:w-16 md:h-16 rounded-2xl bg-nova-violet/10 text-nova-violet flex items-center justify-center flex-shrink-0">
-                   <Building2 className="w-6 h-6 md:w-8 md:h-8" />
+              <div className="flex flex-col sm:flex-row sm:items-center gap-6 md:gap-8 p-6 md:p-10 bg-gray-50 rounded-[2rem] md:rounded-[3rem] border border-gray-100 shadow-sm">
+                <div className="flex items-center gap-4">
+                  <img src="https://i.postimg.cc/02J6zzfD/WISSAM-INGCO.jpg" alt="WISSAM INGCO" className="h-12 md:h-16 w-auto object-contain rounded-lg shadow-sm" />
+                  <img src="https://i.postimg.cc/6qhn75My/ingco_logo_png.png" alt="INGCO" className="h-10 md:h-14 w-auto object-contain" />
                 </div>
                 <div>
                    <div className="text-[8px] md:text-[10px] font-black uppercase tracking-widest text-gray-400">Partenaire Officiel 2025</div>
