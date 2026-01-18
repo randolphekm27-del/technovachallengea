@@ -88,7 +88,7 @@ const Dashboard: React.FC = () => {
   return (
     <div className="min-h-screen bg-[#FDFDFF] selection:bg-nova-violet selection:text-white flex flex-col overflow-x-hidden">
       
-      {/* Header Dashboard */}
+      {/* Header Dashboard - Correction de la superposition sous la Navbar principale */}
       <header className="fixed top-0 left-0 w-full bg-white border-b border-gray-100 z-[80] shadow-sm">
         <div className="container mx-auto px-4 md:px-8 flex items-center justify-between pt-32 md:pt-40 pb-6 md:pb-8">
           <div className="flex items-center gap-3 md:gap-4">
@@ -213,7 +213,7 @@ const Dashboard: React.FC = () => {
                          <h3 className="text-2xl font-black uppercase tracking-tighter mb-4 text-nova-black">Validation Totale</h3>
                          <p className="text-gray-400 text-sm font-medium mb-10 leading-relaxed">Soumission finale du dossier scanné via le portail Google Form officiel.</p>
                        </div>
-                       <Button size="lg" variant="primary" className="w-full" onClick={() => window.open('https://forms.gle/w5nnrQw3Kym4pusPA')}>
+                       <Button size="lg" variant="primary" className="w-full" onClick={() => window.open('https://docs.google.com/forms/d/e/1FAIpQLSfxsmktnBL0twMBP0fcJFoXkGJI6Hrz--jKthRiIrnJbTBeLA/viewform')}>
                          Finaliser Inscription
                        </Button>
                     </div>
