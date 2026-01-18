@@ -1,7 +1,7 @@
 
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Send, Package, ShieldCheck, Trash2, Plus, History, AlertCircle, FileUp, X, Download, FileText, Activity, Image as ImageIcon, Settings, Eye, EyeOff, Layers, Users, Trophy, BarChart3, TrendingUp, Clock, ListTodo } from 'lucide-react';
+import { Send, Package, ShieldCheck, Trash2, Plus, History, AlertCircle, FileUp, X, Download, FileText, Activity, Image as ImageIcon, Settings, Eye, EyeOff, Layers, Users, Trophy, BarChart3, TrendingUp, Clock, ListTodo, Building2 } from 'lucide-react';
 import Button from '../components/Button';
 
 interface Broadcast {
@@ -118,6 +118,16 @@ const Admin: React.FC = () => {
     alert("Colis expédié avec succès !");
   };
 
+  const handleAddPartner = () => {
+    if (!pName || !pLogo) return;
+    const newP: Partner = { id: Date.now().toString(), name: pName, logo: pLogo, category: pCat };
+    const updated = [...partners, newP];
+    setPartners(updated);
+    localStorage.setItem('tnc_partners', JSON.stringify(updated));
+    setPName(''); setPLogo(null);
+    alert("Partenaire ajouté avec succès !");
+  };
+
   const handleAddVotingTeam = () => {
     if (!vtName || !vtImage || !vtType) return;
     const newVt: VotingTeam = { id: Date.now().toString(), name: vtName, members: vtMembers, image: vtImage, votes: 0, type: vtType };
@@ -171,7 +181,7 @@ const Admin: React.FC = () => {
           <div className="flex flex-wrap gap-2 p-1 bg-white/5 rounded-3xl border border-white/10">
             {[
               { id: 'colis', label: 'Colis', icon: <Package size={14}/> },
-              { id: 'partners', label: 'Partenaires', icon: <Users size={14}/> },
+              { id: 'partners', label: 'Partenaires', icon: <Building2 size={14}/> },
               { id: 'live', label: 'Live Phases', icon: <ListTodo size={14}/> },
               { id: 'votes', label: 'Scrutins', icon: <Trophy size={14}/> },
               { id: 'stats', label: 'Stats', icon: <BarChart3 size={14}/> },
@@ -185,6 +195,40 @@ const Admin: React.FC = () => {
         </header>
 
         <AnimatePresence mode="wait">
+          {activeAdminTab === 'partners' && (
+            <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="grid lg:grid-cols-2 gap-12">
+               <div className="bg-white/5 p-10 rounded-[3rem] border border-white/10 h-fit space-y-6">
+                  <h3 className="text-xs font-black uppercase tracking-widest text-nova-violet flex items-center gap-2"><Plus size={16} /> Nouveau Partenaire</h3>
+                  <input value={pName} onChange={e => setPName(e.target.value)} placeholder="Nom du partenaire" className="w-full bg-white/5 border border-white/10 rounded-2xl px-6 py-4 outline-none focus:border-nova-violet text-sm font-bold" />
+                  <select value={pCat} onChange={e => setPCat(e.target.value as any)} className="w-full bg-white/5 border border-white/10 rounded-2xl px-6 py-4 outline-none focus:border-nova-violet text-sm font-bold text-white">
+                    <option value="enterprise" className="bg-nova-black">Entreprise</option>
+                    <option value="institution" className="bg-nova-black">Institution</option>
+                    <option value="media" className="bg-nova-black">Média</option>
+                  </select>
+                  <label className="flex flex-col items-center justify-center w-full h-32 border-2 border-dashed border-white/10 rounded-2xl cursor-pointer hover:bg-white/5 transition-all overflow-hidden">
+                    {pLogo ? <img src={pLogo} className="h-24 w-auto object-contain" /> : <div className="text-center"><ImageIcon className="mx-auto mb-2 text-gray-500" /> <span className="text-[10px] uppercase font-black text-gray-500">Logo du partenaire</span></div>}
+                    <input type="file" className="hidden" accept="image/*" onChange={e => handleImageUpload(e, setPLogo)} />
+                  </label>
+                  <Button className="w-full" onClick={handleAddPartner} disabled={!pName || !pLogo}>Ajouter Partenaire</Button>
+               </div>
+               <div className="space-y-4">
+                  <h3 className="text-xs font-black uppercase tracking-widest text-gray-500 mb-6">Liste des Partenaires</h3>
+                  {partners.map(p => (
+                    <div key={p.id} className="bg-white/5 p-4 rounded-2xl flex items-center justify-between border border-white/10 group">
+                       <div className="flex items-center gap-4">
+                          <img src={p.logo} className="h-10 w-auto object-contain" />
+                          <div className="flex flex-col">
+                             <span className="text-xs font-black uppercase">{p.name}</span>
+                             <span className="text-[8px] font-black uppercase text-gray-500">{p.category}</span>
+                          </div>
+                       </div>
+                       <button onClick={() => deleteItem(p.id, 'tnc_partners', setPartners)} className="p-3 text-gray-600 hover:text-nova-red opacity-0 group-hover:opacity-100 transition-all"><Trash2 size={16}/></button>
+                    </div>
+                  ))}
+               </div>
+            </motion.div>
+          )}
+
           {activeAdminTab === 'votes' && (
             <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="grid lg:grid-cols-2 gap-12">
                <div className="bg-white/5 p-10 rounded-[3rem] border border-white/10 h-fit space-y-10">
@@ -381,6 +425,23 @@ const Admin: React.FC = () => {
                     <div>
                       <label className="text-[10px] font-black uppercase tracking-widest text-gray-500 block mb-2">Fin Vote Gagnants</label>
                       <input type="datetime-local" value={winnersVoteEndDate} onChange={(e) => updateConfig(hiddenPages, isReorganized, publicVoteEndDate, e.target.value)} className="w-full bg-white/5 border border-white/10 rounded-xl p-4 text-white outline-none focus:border-nova-violet" />
+                    </div>
+                    <div className="pt-6 border-t border-white/5">
+                      <div className="flex items-center justify-between p-4 bg-white/5 rounded-2xl">
+                         <div className="flex flex-col">
+                            <span className="text-[10px] font-black uppercase tracking-widest">Réorganiser le Site</span>
+                            <span className="text-[8px] text-gray-500 uppercase">Archive les pages 2025 vers Hub</span>
+                         </div>
+                         <button 
+                            onClick={() => updateConfig(hiddenPages, !isReorganized, publicVoteEndDate, winnersVoteEndDate)} 
+                            className={`w-12 h-6 rounded-full relative transition-colors ${isReorganized ? 'bg-nova-violet' : 'bg-white/10'}`}
+                         >
+                            <motion.div 
+                               animate={{ x: isReorganized ? 24 : 4 }} 
+                               className="absolute top-1 w-4 h-4 bg-white rounded-full shadow-lg" 
+                            />
+                         </button>
+                      </div>
                     </div>
                   </div>
                </div>
