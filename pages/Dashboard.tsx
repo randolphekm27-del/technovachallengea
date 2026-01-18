@@ -14,6 +14,8 @@ interface Broadcast {
   title: string;
   content: string;
   link?: string;
+  fileData?: string;
+  fileName?: string;
   timestamp: string;
   type: 'message' | 'file' | 'critical' | 'auth';
 }
@@ -43,7 +45,11 @@ const Dashboard: React.FC = () => {
       }
     }
 
-    const initialBroadcasts: Broadcast[] = [
+    // Récupérer les messages admin
+    const adminBroadcastsStr = localStorage.getItem('tnc_broadcasts');
+    const adminBroadcasts: Broadcast[] = adminBroadcastsStr ? JSON.parse(adminBroadcastsStr) : [];
+
+    const staticBroadcasts: Broadcast[] = [
       {
         id: 'auth-code',
         title: '📦 Colis de Sécurité : Votre Code Unique',
@@ -52,14 +58,17 @@ const Dashboard: React.FC = () => {
         type: 'auth'
       },
       {
-        id: 'welcome',
-        title: 'Action requise : Validation de dossier',
-        content: 'La fiche d\'inscription est prête dans votre espace. Téléchargez-la pour finaliser votre parcours.',
+        id: 'welcome-file',
+        title: 'Document Officiel : Fiche d\'Inscription',
+        content: 'Vous trouverez ci-joint la fiche d\'inscription à remplir. Téléchargez, complétez et scannez-la pour la phase finale.',
+        fileName: 'fiche-tnc-2026.pdf',
+        fileData: 'https://example.com/fiche.pdf',
         timestamp: 'Aujourd\'hui',
-        type: 'critical'
+        type: 'file'
       }
     ];
-    setBroadcasts(initialBroadcasts);
+
+    setBroadcasts([...adminBroadcasts, ...staticBroadcasts]);
     window.scrollTo(0, 0);
   }, []);
 
@@ -79,9 +88,8 @@ const Dashboard: React.FC = () => {
   return (
     <div className="min-h-screen bg-[#FDFDFF] selection:bg-nova-violet selection:text-white flex flex-col overflow-x-hidden">
       
-      {/* Header Dashboard - Ajusté pour descendre plus bas que la Navbar principale */}
+      {/* Header Dashboard */}
       <header className="fixed top-0 left-0 w-full bg-white border-b border-gray-100 z-[80] shadow-sm">
-        {/* pt-32 sur mobile et pt-40 sur desktop assure que les éléments (Nom d'équipe, déconnexion) sont bien visibles sous la navbar globale */}
         <div className="container mx-auto px-4 md:px-8 flex items-center justify-between pt-32 md:pt-40 pb-6 md:pb-8">
           <div className="flex items-center gap-3 md:gap-4">
              <div className="w-10 h-10 md:w-12 md:h-12 rounded-2xl bg-nova-violet text-white flex items-center justify-center shadow-xl shadow-nova-violet/20">
@@ -102,7 +110,7 @@ const Dashboard: React.FC = () => {
         </div>
       </header>
 
-      {/* Main Content Area - Padding top compensant le header descendu */}
+      {/* Main Content Area */}
       <div className="container mx-auto px-4 md:px-8 flex flex-col lg:flex-row gap-8 lg:gap-12 flex-grow pt-[240px] md:pt-[320px] pb-[100px] lg:pb-24">
         
         {/* Navigation Sidebar */}
@@ -139,7 +147,7 @@ const Dashboard: React.FC = () => {
             >
               {activeTab === 'overview' && (
                 <>
-                  {/* Message d'accueil sans parenthèse */}
+                  {/* Message d'accueil */}
                   <section className="bg-white rounded-[2.5rem] md:rounded-[4rem] border border-gray-100 shadow-sm p-8 md:p-16">
                     <div className="flex items-center gap-4 mb-10">
                        <span className="text-[10px] font-black uppercase tracking-[0.4em] text-nova-violet">Information Institutionnelle</span>
@@ -148,7 +156,7 @@ const Dashboard: React.FC = () => {
                     
                     <div className="prose prose-xl max-w-none text-nova-black">
                       <h2 className="text-2xl md:text-4xl font-black uppercase tracking-tighter mb-10 leading-[1.1]">
-                        Bonjour <span className="text-nova-violet">{teamName}</span> et bienvenue au TECH NOVA CHALLENGE, premier concours d’innovation technologique au Bénin.
+                        Bonjour <span className="text-nova-violet">{teamName}</span> et bienvenue au TECH NOVA CHALLENGE.
                       </h2>
                       
                       <div className="space-y-6 md:space-y-8 text-gray-600 font-medium leading-relaxed text-sm md:text-lg">
@@ -162,7 +170,7 @@ const Dashboard: React.FC = () => {
                           </h4>
                           <ul className="space-y-5">
                             {[
-                              "Téléchargez la fiche d’inscription officielle (bouton ci-dessous).",
+                              "Téléchargez la fiche d’inscription officielle (onglet Réception).",
                               "Imprimez-la et remplissez-la manuellement (à la main).",
                               "Scannez la fiche complétée au format PDF.",
                               "Cliquez sur 'Finaliser mon inscription' pour accéder au Google Form."
@@ -182,10 +190,6 @@ const Dashboard: React.FC = () => {
                              Une fois le formulaire de finalisation envoyé, aucune modification ne sera possible. Assurez-vous de l'exactitude de vos documents avant l'envoi.
                            </div>
                         </div>
-
-                        <p className="italic font-serif border-l-8 border-nova-violet pl-10 text-base md:text-xl py-4 bg-gray-50/50 rounded-r-3xl">
-                          "Tant que le formulaire de finalisation n’est pas encore validé, vous pouvez revenir sur votre dashboard autant de fois que nécessaire sans aucune conséquence."
-                        </p>
                       </div>
                     </div>
                   </section>
@@ -220,16 +224,44 @@ const Dashboard: React.FC = () => {
               {activeTab === 'instructions' && (
                 <div className="space-y-6 md:space-y-8">
                   {broadcasts.map((b) => (
-                    <div key={b.id} className={`bg-white p-8 md:p-12 border border-gray-100 rounded-[2.5rem] md:rounded-[3.5rem] shadow-sm relative overflow-hidden group ${b.type === 'auth' ? 'border-l-8 border-l-nova-violet bg-nova-violet/[0.01]' : ''}`}>
+                    <motion.div 
+                      layout
+                      initial={{ opacity: 0, scale: 0.98 }}
+                      animate={{ opacity: 1, scale: 1 }}
+                      key={b.id} 
+                      className={`bg-white p-8 md:p-12 border border-gray-100 rounded-[2.5rem] md:rounded-[3.5rem] shadow-sm relative overflow-hidden group ${b.type === 'auth' ? 'border-l-8 border-l-nova-violet bg-nova-violet/[0.01]' : b.type === 'critical' ? 'border-l-8 border-l-nova-red bg-nova-red/[0.01]' : ''}`}
+                    >
                        <div className="flex items-start justify-between mb-8 md:mb-12">
                           <div className={`p-5 rounded-2xl ${b.type === 'auth' ? 'bg-nova-violet text-white' : b.type === 'critical' ? 'bg-nova-red text-white' : 'bg-nova-violet/10 text-nova-violet'}`}>
-                             {b.type === 'auth' ? <Key size={24} /> : <Package size={24} />}
+                             {b.type === 'auth' ? <Key size={24} /> : b.type === 'file' ? <FileText size={24} /> : <Package size={24} />}
                           </div>
                           <span className="text-[10px] font-black text-gray-300 uppercase tracking-widest">{b.timestamp}</span>
                        </div>
                        <h3 className="text-xl md:text-3xl font-black text-nova-black uppercase mb-6 tracking-tighter leading-tight">{b.title}</h3>
                        <p className="text-gray-500 text-sm md:text-lg font-medium leading-relaxed mb-10">{b.content}</p>
                        
+                       {/* Gestion des fichiers joints */}
+                       {b.fileData && (
+                         <div className="p-6 bg-gray-50 rounded-2xl border border-gray-100 flex items-center justify-between group-hover:border-nova-violet/30 transition-colors">
+                            <div className="flex items-center gap-4">
+                               <div className="w-12 h-12 bg-white rounded-xl flex items-center justify-center text-nova-violet shadow-sm">
+                                  <FileText size={20} />
+                               </div>
+                               <div>
+                                  <span className="text-[10px] font-black uppercase text-gray-400 block mb-1">Document joint</span>
+                                  <span className="text-xs md:text-sm font-bold text-nova-black truncate max-w-[150px] md:max-w-xs">{b.fileName}</span>
+                               </div>
+                            </div>
+                            <a 
+                              href={b.fileData} 
+                              download={b.fileName}
+                              className="flex items-center gap-2 text-[10px] font-black uppercase tracking-widest text-nova-violet hover:text-nova-red transition-colors"
+                            >
+                               <Download size={16} /> <span className="hidden sm:inline">Télécharger</span>
+                            </a>
+                         </div>
+                       )}
+
                        {b.type === 'auth' && (
                          <div className="mt-4 p-8 bg-nova-black text-white rounded-[2rem] text-center relative overflow-hidden">
                             <div className="absolute inset-0 bg-gradient-to-r from-nova-violet/20 to-transparent opacity-50" />
@@ -238,7 +270,7 @@ const Dashboard: React.FC = () => {
                               <span className="text-3xl md:text-5xl font-black tracking-[0.3em]">{b.content.split(':').pop()?.trim()}</span>
                               <button onClick={() => {
                                 navigator.clipboard.writeText(b.content.split(':').pop()?.trim() || '');
-                                alert("Code copié !");
+                                alert("Code copié avec succès !");
                               }} className="p-3 bg-white/10 rounded-xl hover:bg-white/20 transition-colors">
                                 <Copy size={20} />
                               </button>
@@ -246,10 +278,10 @@ const Dashboard: React.FC = () => {
                          </div>
                        )}
 
-                       {b.link && (
-                         <Button size="sm" variant="outline" className="w-full mt-6" onClick={() => window.open(b.link)}>Ouvrir le contenu</Button>
+                       {b.link && !b.fileData && (
+                         <Button size="sm" variant="outline" className="w-full mt-6" onClick={() => window.open(b.link)}>Ouvrir le lien externe</Button>
                        )}
-                    </div>
+                    </motion.div>
                   ))}
                 </div>
               )}
@@ -261,11 +293,11 @@ const Dashboard: React.FC = () => {
                   </div>
                   <h3 className="text-3xl md:text-5xl font-black text-nova-black uppercase mb-8 tracking-tighter">Mon Dossier Candidat</h3>
                   <p className="text-gray-400 font-medium text-base md:text-xl mb-12 max-w-lg mx-auto leading-relaxed">
-                    Votre candidature est en cours de traitement. Complétez la fiche d'inscription pour passer à l'étape suivante.
+                    Votre candidature est en cours de traitement par le directoire technique.
                   </p>
                   <div className="flex flex-col md:flex-row justify-center gap-6 w-full max-w-lg">
-                    <Button variant="outline" disabled className="w-full opacity-40">Projets Techniques</Button>
-                    <Button variant="outline" disabled className="w-full opacity-40">Résultats Phase 1</Button>
+                    <Button variant="outline" disabled className="w-full opacity-40">Livrables de Projet</Button>
+                    <Button variant="outline" disabled className="w-full opacity-40">Rapport de Jury</Button>
                   </div>
                 </div>
               )}
