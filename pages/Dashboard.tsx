@@ -1,10 +1,11 @@
 
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
+import { useNavigate } from 'react-router-dom';
 import { 
   LayoutDashboard, Bell, CheckCircle2, 
   Upload, Palette, Sparkles, LogOut,
-  Package, Download, ChevronRight, User
+  Package, Download, ChevronRight, FileText, ExternalLink, AlertTriangle, Key, Copy
 } from 'lucide-react';
 import Button from '../components/Button';
 
@@ -14,215 +15,270 @@ interface Broadcast {
   content: string;
   link?: string;
   timestamp: string;
-  type: 'message' | 'file' | 'critical';
+  type: 'message' | 'file' | 'critical' | 'auth';
 }
 
 const Dashboard: React.FC = () => {
-  const [activeTab, setActiveTab] = useState<'overview' | 'instructions' | 'missions' | 'space'>('overview');
+  const navigate = useNavigate();
+  const [activeTab, setActiveTab] = useState<'overview' | 'instructions' | 'missions'>('overview');
   const [teamName, setTeamName] = useState('Innovation Team');
   const [userName, setUserName] = useState('Jean Dupont');
-  const [accentColor, setAccentColor] = useState<'violet' | 'red' | 'gold'>('violet');
+  const [userEmail, setUserEmail] = useState('');
   const [broadcasts, setBroadcasts] = useState<Broadcast[]>([]);
 
   useEffect(() => {
     const savedTeam = localStorage.getItem('tnc_team_name');
     const savedUser = localStorage.getItem('tnc_user_name');
-    const savedBroadcasts = localStorage.getItem('tnc_broadcasts');
+    const savedEmail = localStorage.getItem('tnc_user_email');
     
     if (savedTeam) setTeamName(savedTeam);
     if (savedUser) setUserName(savedUser);
-    if (savedBroadcasts) setBroadcasts(JSON.parse(savedBroadcasts));
+    if (savedEmail) setUserEmail(savedEmail);
+    
+    let teamCode = 'NOVA-XXXX';
+    if (savedEmail) {
+      const recordStr = localStorage.getItem(`tnc_auth_${savedEmail.toLowerCase()}`);
+      if (recordStr) {
+        teamCode = JSON.parse(recordStr).code;
+      }
+    }
+
+    const initialBroadcasts: Broadcast[] = [
+      {
+        id: 'auth-code',
+        title: '📦 Colis de Sécurité : Votre Code Unique',
+        content: `C'est votre clé d'accès exclusive. Partagez ce code uniquement avec votre binôme pour qu'il puisse se connecter à cet espace. Code : ${teamCode}`,
+        timestamp: 'Réception immédiate',
+        type: 'auth'
+      },
+      {
+        id: 'welcome',
+        title: 'Action requise : Validation de dossier',
+        content: 'La fiche d\'inscription est prête dans votre espace. Téléchargez-la pour finaliser votre parcours.',
+        timestamp: 'Aujourd\'hui',
+        type: 'critical'
+      }
+    ];
+    setBroadcasts(initialBroadcasts);
+    window.scrollTo(0, 0);
   }, []);
 
-  const logout = () => {
-    localStorage.clear();
-    window.location.href = '/';
-  };
-
-  const getAccentText = () => {
-    if (accentColor === 'red') return 'text-nova-red';
-    if (accentColor === 'gold') return 'text-yellow-600';
-    return 'text-nova-violet';
-  };
-
-  const getAccentBg = () => {
-    if (accentColor === 'red') return 'bg-nova-red text-white';
-    if (accentColor === 'gold') return 'bg-yellow-500 text-nova-black';
-    return 'bg-nova-violet text-white';
+  const handleLogout = () => {
+    localStorage.removeItem('tnc_user_email');
+    localStorage.removeItem('tnc_user_name');
+    localStorage.removeItem('tnc_team_name');
+    navigate('/'); 
   };
 
   const menuItems = [
-    { id: 'overview', label: 'Vue d\'ensemble', icon: <LayoutDashboard size={20} /> },
+    { id: 'overview', label: 'Dashboard', icon: <LayoutDashboard size={20} /> },
     { id: 'instructions', label: 'Réception (Colis)', icon: <Package size={20} /> },
-    { id: 'missions', label: 'Mes Dépôts', icon: <Upload size={20} /> },
-    { id: 'space', label: 'Mon Espace', icon: <Palette size={20} /> },
+    { id: 'missions', label: 'Mon Dossier', icon: <Upload size={20} /> },
   ] as const;
 
   return (
-    <div className="min-h-screen bg-[#FDFDFF] pb-24">
+    <div className="min-h-screen bg-[#FDFDFF] selection:bg-nova-violet selection:text-white flex flex-col overflow-x-hidden">
       
-      {/* Top Header - Unified Mobile/Desktop */}
-      <header className="fixed top-0 left-0 w-full bg-white/80 backdrop-blur-xl border-b border-gray-100 z-50 pt-20 pb-4">
-        <div className="container mx-auto px-4 flex items-center justify-between">
-          <div className="flex items-center gap-3">
-             <div className={`w-10 h-10 rounded-2xl flex items-center justify-center ${getAccentBg()} shadow-lg shadow-current/10`}>
-                <Sparkles size={18} />
+      {/* Header Dashboard - Correction de la superposition */}
+      <header className="fixed top-0 left-0 w-full bg-white border-b border-gray-100 z-[80] shadow-sm">
+        {/* Le pt-24 (mobile) et pt-32 (desktop) assure que le header dashboard apparaît SOUS la navbar globale */}
+        <div className="container mx-auto px-4 md:px-8 flex items-center justify-between pt-28 md:pt-36 pb-6">
+          <div className="flex items-center gap-3 md:gap-4">
+             <div className="w-10 h-10 md:w-12 md:h-12 rounded-2xl bg-nova-violet text-white flex items-center justify-center shadow-xl shadow-nova-violet/20">
+                <Sparkles size={20} />
              </div>
-             <div>
-                <h1 className="text-sm font-black uppercase tracking-widest text-nova-black truncate max-w-[150px]">{teamName}</h1>
-                <p className="text-[9px] font-bold text-gray-400 uppercase tracking-widest">Compétiteur 2026</p>
+             <div className="flex flex-col">
+                <h1 className="text-xs md:text-base font-black uppercase tracking-widest text-nova-black truncate max-w-[140px] md:max-w-[300px] leading-tight">{teamName}</h1>
+                <p className="text-[8px] md:text-[10px] font-bold text-gray-400 uppercase tracking-widest">Compétiteur Officiel 2026</p>
              </div>
           </div>
-          <button onClick={logout} className="p-3 text-gray-300 hover:text-nova-red transition-colors">
-            <LogOut size={20} />
+          <button 
+            onClick={handleLogout} 
+            className="group flex items-center gap-2 md:gap-3 px-3 py-1.5 md:px-5 md:py-2.5 rounded-full border border-gray-100 hover:border-nova-red hover:bg-nova-red/5 transition-all"
+          >
+            <span className="hidden sm:inline text-[9px] md:text-[10px] font-black uppercase tracking-[0.2em] text-gray-400 group-hover:text-nova-red">Déconnexion</span>
+            <LogOut size={16} className="text-gray-300 group-hover:text-nova-red md:w-[18px] md:h-[18px]" />
           </button>
         </div>
       </header>
 
-      {/* Main Content Area */}
-      <div className="container mx-auto px-4 pt-44 md:pt-48 lg:flex lg:gap-12">
+      {/* Main Content Area - Padding top augmenté pour compenser le header décalé */}
+      <div className="container mx-auto px-4 md:px-8 flex flex-col lg:flex-row gap-8 lg:gap-12 flex-grow pt-[220px] md:pt-[280px] pb-[100px] lg:pb-24">
         
-        {/* Navigation - Sidebar for Desktop, Bottom for Mobile */}
-        <nav className="fixed bottom-0 left-0 w-full bg-white border-t border-gray-100 px-2 py-3 lg:relative lg:border-none lg:bg-transparent lg:w-72 lg:p-0 flex lg:flex-col justify-around lg:justify-start gap-1 z-50">
+        {/* Navigation Sidebar (Mobile bottom fixed, Desktop left) */}
+        <aside className="fixed bottom-0 left-0 w-full bg-white border-t border-gray-100 px-2 py-3 lg:relative lg:border-none lg:bg-transparent lg:w-72 lg:p-0 flex lg:flex-col justify-around lg:justify-start gap-1 z-[90]">
           {menuItems.map((item) => (
             <button
               key={item.id}
-              onClick={() => setActiveTab(item.id)}
-              className={`flex flex-col lg:flex-row items-center gap-2 lg:gap-4 px-3 lg:px-6 py-2 lg:py-5 rounded-2xl transition-all duration-300 ${activeTab === item.id ? `${getAccentBg()} lg:shadow-xl` : 'text-gray-400 hover:bg-gray-50'}`}
+              onClick={() => {
+                setActiveTab(item.id);
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+              }}
+              className={`flex flex-col lg:flex-row items-center gap-2 lg:gap-5 px-3 lg:px-7 py-3 lg:py-6 rounded-[1.5rem] md:rounded-[2rem] transition-all duration-500 w-full lg:mb-3 ${
+                activeTab === item.id 
+                  ? 'bg-nova-violet text-white shadow-2xl shadow-nova-violet/30' 
+                  : 'text-gray-400 hover:bg-white hover:shadow-lg'
+              }`}
             >
               {item.icon}
-              <span className="text-[8px] lg:text-[10px] font-black uppercase tracking-widest">{item.label}</span>
+              <span className="text-[8px] lg:text-[11px] font-black uppercase tracking-widest whitespace-nowrap">{item.label}</span>
             </button>
           ))}
-        </nav>
+        </aside>
 
-        {/* Content Section */}
+        {/* Section Dynamique */}
         <main className="flex-grow">
           <AnimatePresence mode="wait">
             <motion.div
               key={activeTab}
-              initial={{ opacity: 0, x: 10 }}
-              animate={{ opacity: 1, x: 0 }}
-              exit={{ opacity: 0, x: -10 }}
-              transition={{ duration: 0.3 }}
-              className="space-y-8"
+              initial={{ opacity: 0, y: 15 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -15 }}
+              transition={{ duration: 0.4 }}
+              className="space-y-8 md:space-y-12"
             >
               {activeTab === 'overview' && (
                 <>
-                  {/* Status Card */}
-                  <div className="bg-white rounded-[2.5rem] p-8 md:p-12 border border-gray-100 shadow-sm overflow-hidden relative group">
-                    <div className="flex items-center justify-between mb-10">
-                       <span className={`text-[10px] font-black uppercase tracking-widest ${getAccentText()}`}>Phase Active</span>
-                       <span className="text-nova-black/20 font-black text-2xl group-hover:text-nova-violet/20 transition-colors duration-700">#02</span>
+                  {/* Message d'accueil sans parenthèse */}
+                  <section className="bg-white rounded-[2.5rem] md:rounded-[4rem] border border-gray-100 shadow-sm p-8 md:p-16">
+                    <div className="flex items-center gap-4 mb-10">
+                       <span className="text-[10px] font-black uppercase tracking-[0.4em] text-nova-violet">Information Institutionnelle</span>
+                       <div className="h-px flex-grow bg-gray-50" />
                     </div>
-                    <h2 className="editorial-title text-4xl md:text-5xl text-nova-black mb-10">SÉLECTION <br /><span className={`${getAccentText()} italic font-light`}>EN COURS.</span></h2>
                     
-                    {/* Simplified Progress for Mobile */}
-                    <div className="flex items-center gap-3">
-                      <div className="flex-grow h-2 bg-gray-100 rounded-full overflow-hidden">
-                        <motion.div initial={{ width: 0 }} animate={{ width: '25%' }} className={`h-full ${getAccentBg()}`} />
-                      </div>
-                      <span className="text-[10px] font-black text-nova-black">25%</span>
-                    </div>
-                  </div>
+                    <div className="prose prose-xl max-w-none text-nova-black">
+                      <h2 className="text-2xl md:text-4xl font-black uppercase tracking-tighter mb-10 leading-[1.1]">
+                        Bonjour <span className="text-nova-violet">{teamName}</span> et bienvenue au TECH NOVA CHALLENGE, premier concours d’innovation technologique au Bénin.
+                      </h2>
+                      
+                      <div className="space-y-6 md:space-y-8 text-gray-600 font-medium leading-relaxed text-sm md:text-lg">
+                        <p>
+                          Vous venez de franchir avec succès la première étape de votre inscription. Pour que votre participation soit pleinement validée, il vous reste encore une dernière étape obligatoire à compléter.
+                        </p>
+                        
+                        <div className="bg-gray-50 rounded-[2.5rem] p-8 md:p-12 border border-gray-100">
+                          <h4 className="flex items-center gap-3 text-nova-violet font-black uppercase tracking-widest text-xs mb-8">
+                            <Bell size={18} /> Protocole de finalisation :
+                          </h4>
+                          <ul className="space-y-5">
+                            {[
+                              "Téléchargez la fiche d’inscription officielle (bouton ci-dessous).",
+                              "Imprimez-la et remplissez-la manuellement (à la main).",
+                              "Scannez la fiche complétée au format PDF.",
+                              "Cliquez sur 'Finaliser mon inscription' pour accéder au Google Form."
+                            ].map((step, idx) => (
+                              <li key={idx} className="flex gap-5 items-start">
+                                <div className="w-6 h-6 rounded-full bg-nova-violet text-white flex items-center justify-center text-[10px] font-black flex-shrink-0 mt-1">{idx + 1}</div>
+                                <span className="text-sm md:text-lg leading-snug">{step}</span>
+                              </li>
+                            ))}
+                          </ul>
+                        </div>
 
-                  <div className="grid md:grid-cols-2 gap-8">
-                    {/* Latest Colis */}
-                    <div className="bg-white rounded-[2.5rem] p-8 md:p-10 border border-gray-100">
-                      <div className="flex items-center justify-between mb-8">
-                         <h3 className="text-[10px] font-black uppercase tracking-widest text-nova-black">Dernier Colis</h3>
-                         <button onClick={() => setActiveTab('instructions')} className={`text-[10px] font-black uppercase underline ${getAccentText()}`}>Voir tout</button>
-                      </div>
-                      {broadcasts.length > 0 ? (
-                        <div className="space-y-6">
-                           <div className="p-5 bg-gray-50 rounded-2xl border border-gray-100">
-                             <span className="text-[9px] font-bold text-gray-400 block mb-2">{broadcasts[0].timestamp}</span>
-                             <h4 className="font-black text-sm text-nova-black uppercase mb-2">{broadcasts[0].title}</h4>
-                             <p className="text-xs text-gray-500 font-medium line-clamp-2">{broadcasts[0].content}</p>
+                        <div className="flex gap-4 p-8 bg-nova-red/5 rounded-3xl border border-nova-red/10 text-nova-red">
+                           <AlertTriangle size={24} className="flex-shrink-0" />
+                           <div className="text-xs md:text-base">
+                             <strong className="block mb-2 uppercase font-black tracking-widest">Alerte Critique</strong>
+                             Une fois le formulaire de finalisation envoyé, aucune modification ne sera possible. Assurez-vous de l'exactitude de vos documents avant l'envoi.
                            </div>
                         </div>
-                      ) : (
-                        <div className="py-10 text-center text-gray-300 font-bold uppercase text-[10px] tracking-widest">En attente d'envoi</div>
-                      )}
+
+                        <p className="italic font-serif border-l-8 border-nova-violet pl-10 text-base md:text-xl py-4 bg-gray-50/50 rounded-r-3xl">
+                          "Tant que le formulaire de finalisation n’est pas encore validé, vous pouvez revenir sur votre dashboard autant de fois que nécessaire sans aucune conséquence."
+                        </p>
+                      </div>
+                    </div>
+                  </section>
+
+                  {/* Actions rapides */}
+                  <div className="grid md:grid-cols-2 gap-6 md:gap-10">
+                    <div className="bg-nova-black text-white rounded-[3rem] p-10 md:p-14 flex flex-col justify-between hover:scale-[1.01] transition-transform duration-500 shadow-2xl">
+                       <div>
+                         <FileText size={40} className="text-nova-violet mb-10" />
+                         <h3 className="text-2xl font-black uppercase tracking-tighter mb-4">La Fiche Officielle</h3>
+                         <p className="text-white/50 text-sm font-medium mb-10 leading-relaxed">Document maître à remplir manuellement pour valider votre identité technique.</p>
+                       </div>
+                       <Button size="lg" variant="accent" className="w-full" onClick={() => window.open('https://example.com/fiche-tnc.pdf')}>
+                         <Download size={18} className="mr-3" /> Télécharger PDF
+                       </Button>
                     </div>
 
-                    {/* Resources */}
-                    <div className="bg-nova-black rounded-[2.5rem] p-8 md:p-10 text-white">
-                      <h3 className="text-[10px] font-black uppercase tracking-widest text-nova-violet mb-8">Ressources</h3>
-                      <div className="space-y-4">
-                        <div className="flex items-center justify-between p-4 bg-white/5 rounded-2xl hover:bg-white/10 transition-colors group cursor-pointer">
-                           <span className="text-[10px] font-bold uppercase tracking-widest">Guide Officiel PDF</span>
-                           <Download size={16} className="text-nova-violet group-hover:scale-110 transition-transform" />
-                        </div>
-                      </div>
+                    <div className="bg-white rounded-[3rem] border border-gray-100 p-10 md:p-14 flex flex-col justify-between shadow-sm hover:shadow-2xl transition-all duration-500">
+                       <div>
+                         <ExternalLink size={40} className="text-nova-violet mb-10" />
+                         <h3 className="text-2xl font-black uppercase tracking-tighter mb-4 text-nova-black">Validation Totale</h3>
+                         <p className="text-gray-400 text-sm font-medium mb-10 leading-relaxed">Soumission finale du dossier scanné via le portail Google Form officiel.</p>
+                       </div>
+                       <Button size="lg" variant="primary" className="w-full" onClick={() => window.open('https://forms.gle/votre_lien_google_form')}>
+                         Finaliser Inscription
+                       </Button>
                     </div>
                   </div>
                 </>
               )}
 
               {activeTab === 'instructions' && (
-                <div className="space-y-6">
+                <div className="space-y-6 md:space-y-8">
                   {broadcasts.map((b) => (
-                    <div key={b.id} className="bg-white p-8 border border-gray-100 rounded-[2.5rem] shadow-sm relative overflow-hidden">
-                       <div className="flex items-start justify-between mb-6">
-                          <div className={`p-3 rounded-2xl ${b.type === 'critical' ? 'bg-nova-red/10 text-nova-red' : 'bg-nova-violet/10 text-nova-violet'}`}>
-                             <Package size={20} />
+                    <div key={b.id} className={`bg-white p-8 md:p-12 border border-gray-100 rounded-[2.5rem] md:rounded-[3.5rem] shadow-sm relative overflow-hidden group ${b.type === 'auth' ? 'border-l-8 border-l-nova-violet bg-nova-violet/[0.01]' : ''}`}>
+                       <div className="flex items-start justify-between mb-8 md:mb-12">
+                          <div className={`p-5 rounded-2xl ${b.type === 'auth' ? 'bg-nova-violet text-white' : b.type === 'critical' ? 'bg-nova-red text-white' : 'bg-nova-violet/10 text-nova-violet'}`}>
+                             {b.type === 'auth' ? <Key size={24} /> : <Package size={24} />}
                           </div>
-                          <span className="text-[9px] font-bold text-gray-400 uppercase tracking-widest">{b.timestamp}</span>
+                          <span className="text-[10px] font-black text-gray-300 uppercase tracking-widest">{b.timestamp}</span>
                        </div>
-                       <h3 className="text-xl font-black text-nova-black uppercase mb-4 tracking-tighter">{b.title}</h3>
-                       <p className="text-gray-500 text-sm font-medium leading-relaxed mb-6">{b.content}</p>
-                       {b.link && (
-                         <Button size="sm" variant="outline" className="w-full" onClick={() => window.open(b.link)}>Accéder au contenu</Button>
+                       <h3 className="text-xl md:text-3xl font-black text-nova-black uppercase mb-6 tracking-tighter leading-tight">{b.title}</h3>
+                       <p className="text-gray-500 text-sm md:text-lg font-medium leading-relaxed mb-10">{b.content}</p>
+                       
+                       {b.type === 'auth' && (
+                         <div className="mt-4 p-8 bg-nova-black text-white rounded-[2rem] text-center relative overflow-hidden">
+                            <div className="absolute inset-0 bg-gradient-to-r from-nova-violet/20 to-transparent opacity-50" />
+                            <span className="text-[10px] font-black text-white/40 uppercase tracking-[0.4em] block mb-4 relative z-10">VOTRE CODE NOVA UNIQUE</span>
+                            <div className="flex items-center justify-center gap-6 relative z-10">
+                              <span className="text-3xl md:text-5xl font-black tracking-[0.3em]">{b.content.split(':').pop()?.trim()}</span>
+                              <button onClick={() => {
+                                navigator.clipboard.writeText(b.content.split(':').pop()?.trim() || '');
+                                alert("Code copié !");
+                              }} className="p-3 bg-white/10 rounded-xl hover:bg-white/20 transition-colors">
+                                <Copy size={20} />
+                              </button>
+                            </div>
+                         </div>
                        )}
-                       {b.type === 'critical' && <div className="absolute top-0 left-0 w-1.5 h-full bg-nova-red" />}
+
+                       {b.link && (
+                         <Button size="sm" variant="outline" className="w-full mt-6" onClick={() => window.open(b.link)}>Ouvrir le contenu</Button>
+                       )}
                     </div>
                   ))}
-                  {broadcasts.length === 0 && (
-                    <div className="py-32 text-center text-gray-300 font-black uppercase text-xs tracking-widest">Aucun message pour l'instant</div>
-                  )}
                 </div>
               )}
 
-              {activeTab === 'space' && (
-                <div className="bg-white rounded-[2.5rem] p-8 md:p-12 border border-gray-100">
-                  <h3 className="text-xs font-black uppercase tracking-widest text-nova-black mb-12">Personnalisation</h3>
-                  <div className="space-y-12">
-                     <div className="space-y-6">
-                        <label className="text-[10px] font-black uppercase text-gray-400">Thème Visuel</label>
-                        <div className="flex gap-4">
-                          {['violet', 'red', 'gold'].map((color) => (
-                            <button
-                              key={color}
-                              onClick={() => setAccentColor(color as any)}
-                              className={`w-12 h-12 rounded-2xl border-4 transition-all ${accentColor === color ? 'border-nova-black scale-110' : 'border-transparent opacity-40'} ${color === 'violet' ? 'bg-nova-violet' : color === 'red' ? 'bg-nova-red' : 'bg-yellow-500'}`}
-                            />
-                          ))}
-                        </div>
-                     </div>
-                     <div className="space-y-6">
-                        <label className="text-[10px] font-black uppercase text-gray-400">Équipe</label>
-                        <input value={teamName} onChange={e => setTeamName(e.target.value)} className="w-full bg-gray-50 border border-gray-200 rounded-2xl px-6 py-4 text-nova-black font-bold outline-none focus:border-nova-violet transition-all" />
-                        <Button size="sm" className="w-full" onClick={() => localStorage.setItem('tnc_team_name', teamName)}>Sauvegarder</Button>
-                     </div>
-                  </div>
-                </div>
-              )}
-              
               {activeTab === 'missions' && (
-                <div className="bg-white rounded-[2.5rem] p-12 text-center border border-gray-100">
-                  <div className="w-20 h-20 bg-gray-50 rounded-full flex items-center justify-center mx-auto mb-8 text-nova-violet/20">
-                     <Upload size={32} />
+                <div className="bg-white rounded-[3rem] md:rounded-[4rem] p-16 md:p-24 text-center border border-gray-100 shadow-sm min-h-[500px] flex flex-col items-center justify-center">
+                  <div className="w-24 h-24 md:w-32 md:h-32 bg-gray-50 rounded-full flex items-center justify-center mx-auto mb-12 text-nova-violet/20">
+                     <Upload size={48} />
                   </div>
-                  <h3 className="text-2xl font-black text-nova-black uppercase mb-4">Portail Fermé</h3>
-                  <p className="text-gray-400 font-medium text-sm mb-10">Les dépôts de livrables ne sont pas encore ouverts pour votre binôme. Surveillez vos colis.</p>
-                  <Button variant="outline" disabled className="w-full md:w-auto">En attente</Button>
+                  <h3 className="text-3xl md:text-5xl font-black text-nova-black uppercase mb-8 tracking-tighter">Mon Dossier Candidat</h3>
+                  <p className="text-gray-400 font-medium text-base md:text-xl mb-12 max-w-lg mx-auto leading-relaxed">
+                    Votre candidature est en cours de traitement. Complétez la fiche d'inscription pour passer à l'étape suivante.
+                  </p>
+                  <div className="flex flex-col md:flex-row justify-center gap-6 w-full max-w-lg">
+                    <Button variant="outline" disabled className="w-full opacity-40">Projets Techniques</Button>
+                    <Button variant="outline" disabled className="w-full opacity-40">Résultats Phase 1</Button>
+                  </div>
                 </div>
               )}
             </motion.div>
           </AnimatePresence>
         </main>
       </div>
+
+      <footer className="hidden lg:block py-16 text-center border-t border-black/5 bg-white">
+         <p className="text-[11px] font-black tracking-[1.2em] text-nova-black/10 uppercase font-display">
+            Tableau de Bord Officiel — Tech Nova Challenge.
+         </p>
+      </footer>
     </div>
   );
 };

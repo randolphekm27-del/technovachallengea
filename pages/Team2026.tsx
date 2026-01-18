@@ -12,7 +12,7 @@ interface TeamMember {
   field: string;
   image: string;
   priority: number;
-  bio: string; // La description en une phrase est maintenant obligatoire
+  bio: string; 
 }
 
 const team: TeamMember[] = [
@@ -135,7 +135,7 @@ const team: TeamMember[] = [
     field: "Génie énergétique et procédés",
     image: "https://i.postimg.cc/GmM9NHGb/Charone_Abioud_Wicham.jpg",
     priority: 90,
-    bio: "Il déploie son expertise en génie énergétique et procédés pour assurer la fiabilité des installations techniques du challenge."
+    bio: "Expert en systèmes énergétiques, il assure la faisabilité technique et la fiabilité des prototypes industriels du challenge."
   },
   {
     id: 10,
@@ -258,7 +258,7 @@ const TeamMemberCard: React.FC<{ member: TeamMember }> = ({ member }) => {
       whileInView={{ opacity: 1, scale: 1, y: 0 }}
       viewport={{ once: true, margin: "-10%" }}
       transition={{ duration: 1.2, ease: [0.16, 1, 0.3, 1] }}
-      className="group flex flex-col md:flex-row bg-white border border-gray-100 rounded-[3rem] overflow-hidden shadow-sm hover:shadow-2xl transition-all duration-700 mb-20 md:mb-32"
+      className="group flex flex-col md:flex-row bg-white border border-gray-100 rounded-[3rem] overflow-hidden shadow-sm hover:shadow-2xl transition-all duration-700 mb-12 md:mb-32"
     >
       <div className="w-full md:w-[42%] aspect-[4/5] overflow-hidden bg-gray-50 relative">
         <motion.img
@@ -273,9 +273,9 @@ const TeamMemberCard: React.FC<{ member: TeamMember }> = ({ member }) => {
         <div className="absolute inset-0 bg-gradient-to-r from-black/5 to-transparent pointer-events-none" />
       </div>
 
-      <div className="w-full md:w-[58%] p-10 md:p-16 flex flex-col justify-center bg-white">
-        <div className="space-y-10">
-          <div className="pb-8 border-b border-gray-100">
+      <div className="w-full md:w-[58%] p-8 md:p-16 flex flex-col justify-center bg-white">
+        <div className="space-y-8 md:space-y-10">
+          <div className="pb-6 md:pb-8 border-b border-gray-100">
             <div className="flex items-center gap-4 mb-4">
               <span className="text-[10px] font-black uppercase tracking-[0.4em] text-nova-violet">Identité Digitale</span>
               {member.priority === 10 && (
@@ -284,26 +284,26 @@ const TeamMemberCard: React.FC<{ member: TeamMember }> = ({ member }) => {
                 </span>
               )}
             </div>
-            <h2 className="text-4xl md:text-5xl font-black text-nova-black uppercase tracking-tighter leading-none mb-4">
+            <h2 className="text-3xl md:text-5xl font-black text-nova-black uppercase tracking-tighter leading-none mb-4">
               {member.lastName}
             </h2>
-            <p className="text-xl md:text-2xl font-bold text-gray-400 uppercase tracking-tight">
+            <p className="text-lg md:text-2xl font-bold text-gray-400 uppercase tracking-tight">
               {member.firstName}
             </p>
           </div>
 
           <div className="space-y-4">
             <span className="text-[10px] font-black uppercase tracking-[0.4em] text-nova-violet mb-3 block opacity-60">Profil & Mission</span>
-            <p className="text-lg md:text-xl font-medium text-gray-500 italic leading-relaxed font-serif">
+            <p className="text-base md:text-xl font-medium text-gray-500 italic leading-relaxed font-serif">
               {member.bio}
             </p>
           </div>
 
           {!isHighLevel && (
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-10 pt-4">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-10 pt-4">
               <div>
                 <span className="text-[10px] font-black uppercase tracking-[0.4em] text-nova-violet mb-3 block opacity-60">Établissement</span>
-                <p className="text-base font-black text-nova-black uppercase leading-tight tracking-tight">
+                <p className="text-sm md:text-base font-black text-nova-black uppercase leading-tight tracking-tight">
                   {member.university}
                 </p>
               </div>
@@ -311,7 +311,7 @@ const TeamMemberCard: React.FC<{ member: TeamMember }> = ({ member }) => {
               {member.field && (
                 <div>
                   <span className="text-[10px] font-black uppercase tracking-[0.4em] text-nova-violet mb-3 block opacity-60">Filière / Spécialité</span>
-                  <p className="text-base font-bold text-gray-500 italic leading-snug">
+                  <p className="text-sm md:text-base font-bold text-gray-500 italic leading-snug">
                     {member.field}
                   </p>
                 </div>
@@ -319,9 +319,9 @@ const TeamMemberCard: React.FC<{ member: TeamMember }> = ({ member }) => {
             </div>
           )}
 
-          <div className="pt-6">
+          <div className="pt-4 md:pt-6">
             <div className="inline-block px-0 py-0 border-l-4 border-nova-violet pl-6">
-              <p className="text-2xl font-black text-nova-violet uppercase tracking-wider leading-none">
+              <p className="text-xl md:text-2xl font-black text-nova-violet uppercase tracking-wider leading-none">
                 {member.role}
               </p>
             </div>
@@ -340,7 +340,7 @@ const Team2026: React.FC = () => {
   return (
     <div className="min-h-screen bg-white selection:bg-nova-violet selection:text-white pb-32">
       
-      <section className="relative h-screen w-full flex flex-col items-center justify-center overflow-hidden">
+      <section className="relative h-[80vh] md:h-screen w-full flex flex-col items-center justify-center overflow-hidden">
         <motion.div 
           style={{ y: yHero, opacity: opacityHero }}
           className="absolute inset-0 z-0"
@@ -360,14 +360,14 @@ const Team2026: React.FC = () => {
           transition={{ duration: 1.5, ease: [0.16, 1, 0.3, 1] }}
           className="container mx-auto max-w-7xl relative z-30 text-center px-6"
         >
-          <h1 className="editorial-title !text-white !text-[clamp(3rem,12vw,11rem)] !tracking-[-0.08em] !leading-[0.75] !text-shadow-none uppercase mb-12">
+          <h1 className="editorial-title !text-white !text-[clamp(2.5rem,10vw,11rem)] !tracking-[-0.08em] !leading-[0.8] !text-shadow-none uppercase mb-8 md:mb-12">
             UNE ÉQUIPE, <br />
             <span className="text-nova-violet italic font-light lowercase tracking-tighter">UNE VISION.</span>
           </h1>
           
-          <div className="w-24 h-px bg-nova-violet mx-auto mb-12" />
+          <div className="w-16 md:w-24 h-px bg-nova-violet mx-auto mb-8 md:mb-12" />
           
-          <p className="text-xl md:text-3xl text-white/60 font-light max-w-3xl mx-auto leading-relaxed italic font-serif">
+          <p className="text-lg md:text-3xl text-white/60 font-light max-w-3xl mx-auto leading-relaxed italic font-serif">
             Un collectif d'esprits visionnaires unis par l'audace et l'excellence pour façonner l'infrastructure technologique du Bénin.
           </p>
         </motion.div>
@@ -381,7 +381,7 @@ const Team2026: React.FC = () => {
         </motion.div>
       </section>
 
-      <section className="py-24 md:py-48 px-6 bg-white">
+      <section className="py-20 md:py-48 px-4 md:px-6 bg-white">
         <div className="container mx-auto max-w-6xl">
           {team.sort((a, b) => a.priority - b.priority).map((member) => (
             <TeamMemberCard key={member.id} member={member} />
@@ -391,32 +391,32 @@ const Team2026: React.FC = () => {
             initial={{ opacity: 0 }}
             whileInView={{ opacity: 1 }}
             viewport={{ once: true }}
-            className="mt-48 py-32 border-t border-gray-50 text-center"
+            className="mt-24 md:mt-48 py-20 md:py-32 border-t border-gray-50 text-center"
           >
-            <h2 className="text-4xl md:text-7xl font-black uppercase tracking-tighter text-nova-black mb-8 leading-none">
+            <h2 className="text-3xl md:text-7xl font-black uppercase tracking-tighter text-nova-black mb-8 leading-none">
               DÉPASSER LES <br /><span className="text-nova-violet italic font-light uppercase">FRONTIÈRES.</span>
             </h2>
-            <p className="text-gray-400 font-bold uppercase tracking-[0.4em] text-[11px]">
+            <p className="text-gray-400 font-bold uppercase tracking-[0.4em] text-[9px] md:text-[11px]">
               L'Elite Technologique au Service de la Nation
             </p>
           </motion.div>
         </div>
       </section>
 
-      <section className="py-48 bg-nova-black text-white px-6 text-center relative overflow-hidden">
+      <section className="py-24 md:py-48 bg-nova-black text-white px-6 text-center relative overflow-hidden">
         <div className="container mx-auto max-w-5xl relative z-10">
-            <h2 className="editorial-title text-[clamp(3rem,10vw,9rem)] leading-[0.8] mb-16 text-white !text-shadow-none">
+            <h2 className="editorial-title text-[clamp(2.5rem,10vw,9rem)] leading-[0.8] mb-12 md:mb-16 text-white !text-shadow-none">
               SOUVERAINETÉ <br />
               <span className="text-nova-violet italic font-light uppercase tracking-tighter">ET AUDACE.</span>
             </h2>
-            <div className="h-px w-32 bg-nova-violet mx-auto mb-16" />
-            <p className="text-[11px] font-black uppercase tracking-[1em] text-white/30">L'EXCELLENCE EST NOTRE SEUL STANDARD</p>
+            <div className="h-px w-24 md:w-32 bg-nova-violet mx-auto mb-12 md:mb-16" />
+            <p className="text-[9px] md:text-[11px] font-black uppercase tracking-[1em] text-white/30">L'EXCELLENCE EST NOTRE SEUL STANDARD</p>
         </div>
         <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[80vw] h-[80vw] bg-nova-violet/10 blur-[150px] rounded-full pointer-events-none" />
       </section>
 
-      <footer className="py-24 text-center border-t border-black/5 bg-white">
-         <p className="text-[11px] font-black tracking-[1.5em] text-nova-black/10 uppercase font-display px-4">
+      <footer className="py-16 md:py-24 text-center border-t border-black/5 bg-white">
+         <p className="text-[9px] md:text-[11px] font-black tracking-[1em] md:tracking-[1.5em] text-nova-black/10 uppercase font-display px-4">
             Tech Nova Challenge — Un Collectif Visionnaire.
          </p>
       </footer>

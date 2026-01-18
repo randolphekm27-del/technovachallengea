@@ -1,7 +1,8 @@
+
 import React, { useState, useEffect } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Menu, X, LayoutDashboard } from 'lucide-react';
+import { Menu, X, LayoutDashboard, Rocket } from 'lucide-react';
 import Button from './Button';
 
 const Navbar: React.FC = () => {
@@ -21,11 +22,11 @@ const Navbar: React.FC = () => {
     };
     
     checkLogin();
-    window.addEventListener('storage', checkLogin);
+    const interval = setInterval(checkLogin, 1000); // Check periodic for dev/simulated env
     
     return () => {
       window.removeEventListener('scroll', handleScroll);
-      window.removeEventListener('storage', checkLogin);
+      clearInterval(interval);
     };
   }, []);
 
@@ -78,9 +79,6 @@ const Navbar: React.FC = () => {
                 }`}
               >
                 {link.name}
-                {isActive(link.path) && scrolled && (
-                  <motion.div layoutId="activeNav" className="absolute -bottom-1 left-0 right-0 h-0.5 bg-nova-red" />
-                )}
               </Link>
             ))}
           </div>
@@ -93,9 +91,9 @@ const Navbar: React.FC = () => {
                   key="dashboard-btn"
                   size="sm" 
                   onClick={() => navigate('/dashboard')}
-                  className={`hidden md:inline-flex ${!scrolled ? 'border-white/20' : ''}`}
+                  className={`hidden md:inline-flex ${!scrolled ? '!bg-nova-violet !text-white' : ''}`}
                 >
-                  <LayoutDashboard size={14} className="mr-2" /> Espace
+                  <LayoutDashboard size={14} className="mr-2" /> Mon Espace
                 </Button>
               ) : (
                 <Button 
@@ -104,7 +102,7 @@ const Navbar: React.FC = () => {
                   onClick={() => navigate('/participate')}
                   className={`hidden md:inline-flex ${!scrolled ? '!bg-white !text-nova-black shadow-none border-none' : ''}`}
                 >
-                  Postuler
+                  <Rocket size={14} className="mr-2" /> Postuler
                 </Button>
               )}
             </AnimatePresence>
