@@ -2,7 +2,7 @@
 import React, { useState, useEffect } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Menu, X, LayoutDashboard, Rocket, Bell, Activity } from 'lucide-react';
+import { Menu, X, LayoutDashboard, Rocket, Bell, Activity, Layers } from 'lucide-react';
 import Button from './Button';
 
 const Navbar: React.FC = () => {
@@ -12,6 +12,10 @@ const Navbar: React.FC = () => {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [unreadCount, setUnreadCount] = useState(0);
+  const [siteConfig, setSiteConfig] = useState({
+    hiddenPages: [] as string[],
+    isReorganized: false
+  });
 
   useEffect(() => {
     const handleScroll = () => setScrolled(window.scrollY > 50);
@@ -21,26 +25,24 @@ const Navbar: React.FC = () => {
       const user = localStorage.getItem('tnc_user_name');
       setIsLoggedIn(!!user);
 
+      const configStr = localStorage.getItem('tnc_site_config');
+      if (configStr) {
+        setSiteConfig(JSON.parse(configStr));
+      }
+
       if (user) {
         const broadcastsStr = localStorage.getItem('tnc_broadcasts');
         const lastRead = localStorage.getItem('tnc_last_read_colis') || '0';
-        
         if (broadcastsStr) {
           const broadcasts = JSON.parse(broadcastsStr);
-          const newItems = broadcasts.filter((b: any) => {
-            const bTime = new Date(b.timestamp).getTime();
-            return bTime > parseInt(lastRead);
-          });
+          const newItems = broadcasts.filter((b: any) => new Date(b.timestamp).getTime() > parseInt(lastRead));
           setUnreadCount(newItems.length);
         }
-      } else {
-        setUnreadCount(0);
       }
     };
     
     checkStatus();
     const interval = setInterval(checkStatus, 2000); 
-    
     return () => {
       window.removeEventListener('scroll', handleScroll);
       clearInterval(interval);
@@ -49,15 +51,34 @@ const Navbar: React.FC = () => {
 
   const isActive = (path: string) => location.pathname === path;
 
-  const navLinks = [
+  // Filtrage des liens dynamiques
+  let navLinks = [
     { name: 'Accueil', path: '/' },
     { name: 'Live Étapes', path: '/etapes-en-cours' },
     { name: 'Déroulement', path: '/deroulement' },
+    { name: 'Voter', path: '/vote' },
     { name: 'Lauréats 2025', path: '/laureats-2025' },
     { name: 'Équipe 2026', path: '/equipe-2026' },
     { name: 'Galerie', path: '/galerie' },
     { name: 'Partenaires', path: '/partenaires' },
   ];
+
+  // Appliquer le masquage Admin
+  navLinks = navLinks.filter(link => !siteConfig.hiddenPages.includes(link.path));
+
+  // Appliquer la réorganisation
+  if (siteConfig.isReorganized) {
+    const archivesToHide = ['/laureats-2025', '/equipe-2026', '/galerie'];
+    navLinks = navLinks.filter(link => !archivesToHide.includes(link.path));
+    // Insérer le bouton Hub
+    const partnersIndex = navLinks.findIndex(l => l.path === '/partenaires');
+    const hubLink = { name: 'Rétrospectives', path: '/archives' };
+    if (partnersIndex !== -1) {
+      navLinks.splice(partnersIndex, 0, hubLink);
+    } else {
+      navLinks.push(hubLink);
+    }
+  }
 
   return (
     <>
@@ -136,9 +157,6 @@ const Navbar: React.FC = () => {
               className={`lg:hidden p-2.5 rounded-full transition-all duration-500 relative ${scrolled ? 'bg-nova-gray border border-black/5 text-nova-black' : 'bg-white/20 text-white border border-white/20'}`}
             >
               {mobileMenuOpen ? <X size={18} /> : <Menu size={18} />}
-              {!mobileMenuOpen && unreadCount > 0 && (
-                <div className="absolute top-0 right-0 w-3 h-3 bg-nova-red rounded-full border-2 border-white" />
-              )}
             </button>
           </div>
         </motion.div>
@@ -147,30 +165,25 @@ const Navbar: React.FC = () => {
       <AnimatePresence>
         {mobileMenuOpen && (
           <motion.div 
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            className="fixed inset-0 z-[90] bg-white overflow-hidden flex flex-col"
+            initial={{ opacity: 0, x: '100%' }}
+            animate={{ opacity: 1, x: 0 }}
+            exit={{ opacity: 0, x: '100%' }}
+            className="fixed inset-0 z-[90] bg-white overflow-hidden flex flex-col pt-32"
           >
-            <div className="flex-grow flex flex-col justify-center px-10 pt-20">
+            <div className="flex-grow flex flex-col px-10">
               <nav className="space-y-4">
                 {navLinks.map((link, i) => (
-                  <motion.div key={link.path} initial={{ x: -20, opacity: 0 }} animate={{ x: 0, opacity: 1 }} transition={{ delay: i * 0.05 }}>
-                    <Link to={link.path} onClick={() => setMobileMenuOpen(false)} className={`block py-3 border-b border-black/5 transition-all ${isActive(link.path) ? 'text-nova-red' : 'text-nova-black'}`}>
+                  <motion.div key={link.path} initial={{ x: 20, opacity: 0 }} animate={{ x: 0, opacity: 1 }} transition={{ delay: i * 0.05 }}>
+                    <Link to={link.path} onClick={() => setMobileMenuOpen(false)} className={`block py-4 border-b border-black/5 transition-all ${isActive(link.path) ? 'text-nova-red' : 'text-nova-black'}`}>
                       <span className="text-3xl font-black uppercase tracking-tighter">{link.name}</span>
                     </Link>
                   </motion.div>
                 ))}
               </nav>
-              <div className="mt-16 relative">
+              <div className="mt-auto mb-20">
                 <Button size="lg" variant="accent" className="w-full" onClick={() => { setMobileMenuOpen(false); navigate(isLoggedIn ? '/dashboard' : '/participate'); }}>
                   {isLoggedIn ? 'Mon Espace' : 'Postuler 2026'}
                 </Button>
-                {isLoggedIn && unreadCount > 0 && (
-                  <div className="absolute -top-3 -right-3 w-8 h-8 bg-nova-red text-white rounded-full flex items-center justify-center font-black border-4 border-white shadow-xl">
-                    {unreadCount}
-                  </div>
-                )}
               </div>
             </div>
           </motion.div>
