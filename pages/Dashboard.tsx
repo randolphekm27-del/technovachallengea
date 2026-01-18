@@ -79,10 +79,10 @@ const Dashboard: React.FC = () => {
   return (
     <div className="min-h-screen bg-[#FDFDFF] selection:bg-nova-violet selection:text-white flex flex-col overflow-x-hidden">
       
-      {/* Header Dashboard - Correction de la superposition */}
+      {/* Header Dashboard - Ajusté pour descendre plus bas que la Navbar principale */}
       <header className="fixed top-0 left-0 w-full bg-white border-b border-gray-100 z-[80] shadow-sm">
-        {/* Le pt-24 (mobile) et pt-32 (desktop) assure que le header dashboard apparaît SOUS la navbar globale */}
-        <div className="container mx-auto px-4 md:px-8 flex items-center justify-between pt-28 md:pt-36 pb-6">
+        {/* pt-32 sur mobile et pt-40 sur desktop assure que les éléments (Nom d'équipe, déconnexion) sont bien visibles sous la navbar globale */}
+        <div className="container mx-auto px-4 md:px-8 flex items-center justify-between pt-32 md:pt-40 pb-6 md:pb-8">
           <div className="flex items-center gap-3 md:gap-4">
              <div className="w-10 h-10 md:w-12 md:h-12 rounded-2xl bg-nova-violet text-white flex items-center justify-center shadow-xl shadow-nova-violet/20">
                 <Sparkles size={20} />
@@ -102,10 +102,10 @@ const Dashboard: React.FC = () => {
         </div>
       </header>
 
-      {/* Main Content Area - Padding top augmenté pour compenser le header décalé */}
-      <div className="container mx-auto px-4 md:px-8 flex flex-col lg:flex-row gap-8 lg:gap-12 flex-grow pt-[220px] md:pt-[280px] pb-[100px] lg:pb-24">
+      {/* Main Content Area - Padding top compensant le header descendu */}
+      <div className="container mx-auto px-4 md:px-8 flex flex-col lg:flex-row gap-8 lg:gap-12 flex-grow pt-[240px] md:pt-[320px] pb-[100px] lg:pb-24">
         
-        {/* Navigation Sidebar (Mobile bottom fixed, Desktop left) */}
+        {/* Navigation Sidebar */}
         <aside className="fixed bottom-0 left-0 w-full bg-white border-t border-gray-100 px-2 py-3 lg:relative lg:border-none lg:bg-transparent lg:w-72 lg:p-0 flex lg:flex-col justify-around lg:justify-start gap-1 z-[90]">
           {menuItems.map((item) => (
             <button
@@ -209,7 +209,7 @@ const Dashboard: React.FC = () => {
                          <h3 className="text-2xl font-black uppercase tracking-tighter mb-4 text-nova-black">Validation Totale</h3>
                          <p className="text-gray-400 text-sm font-medium mb-10 leading-relaxed">Soumission finale du dossier scanné via le portail Google Form officiel.</p>
                        </div>
-                       <Button size="lg" variant="primary" className="w-full" onClick={() => window.open('https://forms.gle/votre_lien_google_form')}>
+                       <Button size="lg" variant="primary" className="w-full" onClick={() => window.open('https://forms.gle/w5nnrQw3Kym4pusPA')}>
                          Finaliser Inscription
                        </Button>
                     </div>
