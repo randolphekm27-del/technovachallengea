@@ -1,7 +1,7 @@
 
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Trophy, Activity, Crown, TrendingUp, Sparkles, X, ChevronRight, ArrowDown, Clock } from 'lucide-react';
+import { Trophy, Activity, Crown, X, ChevronRight, ArrowDown, Clock } from 'lucide-react';
 import Button from '../components/Button';
 
 interface VotingTeam {
@@ -63,7 +63,6 @@ const WinnersVoting: React.FC = () => {
   const [teams, setTeams] = useState<VotingTeam[]>([]);
   const [selectedTeam, setSelectedTeam] = useState<VotingTeam | null>(null);
   const [voteCount, setVoteCount] = useState(1);
-  const [leaderMessage, setLeaderMessage] = useState<string | null>(null);
   const [targetDate, setTargetDate] = useState('');
   const LIMIT = 2000;
 
@@ -74,30 +73,31 @@ const WinnersVoting: React.FC = () => {
       setTargetDate(config.winnersVoteEndDate || '');
 
       if (saved) {
-        // FILTRAGE : Uniquement les binômes de type 'winners'
         const parsed: VotingTeam[] = JSON.parse(saved);
         const filtered = parsed.filter(t => t.type === 'winners');
         const sorted = filtered.sort((a, b) => b.votes - a.votes);
-        
-        if (teams.length > 0 && sorted[0].id !== teams[0].id && sorted[0].votes > 0) {
-          setLeaderMessage(`${sorted[0].name} PREND LA TÊTE DU SCRUTIN FINAL !`);
-          setTimeout(() => setLeaderMessage(null), 6000);
-        }
         setTeams(sorted);
       }
     };
     load();
     const interval = setInterval(load, 3000);
     return () => clearInterval(interval);
-  }, [teams]);
+  }, []);
 
   const handleVote = () => {
-    if (!selectedTeam) return;
+    if (!selectedTeam || voteCount < 1) return;
     const currentTeams = JSON.parse(localStorage.getItem('tnc_voting_teams') || '[]');
     const updated = currentTeams.map((t: any) => t.id === selectedTeam.id ? { ...t, votes: t.votes + voteCount } : t);
     localStorage.setItem('tnc_voting_teams', JSON.stringify(updated));
     setSelectedTeam(null);
     setVoteCount(1);
+    alert(`Merci ! Votre vote final de ${voteCount} voix a été comptabilisé.`);
+  };
+
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const val = parseInt(e.target.value);
+    if (isNaN(val)) setVoteCount(0);
+    else setVoteCount(Math.max(1, val));
   };
 
   return (
@@ -120,7 +120,7 @@ const WinnersVoting: React.FC = () => {
             </div>
             <CountdownTimer targetDate={targetDate} />
             <h2 className="text-2xl md:text-5xl font-black text-white uppercase tracking-tighter">
-                Votez maintenant pour l'équipe de votre choix !
+                Le choix final vous appartient
             </h2>
         </div>
 
@@ -132,7 +132,6 @@ const WinnersVoting: React.FC = () => {
                 layout
                 initial={{ opacity: 0, x: -50 }}
                 animate={{ opacity: 1, x: 0 }}
-                transition={{ type: "spring", stiffness: 200, damping: 25 }}
                 className="bg-white/5 border border-white/10 p-10 md:p-14 rounded-[4rem] flex flex-col md:flex-row items-center gap-12 group relative overflow-hidden hover:bg-white/[0.08] transition-all duration-700"
               >
                  <div className="text-9xl font-black text-white/[0.03] absolute -left-6 top-1/2 -translate-y-1/2 select-none italic">#{i + 1}</div>
@@ -167,25 +166,44 @@ const WinnersVoting: React.FC = () => {
 
       <AnimatePresence>
         {selectedTeam && (
-          <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className="fixed inset-0 z-[1000] flex items-center justify-center bg-black/95 backdrop-blur-3xl p-4" onClick={() => setSelectedTeam(null)}>
-             <motion.div initial={{ scale: 0.9, y: 30 }} animate={{ scale: 1, y: 0 }} className="bg-nova-black border border-white/10 w-full max-w-xl rounded-[4rem] p-12 relative overflow-hidden" onClick={e => e.stopPropagation()}>
-                <button onClick={() => setSelectedTeam(null)} className="absolute top-10 right-10 text-gray-500 hover:text-white"><X size={32} /></button>
+          <motion.div 
+            initial={{ opacity: 0 }} 
+            animate={{ opacity: 1 }} 
+            exit={{ opacity: 0 }} 
+            className="fixed inset-0 z-[1000] flex items-center justify-center bg-black/95 backdrop-blur-3xl p-4 overflow-y-auto" 
+            onClick={() => setSelectedTeam(null)}
+          >
+             <motion.div 
+               initial={{ scale: 0.9, y: 30, opacity: 0 }} 
+               animate={{ scale: 1, y: 0, opacity: 1 }} 
+               className="bg-nova-black border border-white/10 w-full max-w-xl rounded-[3rem] md:rounded-[4rem] p-10 md:p-14 relative shadow-2xl" 
+               onClick={e => e.stopPropagation()}
+             >
+                <button onClick={() => setSelectedTeam(null)} className="absolute top-10 right-10 text-gray-500 hover:text-white transition-colors"><X size={32} /></button>
                 <div className="text-center mb-10">
                    <div className="w-24 h-24 rounded-[2rem] overflow-hidden mx-auto mb-8 border-4 border-nova-violet shadow-[0_0_50px_rgba(124,58,237,0.3)]"><img src={selectedTeam.image} className="w-full h-full object-cover" alt="Selected" /></div>
-                   <h2 className="text-4xl font-black text-white uppercase tracking-tighter leading-none">{selectedTeam.name}</h2>
+                   <h2 className="text-3xl md:text-4xl font-black text-white uppercase tracking-tighter leading-none">{selectedTeam.name}</h2>
+                   <p className="text-[10px] text-gray-500 uppercase font-black tracking-widest mt-4">Saisissez le nombre de voix finales</p>
                 </div>
                 <div className="space-y-12">
                    <div className="flex flex-col items-center">
-                      <div className="flex items-center justify-center gap-10">
-                         <button onClick={() => setVoteCount(Math.max(1, voteCount - 1))} className="w-20 h-20 rounded-full border border-white/10 flex items-center justify-center text-4xl font-light text-white hover:bg-nova-violet transition-all">-</button>
-                         <span className="text-8xl font-black text-white w-40 text-center tracking-tighter">{voteCount}</span>
-                         <button onClick={() => setVoteCount(voteCount + 1)} className="w-20 h-20 rounded-full border border-white/10 flex items-center justify-center text-4xl font-light text-white hover:bg-nova-violet transition-all">+</button>
+                      <div className="flex items-center justify-center gap-6 md:gap-10 w-full">
+                         <button onClick={() => setVoteCount(Math.max(1, voteCount - 1))} className="w-16 h-16 rounded-full border border-white/10 flex items-center justify-center text-4xl font-light text-white hover:bg-nova-violet transition-all">-</button>
+                         <input 
+                            type="number" 
+                            value={voteCount} 
+                            onChange={handleInputChange}
+                            className="text-6xl md:text-8xl font-black text-white w-32 md:w-56 text-center bg-transparent border-b-2 border-white/10 focus:border-nova-violet outline-none py-2 transition-all tracking-tighter"
+                            min="1"
+                         />
+                         <button onClick={() => setVoteCount(voteCount + 1)} className="w-16 h-16 rounded-full border border-white/10 flex items-center justify-center text-4xl font-light text-white hover:bg-nova-violet transition-all">+</button>
                       </div>
                    </div>
-                   <div className="bg-white/5 p-10 rounded-[2.5rem] text-center border border-white/10">
-                      <span className="text-4xl font-black text-white">{voteCount * 500} FCFA</span>
+                   <div className="bg-white/5 p-8 rounded-[2rem] text-center border border-white/10">
+                      <div className="text-[10px] font-black text-nova-violet uppercase tracking-widest mb-1">Total de l'Engagement Final</div>
+                      <span className="text-3xl md:text-5xl font-black text-white">{(voteCount * 500).toLocaleString()} FCFA</span>
                    </div>
-                   <Button className="w-full py-7" size="lg" onClick={handleVote}>Valider mon Vote <ChevronRight size={20} className="ml-2" /></Button>
+                   <Button className="w-full py-6 md:py-8" size="lg" onClick={handleVote}>Valider mon Vote Final <ChevronRight size={20} className="ml-2" /></Button>
                 </div>
              </motion.div>
           </motion.div>

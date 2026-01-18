@@ -63,7 +63,6 @@ const Voting: React.FC = () => {
   const [teams, setTeams] = useState<VotingTeam[]>([]);
   const [selectedTeam, setSelectedTeam] = useState<VotingTeam | null>(null);
   const [voteCount, setVoteCount] = useState(1);
-  const [leaderMessage, setLeaderMessage] = useState<string | null>(null);
   const [targetDate, setTargetDate] = useState('');
   const LIMIT = 1000;
 
@@ -74,30 +73,31 @@ const Voting: React.FC = () => {
       setTargetDate(config.publicVoteEndDate || '');
 
       if (saved) {
-        // FILTRAGE : Uniquement les binômes de type 'public'
         const parsed: VotingTeam[] = JSON.parse(saved);
         const filtered = parsed.filter(t => t.type === 'public');
         const sorted = filtered.sort((a, b) => b.votes - a.votes);
-        
-        if (teams.length > 0 && sorted[0].id !== teams[0].id && sorted[0].votes > 0) {
-          setLeaderMessage(`${sorted[0].name} VIENT DE PRENDRE LA TÊTE DU SCRUTIN !`);
-          setTimeout(() => setLeaderMessage(null), 5000);
-        }
         setTeams(sorted);
       }
     };
     load();
     const interval = setInterval(load, 2000);
     return () => clearInterval(interval);
-  }, [teams]);
+  }, []);
 
   const handleVote = () => {
-    if (!selectedTeam) return;
+    if (!selectedTeam || voteCount < 1) return;
     const currentTeams = JSON.parse(localStorage.getItem('tnc_voting_teams') || '[]');
     const updated = currentTeams.map((t: any) => t.id === selectedTeam.id ? { ...t, votes: t.votes + voteCount } : t);
     localStorage.setItem('tnc_voting_teams', JSON.stringify(updated));
     setSelectedTeam(null);
     setVoteCount(1);
+    alert(`Merci ! Votre soutien de ${voteCount} votes a été enregistré.`);
+  };
+
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const val = parseInt(e.target.value);
+    if (isNaN(val)) setVoteCount(0);
+    else setVoteCount(Math.max(1, val));
   };
 
   return (
@@ -109,7 +109,7 @@ const Voting: React.FC = () => {
         </div>
         <div className="relative z-10 text-center max-w-5xl">
           <motion.div initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 1.2 }}>
-            <span className="text-nova-violet font-black tracking-[1em] uppercase text-[10px] block mb-8">Scrutin Populaire — Phase Initial</span>
+            <span className="text-nova-violet font-black tracking-[1em] uppercase text-[10px] block mb-8">Scrutin Populaire — Phase Initiale</span>
             <h1 className="editorial-title text-[clamp(2rem,10vw,10rem)] text-white leading-[0.8]">
               VOTE DU <br /><span className="text-nova-violet italic font-light">PUBLIC.</span>
             </h1>
@@ -130,7 +130,7 @@ const Voting: React.FC = () => {
               <CountdownTimer targetDate={targetDate} />
               <div className="h-px w-24 bg-gray-100 mx-auto" />
               <h2 className="text-2xl md:text-5xl font-black text-nova-black uppercase tracking-tighter">
-                Votez maintenant pour l'équipe de votre choix !
+                Soutenez vos innovateurs préférés
               </h2>
            </div>
 
@@ -142,8 +142,6 @@ const Voting: React.FC = () => {
                     layout
                     initial={{ opacity: 0, scale: 0.9 }}
                     animate={{ opacity: 1, scale: 1 }}
-                    exit={{ opacity: 0, scale: 0.9 }}
-                    transition={{ type: "spring", stiffness: 300, damping: 30 }}
                     className="relative bg-white border border-gray-100 rounded-[3rem] overflow-hidden shadow-sm hover:shadow-2xl transition-all duration-700 group flex flex-col h-full"
                   >
                     {i === 0 && team.votes > 0 && (
@@ -163,14 +161,13 @@ const Voting: React.FC = () => {
                     <div className="p-10 flex-grow flex flex-col justify-between">
                        <div className="space-y-6 mb-10">
                           <div className="flex items-center justify-between">
-                             <span className="text-[10px] font-black uppercase text-gray-400">Objectif 1000 Votes</span>
-                             <span className="text-xs font-black text-nova-violet">{(team.votes / LIMIT * 100).toFixed(1)}%</span>
+                             <span className="text-[10px] font-black uppercase text-gray-400">Progression du binôme</span>
                           </div>
                           <div className="h-2 bg-gray-50 rounded-full overflow-hidden">
-                             <motion.div initial={{ width: 0 }} animate={{ width: `${Math.min(100, (team.votes / LIMIT) * 100)}%` }} className="h-full bg-nova-violet shadow-[0_0_15px_rgba(124,58,237,0.5)]" />
+                             <motion.div initial={{ width: 0 }} animate={{ width: `${Math.min(100, (team.votes / LIMIT) * 100)}%` }} className="h-full bg-nova-violet" />
                           </div>
-                          <div className="text-[11px] font-black text-nova-black text-center tracking-[0.2em] bg-gray-50 py-3 rounded-2xl border border-gray-100">
-                            {team.votes} / {LIMIT} VOTES
+                          <div className="text-[11px] font-black text-nova-black text-center tracking-[0.2em] bg-gray-50 py-3 rounded-2xl border border-gray-100 uppercase">
+                            {team.votes.toLocaleString()} Votes acquis
                           </div>
                        </div>
                        <Button className="w-full" variant="accent" onClick={() => setSelectedTeam(team)}>Voter pour ce Binôme</Button>
@@ -184,25 +181,44 @@ const Voting: React.FC = () => {
 
       <AnimatePresence>
         {selectedTeam && (
-          <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className="fixed inset-0 z-[1000] flex items-center justify-center bg-black/95 backdrop-blur-2xl p-4" onClick={() => setSelectedTeam(null)}>
-             <motion.div initial={{ scale: 0.9, y: 20 }} animate={{ scale: 1, y: 0 }} className="bg-white w-full max-w-xl rounded-[4rem] p-12 relative overflow-hidden" onClick={e => e.stopPropagation()}>
-                <button onClick={() => setSelectedTeam(null)} className="absolute top-10 right-10 text-gray-300 hover:text-nova-black"><X size={32} /></button>
-                <div className="text-center mb-10">
-                   <div className="w-24 h-24 rounded-[2rem] overflow-hidden mx-auto mb-6 border-4 border-nova-violet shadow-2xl shadow-nova-violet/20"><img src={selectedTeam.image} className="w-full h-full object-cover" alt="Selected" /></div>
-                   <h2 className="text-3xl font-black text-nova-black uppercase tracking-tighter">{selectedTeam.name}</h2>
+          <motion.div 
+            initial={{ opacity: 0 }} 
+            animate={{ opacity: 1 }} 
+            exit={{ opacity: 0 }} 
+            className="fixed inset-0 z-[1000] flex items-center justify-center bg-black/90 backdrop-blur-xl p-4 overflow-y-auto" 
+            onClick={() => setSelectedTeam(null)}
+          >
+             <motion.div 
+               initial={{ scale: 0.9, y: 20, opacity: 0 }} 
+               animate={{ scale: 1, y: 0, opacity: 1 }} 
+               className="bg-white w-full max-w-xl rounded-[3rem] md:rounded-[4rem] p-8 md:p-12 relative shadow-2xl" 
+               onClick={e => e.stopPropagation()}
+             >
+                <button onClick={() => setSelectedTeam(null)} className="absolute top-8 right-8 text-gray-300 hover:text-nova-black transition-colors"><X size={32} /></button>
+                <div className="text-center mb-8">
+                   <div className="w-20 h-20 rounded-2xl overflow-hidden mx-auto mb-6 border-4 border-nova-violet shadow-xl"><img src={selectedTeam.image} className="w-full h-full object-cover" alt="Selected" /></div>
+                   <h2 className="text-2xl md:text-3xl font-black text-nova-black uppercase tracking-tighter">{selectedTeam.name}</h2>
+                   <p className="text-[10px] text-gray-400 uppercase font-black tracking-widest mt-2">Saisissez le nombre de votes à attribuer</p>
                 </div>
-                <div className="space-y-10">
+                <div className="space-y-8">
                    <div className="flex flex-col items-center">
-                      <div className="flex items-center justify-center gap-8">
-                         <button onClick={() => setVoteCount(Math.max(1, voteCount - 1))} className="w-16 h-16 rounded-full border border-gray-100 flex items-center justify-center text-3xl font-light hover:bg-nova-violet hover:text-white transition-all">-</button>
-                         <span className="text-6xl font-black text-nova-black w-32 text-center">{voteCount}</span>
-                         <button onClick={() => setVoteCount(voteCount + 1)} className="w-16 h-16 rounded-full border border-gray-100 flex items-center justify-center text-3xl font-light hover:bg-nova-violet hover:text-white transition-all">+</button>
+                      <div className="flex items-center justify-center gap-4 md:gap-8 w-full">
+                         <button onClick={() => setVoteCount(Math.max(1, voteCount - 1))} className="w-12 h-12 md:w-16 md:h-16 rounded-full border border-gray-100 flex items-center justify-center text-3xl font-light hover:bg-nova-violet hover:text-white transition-all">-</button>
+                         <input 
+                           type="number" 
+                           value={voteCount} 
+                           onChange={handleInputChange}
+                           className="text-4xl md:text-6xl font-black text-nova-black w-32 md:w-48 text-center bg-transparent border-b-2 border-nova-violet/20 focus:border-nova-violet outline-none py-2 transition-all"
+                           min="1"
+                         />
+                         <button onClick={() => setVoteCount(voteCount + 1)} className="w-12 h-12 md:w-16 md:h-16 rounded-full border border-gray-100 flex items-center justify-center text-3xl font-light hover:bg-nova-violet hover:text-white transition-all">+</button>
                       </div>
                    </div>
-                   <div className="bg-nova-violet/5 p-8 rounded-[2.5rem] text-center border border-nova-violet/10">
-                      <span className="text-3xl font-black text-nova-black">{voteCount * 500} FCFA</span>
+                   <div className="bg-nova-violet/5 p-6 md:p-8 rounded-[2rem] text-center border border-nova-violet/10">
+                      <div className="text-[10px] font-black text-nova-violet uppercase tracking-widest mb-1">Montant de la Contribution</div>
+                      <span className="text-3xl md:text-4xl font-black text-nova-black">{(voteCount * 500).toLocaleString()} FCFA</span>
                    </div>
-                   <Button className="w-full py-6" size="lg" onClick={handleVote}>Valider mon Soutien <ChevronRight size={18} className="ml-2" /></Button>
+                   <Button className="w-full py-5 md:py-6" size="lg" onClick={handleVote}>Confirmer le Vote <ChevronRight size={18} className="ml-2" /></Button>
                 </div>
              </motion.div>
           </motion.div>
