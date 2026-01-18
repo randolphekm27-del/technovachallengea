@@ -1,5 +1,5 @@
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { createPortal } from 'react-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import { ArrowDown, CheckCircle2, Clock, Sparkles, Maximize2, X, ExternalLink, Trophy, Facebook, Linkedin, Youtube, MessageCircle } from 'lucide-react';
@@ -41,7 +41,7 @@ const Lightbox: React.FC<{ src: string | null, onClose: () => void }> = ({ src, 
   );
 };
 
-const phases = [
+const initialPhases = [
   {
     number: 1,
     title: "Recrutement exclusif de la nouvelle équipe TNC 2026",
@@ -81,6 +81,28 @@ const phases = [
 
 const LiveProgress: React.FC = () => {
   const [selectedImage, setSelectedImage] = useState<string | null>(null);
+  const [phases, setPhases] = useState(initialPhases);
+
+  useEffect(() => {
+    const loadDynamicPhases = () => {
+      const savedLive = localStorage.getItem('tnc_live_phases');
+      if (savedLive) {
+        const dynamicPhases = JSON.parse(savedLive);
+        
+        // On fusionne : les 4 premières de base, puis les dynamiques, puis le "À suivre" final
+        // Ou on ajoute simplement après la phase 4
+        const base = initialPhases.filter(p => p.number <= 4);
+        const upcoming = initialPhases.filter(p => p.title === "À suivre...");
+        
+        setPhases([...base, ...dynamicPhases, ...upcoming]);
+      }
+    };
+
+    loadDynamicPhases();
+    // On peut aussi mettre un intervalle pour surveiller les mises à jour si on est sur la même session
+    const interval = setInterval(loadDynamicPhases, 5000);
+    return () => clearInterval(interval);
+  }, []);
 
   const socialChannels = [
     { 
@@ -193,7 +215,7 @@ const LiveProgress: React.FC = () => {
           <div className="space-y-32 md:space-y-64">
             {phases.map((phase, i) => (
               <motion.div 
-                key={phase.number}
+                key={i}
                 initial={{ opacity: 0, y: 50 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true, margin: "-10%" }}
@@ -218,7 +240,7 @@ const LiveProgress: React.FC = () => {
                         <Clock size={24} className="text-nova-violet animate-spin-slow" />
                       )}
                       <span className={`text-[10px] font-black uppercase tracking-[0.4em] ${phase.status === 'active' ? 'text-nova-violet' : phase.status === 'upcoming' ? 'text-nova-violet' : 'text-gray-400'}`}>
-                        {phase.status === 'upcoming' ? 'Horizon 2026' : `Phase 0${phase.number}`}
+                        {phase.status === 'upcoming' ? 'Horizon 2026' : `Phase ${i + 1}`}
                       </span>
                    </div>
                    <h2 className="text-3xl md:text-5xl font-black uppercase tracking-tighter text-nova-black mb-8 leading-tight">
@@ -243,7 +265,7 @@ const LiveProgress: React.FC = () => {
                      phase.status === 'active' ? 'bg-nova-violet border-nova-violet text-white shadow-xl shadow-nova-violet/20' : 
                      'bg-white border-nova-violet text-nova-violet animate-pulse'
                    }`}>
-                      {phase.status === 'upcoming' ? <Trophy size={18} /> : phase.number}
+                      {phase.status === 'upcoming' ? <Trophy size={18} /> : (i + 1)}
                    </div>
                 </div>
 
