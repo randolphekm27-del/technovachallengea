@@ -2,7 +2,7 @@
 import React, { useState, useEffect } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Menu, X, LayoutDashboard, Rocket } from 'lucide-react';
+import { Menu, X, LayoutDashboard, Rocket, Bell } from 'lucide-react';
 import Button from './Button';
 
 const Navbar: React.FC = () => {
@@ -11,18 +11,38 @@ const Navbar: React.FC = () => {
   const [scrolled, setScrolled] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [unreadCount, setUnreadCount] = useState(0);
 
   useEffect(() => {
     const handleScroll = () => setScrolled(window.scrollY > 50);
     window.addEventListener('scroll', handleScroll);
     
-    const checkLogin = () => {
+    const checkStatus = () => {
       const user = localStorage.getItem('tnc_user_name');
       setIsLoggedIn(!!user);
+
+      if (user) {
+        // Calcul des notifications
+        const broadcastsStr = localStorage.getItem('tnc_broadcasts');
+        const lastRead = localStorage.getItem('tnc_last_read_colis') || '0';
+        
+        if (broadcastsStr) {
+          const broadcasts = JSON.parse(broadcastsStr);
+          // On simule une vérification par ID ou timestamp (ici simplifié par la longueur vs dernier vu)
+          const newItems = broadcasts.filter((b: any) => {
+            // Si le timestamp du broadcast est supérieur au dernier lu
+            const bTime = new Date(b.timestamp).getTime();
+            return bTime > parseInt(lastRead);
+          });
+          setUnreadCount(newItems.length);
+        }
+      } else {
+        setUnreadCount(0);
+      }
     };
     
-    checkLogin();
-    const interval = setInterval(checkLogin, 1000); // Check periodic for dev/simulated env
+    checkStatus();
+    const interval = setInterval(checkStatus, 2000); 
     
     return () => {
       window.removeEventListener('scroll', handleScroll);
@@ -41,8 +61,6 @@ const Navbar: React.FC = () => {
     { name: 'Partenaires', path: '/partenaires' },
   ];
 
-  const logoSrc = "https://i.postimg.cc/pdGN9ZKD/logotncf.png";
-
   return (
     <>
       <nav className={`fixed top-0 left-0 w-full z-[100] transition-all duration-700 flex justify-center ${scrolled ? 'pt-4' : 'pt-8'}`}>
@@ -57,16 +75,14 @@ const Navbar: React.FC = () => {
             transition-all duration-700 ease-in-out
           `}
         >
-          {/* Logo */}
           <Link to="/" className="flex items-center z-[110]" onClick={() => setMobileMenuOpen(false)}>
             <img 
-              src={logoSrc} 
+              src="https://i.postimg.cc/pdGN9ZKD/logotncf.png" 
               alt="Tech Nova Challenge" 
-              className={`h-9 md:h-10 w-auto object-contain transition-all duration-500 rounded-lg p-1 bg-white shadow-sm`}
+              className="h-9 md:h-10 w-auto object-contain transition-all duration-500 rounded-lg p-1 bg-white shadow-sm"
             />
           </Link>
 
-          {/* Desktop Links */}
           <div className="hidden lg:flex items-center gap-8 mx-12">
             {navLinks.map((link) => (
               <Link
@@ -83,18 +99,28 @@ const Navbar: React.FC = () => {
             ))}
           </div>
 
-          {/* Right Side */}
           <div className="flex items-center gap-4 z-[110]">
             <AnimatePresence mode="wait">
               {isLoggedIn ? (
-                <Button 
-                  key="dashboard-btn"
-                  size="sm" 
-                  onClick={() => navigate('/dashboard')}
-                  className={`hidden md:inline-flex ${!scrolled ? '!bg-nova-violet !text-white' : ''}`}
-                >
-                  <LayoutDashboard size={14} className="mr-2" /> Mon Espace
-                </Button>
+                <div className="relative">
+                  <Button 
+                    key="dashboard-btn"
+                    size="sm" 
+                    onClick={() => navigate('/dashboard')}
+                    className={`hidden md:inline-flex ${!scrolled ? '!bg-nova-violet !text-white' : ''}`}
+                  >
+                    <LayoutDashboard size={14} className="mr-2" /> Mon Espace
+                  </Button>
+                  {unreadCount > 0 && (
+                    <motion.div 
+                      initial={{ scale: 0 }}
+                      animate={{ scale: 1 }}
+                      className="absolute -top-1 -right-1 w-5 h-5 bg-nova-red text-white text-[10px] font-black rounded-full flex items-center justify-center border-2 border-white shadow-lg"
+                    >
+                      {unreadCount}
+                    </motion.div>
+                  )}
+                </div>
               ) : (
                 <Button 
                   key="participate-btn"
@@ -109,9 +135,12 @@ const Navbar: React.FC = () => {
             
             <button 
               onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-              className={`lg:hidden p-2.5 rounded-full transition-all duration-500 ${scrolled ? 'bg-nova-gray border border-black/5 text-nova-black' : 'bg-white/20 text-white border border-white/20'}`}
+              className={`lg:hidden p-2.5 rounded-full transition-all duration-500 relative ${scrolled ? 'bg-nova-gray border border-black/5 text-nova-black' : 'bg-white/20 text-white border border-white/20'}`}
             >
               {mobileMenuOpen ? <X size={18} /> : <Menu size={18} />}
+              {!mobileMenuOpen && unreadCount > 0 && (
+                <div className="absolute top-0 right-0 w-3 h-3 bg-nova-red rounded-full border-2 border-white" />
+              )}
             </button>
           </div>
         </motion.div>
@@ -128,30 +157,22 @@ const Navbar: React.FC = () => {
             <div className="flex-grow flex flex-col justify-center px-10 pt-20">
               <nav className="space-y-4">
                 {navLinks.map((link, i) => (
-                  <motion.div
-                    key={link.path}
-                    initial={{ x: -20, opacity: 0 }}
-                    animate={{ x: 0, opacity: 1 }}
-                    transition={{ delay: i * 0.05 }}
-                  >
-                    <Link
-                      to={link.path}
-                      onClick={() => setMobileMenuOpen(false)}
-                      className={`block py-3 border-b border-black/5 transition-all ${
-                        isActive(link.path) ? 'text-nova-red' : 'text-nova-black'
-                      }`}
-                    >
-                      <span className="text-3xl font-black uppercase tracking-tighter">
-                        {link.name}
-                      </span>
+                  <motion.div key={link.path} initial={{ x: -20, opacity: 0 }} animate={{ x: 0, opacity: 1 }} transition={{ delay: i * 0.05 }}>
+                    <Link to={link.path} onClick={() => setMobileMenuOpen(false)} className={`block py-3 border-b border-black/5 transition-all ${isActive(link.path) ? 'text-nova-red' : 'text-nova-black'}`}>
+                      <span className="text-3xl font-black uppercase tracking-tighter">{link.name}</span>
                     </Link>
                   </motion.div>
                 ))}
               </nav>
-              <div className="mt-16">
+              <div className="mt-16 relative">
                 <Button size="lg" variant="accent" className="w-full" onClick={() => { setMobileMenuOpen(false); navigate(isLoggedIn ? '/dashboard' : '/participate'); }}>
                   {isLoggedIn ? 'Mon Espace' : 'Postuler 2026'}
                 </Button>
+                {isLoggedIn && unreadCount > 0 && (
+                  <div className="absolute -top-3 -right-3 w-8 h-8 bg-nova-red text-white rounded-full flex items-center justify-center font-black border-4 border-white shadow-xl">
+                    {unreadCount}
+                  </div>
+                )}
               </div>
             </div>
           </motion.div>

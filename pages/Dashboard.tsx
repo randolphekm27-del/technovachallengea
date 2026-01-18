@@ -27,6 +27,7 @@ const Dashboard: React.FC = () => {
   const [userName, setUserName] = useState('Jean Dupont');
   const [userEmail, setUserEmail] = useState('');
   const [broadcasts, setBroadcasts] = useState<Broadcast[]>([]);
+  const [unreadCount, setUnreadCount] = useState(0);
 
   useEffect(() => {
     const savedTeam = localStorage.getItem('tnc_team_name');
@@ -45,32 +46,58 @@ const Dashboard: React.FC = () => {
       }
     }
 
-    // Récupérer les messages admin
-    const adminBroadcastsStr = localStorage.getItem('tnc_broadcasts');
-    const adminBroadcasts: Broadcast[] = adminBroadcastsStr ? JSON.parse(adminBroadcastsStr) : [];
+    const updateMessages = () => {
+      const adminBroadcastsStr = localStorage.getItem('tnc_broadcasts');
+      const adminBroadcasts: Broadcast[] = adminBroadcastsStr ? JSON.parse(adminBroadcastsStr) : [];
+      const lastRead = localStorage.getItem('tnc_last_read_colis') || '0';
 
-    const staticBroadcasts: Broadcast[] = [
-      {
-        id: 'auth-code',
-        title: '📦 Colis de Sécurité : Votre Code Unique',
-        content: `C'est votre clé d'accès exclusive. Partagez ce code uniquement avec votre binôme pour qu'il puisse se connecter à cet espace. Code : ${teamCode}`,
-        timestamp: 'Réception immédiate',
-        type: 'auth'
-      },
-      {
-        id: 'welcome-file',
-        title: 'Document Officiel : Fiche d\'Inscription',
-        content: 'Vous trouverez ci-joint la fiche d\'inscription à remplir. Téléchargez, complétez et scannez-la pour la phase finale.',
-        fileName: 'fiche-tnc-2026.pdf',
-        fileData: 'https://example.com/fiche.pdf',
-        timestamp: 'Aujourd\'hui',
-        type: 'file'
-      }
-    ];
+      const staticBroadcasts: Broadcast[] = [
+        {
+          id: 'auth-code',
+          title: '📦 Colis de Sécurité : Votre Code Unique',
+          content: `C'est votre clé d'accès exclusive. Partagez ce code uniquement avec votre binôme pour qu'il puisse se connecter à cet espace. Code : ${teamCode}`,
+          timestamp: '2026-01-01T00:00:00.000Z',
+          type: 'auth'
+        },
+        {
+          id: 'welcome-file',
+          title: 'Document Officiel : Fiche d\'Inscription',
+          content: 'Vous trouverez ci-joint la fiche d\'inscription à remplir. Téléchargez, complétez et scannez-la pour la phase finale.',
+          fileName: 'fiche-tnc-2026.pdf',
+          fileData: 'https://example.com/fiche.pdf',
+          timestamp: '2026-01-01T00:01:00.000Z',
+          type: 'file'
+        }
+      ];
 
-    setBroadcasts([...adminBroadcasts, ...staticBroadcasts]);
+      const allBroadcasts = [...adminBroadcasts, ...staticBroadcasts];
+      setBroadcasts(allBroadcasts);
+
+      // Compter les nouveaux
+      const newCount = adminBroadcasts.filter(b => {
+        const bTime = new Date(b.timestamp).getTime();
+        return bTime > parseInt(lastRead);
+      }).length;
+      
+      setUnreadCount(newCount);
+    };
+
+    updateMessages();
+    const interval = setInterval(updateMessages, 3000);
     window.scrollTo(0, 0);
+
+    return () => clearInterval(interval);
   }, []);
+
+  const handleTabChange = (tab: 'overview' | 'instructions' | 'missions') => {
+    setActiveTab(tab);
+    if (tab === 'instructions') {
+      // Marquer comme lu
+      localStorage.setItem('tnc_last_read_colis', Date.now().toString());
+      setUnreadCount(0);
+    }
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  };
 
   const handleLogout = () => {
     localStorage.removeItem('tnc_user_email');
@@ -79,16 +106,16 @@ const Dashboard: React.FC = () => {
     navigate('/'); 
   };
 
-  const menuItems = [
+  // Fix: Explicitly defining the MenuItem type to allow optional property 'badge' during mapping.
+  const menuItems: { id: 'overview' | 'instructions' | 'missions'; label: string; icon: React.ReactNode; badge?: boolean }[] = [
     { id: 'overview', label: 'Dashboard', icon: <LayoutDashboard size={20} /> },
-    { id: 'instructions', label: 'Réception (Colis)', icon: <Package size={20} /> },
+    { id: 'instructions', label: 'Réception (Colis)', icon: <Package size={20} />, badge: true },
     { id: 'missions', label: 'Mon Dossier', icon: <Upload size={20} /> },
-  ] as const;
+  ];
 
   return (
     <div className="min-h-screen bg-[#FDFDFF] selection:bg-nova-violet selection:text-white flex flex-col overflow-x-hidden">
       
-      {/* Header Dashboard - Correction de la superposition sous la Navbar principale */}
       <header className="fixed top-0 left-0 w-full bg-white border-b border-gray-100 z-[80] shadow-sm">
         <div className="container mx-auto px-4 md:px-8 flex items-center justify-between pt-32 md:pt-40 pb-6 md:pb-8">
           <div className="flex items-center gap-3 md:gap-4">
@@ -110,19 +137,14 @@ const Dashboard: React.FC = () => {
         </div>
       </header>
 
-      {/* Main Content Area */}
       <div className="container mx-auto px-4 md:px-8 flex flex-col lg:flex-row gap-8 lg:gap-12 flex-grow pt-[240px] md:pt-[320px] pb-[100px] lg:pb-24">
         
-        {/* Navigation Sidebar */}
         <aside className="fixed bottom-0 left-0 w-full bg-white border-t border-gray-100 px-2 py-3 lg:relative lg:border-none lg:bg-transparent lg:w-72 lg:p-0 flex lg:flex-col justify-around lg:justify-start gap-1 z-[90]">
           {menuItems.map((item) => (
             <button
               key={item.id}
-              onClick={() => {
-                setActiveTab(item.id);
-                window.scrollTo({ top: 0, behavior: 'smooth' });
-              }}
-              className={`flex flex-col lg:flex-row items-center gap-2 lg:gap-5 px-3 lg:px-7 py-3 lg:py-6 rounded-[1.5rem] md:rounded-[2rem] transition-all duration-500 w-full lg:mb-3 ${
+              onClick={() => handleTabChange(item.id)}
+              className={`flex flex-col lg:flex-row items-center gap-2 lg:gap-5 px-3 lg:px-7 py-3 lg:py-6 rounded-[1.5rem] md:rounded-[2rem] transition-all duration-500 w-full lg:mb-3 relative ${
                 activeTab === item.id 
                   ? 'bg-nova-violet text-white shadow-2xl shadow-nova-violet/30' 
                   : 'text-gray-400 hover:bg-white hover:shadow-lg'
@@ -130,11 +152,15 @@ const Dashboard: React.FC = () => {
             >
               {item.icon}
               <span className="text-[8px] lg:text-[11px] font-black uppercase tracking-widest whitespace-nowrap">{item.label}</span>
+              {item.badge && unreadCount > 0 && activeTab !== 'instructions' && (
+                <div className="absolute top-2 right-2 lg:relative lg:top-0 lg:right-0 lg:ml-auto w-5 h-5 bg-nova-red text-white text-[9px] font-black rounded-full flex items-center justify-center border-2 border-white lg:border-none shadow-lg lg:shadow-none">
+                  {unreadCount}
+                </div>
+              )}
             </button>
           ))}
         </aside>
 
-        {/* Section Dynamique */}
         <main className="flex-grow">
           <AnimatePresence mode="wait">
             <motion.div
@@ -147,7 +173,6 @@ const Dashboard: React.FC = () => {
             >
               {activeTab === 'overview' && (
                 <>
-                  {/* Message d'accueil */}
                   <section className="bg-white rounded-[2.5rem] md:rounded-[4rem] border border-gray-100 shadow-sm p-8 md:p-16">
                     <div className="flex items-center gap-4 mb-10">
                        <span className="text-[10px] font-black uppercase tracking-[0.4em] text-nova-violet">Information Institutionnelle</span>
@@ -182,19 +207,10 @@ const Dashboard: React.FC = () => {
                             ))}
                           </ul>
                         </div>
-
-                        <div className="flex gap-4 p-8 bg-nova-red/5 rounded-3xl border border-nova-red/10 text-nova-red">
-                           <AlertTriangle size={24} className="flex-shrink-0" />
-                           <div className="text-xs md:text-base">
-                             <strong className="block mb-2 uppercase font-black tracking-widest">Alerte Critique</strong>
-                             Une fois le formulaire de finalisation envoyé, aucune modification ne sera possible. Assurez-vous de l'exactitude de vos documents avant l'envoi.
-                           </div>
-                        </div>
                       </div>
                     </div>
                   </section>
 
-                  {/* Actions rapides */}
                   <div className="grid md:grid-cols-2 gap-6 md:gap-10">
                     <div className="bg-nova-black text-white rounded-[3rem] p-10 md:p-14 flex flex-col justify-between hover:scale-[1.01] transition-transform duration-500 shadow-2xl">
                        <div>
@@ -235,12 +251,13 @@ const Dashboard: React.FC = () => {
                           <div className={`p-5 rounded-2xl ${b.type === 'auth' ? 'bg-nova-violet text-white' : b.type === 'critical' ? 'bg-nova-red text-white' : 'bg-nova-violet/10 text-nova-violet'}`}>
                              {b.type === 'auth' ? <Key size={24} /> : b.type === 'file' ? <FileText size={24} /> : <Package size={24} />}
                           </div>
-                          <span className="text-[10px] font-black text-gray-300 uppercase tracking-widest">{b.timestamp}</span>
+                          <span className="text-[10px] font-black text-gray-300 uppercase tracking-widest">
+                            {b.timestamp.includes('T') ? new Date(b.timestamp).toLocaleString('fr-FR', { day: '2-digit', month: 'short', hour: '2-digit', minute: '2-digit' }) : b.timestamp}
+                          </span>
                        </div>
                        <h3 className="text-xl md:text-3xl font-black text-nova-black uppercase mb-6 tracking-tighter leading-tight">{b.title}</h3>
                        <p className="text-gray-500 text-sm md:text-lg font-medium leading-relaxed mb-10">{b.content}</p>
                        
-                       {/* Gestion des fichiers joints */}
                        {b.fileData && (
                          <div className="p-6 bg-gray-50 rounded-2xl border border-gray-100 flex items-center justify-between group-hover:border-nova-violet/30 transition-colors">
                             <div className="flex items-center gap-4">
@@ -252,11 +269,7 @@ const Dashboard: React.FC = () => {
                                   <span className="text-xs md:text-sm font-bold text-nova-black truncate max-w-[150px] md:max-w-xs">{b.fileName}</span>
                                </div>
                             </div>
-                            <a 
-                              href={b.fileData} 
-                              download={b.fileName}
-                              className="flex items-center gap-2 text-[10px] font-black uppercase tracking-widest text-nova-violet hover:text-nova-red transition-colors"
-                            >
+                            <a href={b.fileData} download={b.fileName} className="flex items-center gap-2 text-[10px] font-black uppercase tracking-widest text-nova-violet hover:text-nova-red transition-colors">
                                <Download size={16} /> <span className="hidden sm:inline">Télécharger</span>
                             </a>
                          </div>
@@ -277,10 +290,6 @@ const Dashboard: React.FC = () => {
                             </div>
                          </div>
                        )}
-
-                       {b.link && !b.fileData && (
-                         <Button size="sm" variant="outline" className="w-full mt-6" onClick={() => window.open(b.link)}>Ouvrir le lien externe</Button>
-                       )}
                     </motion.div>
                   ))}
                 </div>
@@ -295,10 +304,6 @@ const Dashboard: React.FC = () => {
                   <p className="text-gray-400 font-medium text-base md:text-xl mb-12 max-w-lg mx-auto leading-relaxed">
                     Votre candidature est en cours de traitement par le directoire technique.
                   </p>
-                  <div className="flex flex-col md:flex-row justify-center gap-6 w-full max-w-lg">
-                    <Button variant="outline" disabled className="w-full opacity-40">Livrables de Projet</Button>
-                    <Button variant="outline" disabled className="w-full opacity-40">Rapport de Jury</Button>
-                  </div>
                 </div>
               )}
             </motion.div>
