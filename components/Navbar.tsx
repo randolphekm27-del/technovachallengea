@@ -51,7 +51,6 @@ const Navbar: React.FC = () => {
 
   const isActive = (path: string) => location.pathname === path;
 
-  // Filtrage des liens dynamiques
   let navLinks = [
     { name: 'Accueil', path: '/' },
     { name: 'Live Étapes', path: '/etapes-en-cours' },
@@ -64,14 +63,11 @@ const Navbar: React.FC = () => {
     { name: 'Partenaires', path: '/partenaires' },
   ];
 
-  // Appliquer le masquage Admin
   navLinks = navLinks.filter(link => !siteConfig.hiddenPages.includes(link.path));
 
-  // Appliquer la réorganisation
   if (siteConfig.isReorganized) {
     const archivesToHide = ['/laureats-2025', '/equipe-2026', '/galerie'];
     navLinks = navLinks.filter(link => !archivesToHide.includes(link.path));
-    // Insérer le bouton Hub
     const partnersIndex = navLinks.findIndex(l => l.path === '/partenaires');
     const hubLink = { name: 'Rétrospectives', path: '/archives' };
     if (partnersIndex !== -1) {
@@ -83,35 +79,36 @@ const Navbar: React.FC = () => {
 
   return (
     <>
-      <nav className={`fixed top-0 left-0 w-full z-[100] transition-all duration-700 flex justify-center ${scrolled ? 'pt-4' : 'pt-8'}`}>
+      <nav className="fixed top-0 left-0 w-full z-[250] pointer-events-none flex justify-center pt-6 md:pt-8 transition-all duration-700">
         <motion.div 
           initial={{ y: -100, opacity: 0 }}
           animate={{ y: 0, opacity: 1 }}
           className={`
-            flex items-center justify-between px-8 md:px-10 py-3 
+            pointer-events-auto
+            flex items-center justify-between px-6 md:px-10 py-3 
             ${scrolled 
-              ? 'w-[96%] md:w-auto bg-white/95 backdrop-blur-md rounded-full border border-black/10 shadow-2xl' 
-              : 'w-[96%] md:w-auto bg-black/40 backdrop-blur-sm rounded-full border border-white/10 shadow-lg'} 
+              ? 'w-[92%] md:w-auto bg-white/95 backdrop-blur-xl rounded-full border border-black/10 shadow-2xl' 
+              : 'w-[92%] md:w-auto bg-black/40 backdrop-blur-md rounded-full border border-white/10 shadow-lg'} 
             transition-all duration-700 ease-in-out
           `}
         >
-          <Link to="/" className="flex items-center z-[110]" onClick={() => setMobileMenuOpen(false)}>
+          <Link to="/" className="flex items-center" onClick={() => setMobileMenuOpen(false)}>
             <img 
               src="https://i.postimg.cc/pdGN9ZKD/logotncf.png" 
-              alt="Tech Nova Challenge" 
-              className="h-9 md:h-10 w-auto object-contain transition-all duration-500 rounded-lg p-1 bg-white shadow-sm"
+              alt="TNC Logo" 
+              className="h-8 md:h-10 w-auto object-contain transition-all duration-500 rounded-lg p-1 bg-white"
             />
           </Link>
 
-          <div className="hidden lg:flex items-center gap-8 mx-12">
+          <div className="hidden lg:flex items-center gap-6 xl:gap-8 mx-8 xl:mx-12">
             {navLinks.map((link) => (
               <Link
                 key={link.path}
                 to={link.path}
-                className={`text-[10px] uppercase tracking-[0.25em] font-black transition-all duration-300 relative py-2 ${
+                className={`text-[9px] xl:text-[10px] uppercase tracking-[0.2em] font-black transition-all duration-300 relative py-2 ${
                   isActive(link.path) 
                     ? (scrolled ? 'text-nova-red' : 'text-white underline decoration-nova-violet decoration-2 underline-offset-8') 
-                    : (scrolled ? 'text-nova-black hover:text-nova-red' : 'text-white/90 hover:text-white drop-shadow-md')
+                    : (scrolled ? 'text-nova-black hover:text-nova-red' : 'text-white/90 hover:text-white')
                 }`}
               >
                 {link.name}
@@ -119,7 +116,7 @@ const Navbar: React.FC = () => {
             ))}
           </div>
 
-          <div className="flex items-center gap-4 z-[110]">
+          <div className="flex items-center gap-3 md:gap-4">
             <AnimatePresence mode="wait">
               {isLoggedIn ? (
                 <div className="relative">
@@ -129,16 +126,12 @@ const Navbar: React.FC = () => {
                     onClick={() => navigate('/dashboard')}
                     className={`hidden md:inline-flex ${!scrolled ? '!bg-nova-violet !text-white' : ''}`}
                   >
-                    <LayoutDashboard size={14} className="mr-2" /> Mon Espace
+                    <LayoutDashboard size={14} className="mr-2" /> Espace
                   </Button>
                   {unreadCount > 0 && (
-                    <motion.div 
-                      initial={{ scale: 0 }}
-                      animate={{ scale: 1 }}
-                      className="absolute -top-1 -right-1 w-5 h-5 bg-nova-red text-white text-[10px] font-black rounded-full flex items-center justify-center border-2 border-white shadow-lg"
-                    >
+                    <div className="absolute -top-1 -right-1 w-5 h-5 bg-nova-red text-white text-[9px] font-black rounded-full flex items-center justify-center border-2 border-white">
                       {unreadCount}
-                    </motion.div>
+                    </div>
                   )}
                 </div>
               ) : (
@@ -148,17 +141,25 @@ const Navbar: React.FC = () => {
                   onClick={() => navigate('/participate')}
                   className={`hidden md:inline-flex ${!scrolled ? '!bg-white !text-nova-black shadow-none border-none' : ''}`}
                 >
-                  <Rocket size={14} className="mr-2" /> Postuler
+                  Postuler
                 </Button>
               )}
             </AnimatePresence>
             
-            <button 
-              onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-              className={`lg:hidden p-2.5 rounded-full transition-all duration-500 relative ${scrolled ? 'bg-nova-gray border border-black/5 text-nova-black' : 'bg-white/20 text-white border border-white/20'}`}
+            <motion.button 
+              whileTap={{ scale: 0.9 }}
+              onClick={(e) => {
+                e.stopPropagation();
+                setMobileMenuOpen(!mobileMenuOpen);
+              }}
+              className={`lg:hidden p-2.5 rounded-full transition-all duration-500 relative z-[300] shadow-xl ${
+                scrolled 
+                  ? 'bg-nova-black text-white' 
+                  : 'bg-white text-nova-black'
+              }`}
             >
-              {mobileMenuOpen ? <X size={18} /> : <Menu size={18} />}
-            </button>
+              {mobileMenuOpen ? <X size={20} /> : <Menu size={20} />}
+            </motion.button>
           </div>
         </motion.div>
       </nav>
@@ -166,25 +167,33 @@ const Navbar: React.FC = () => {
       <AnimatePresence>
         {mobileMenuOpen && (
           <motion.div 
-            initial={{ opacity: 0, x: '100%' }}
-            animate={{ opacity: 1, x: 0 }}
-            exit={{ opacity: 0, x: '100%' }}
-            className="fixed inset-0 z-[90] bg-white overflow-hidden flex flex-col pt-32"
+            initial={{ opacity: 0, y: -20 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -20 }}
+            className="fixed inset-0 z-[200] bg-white overflow-y-auto flex flex-col pt-32 pb-20 px-6"
           >
-            <div className="flex-grow flex flex-col px-10">
-              <nav className="space-y-4">
+            <div className="flex-grow flex flex-col">
+              <nav className="space-y-1">
                 {navLinks.map((link, i) => (
-                  <motion.div key={link.path} initial={{ x: 20, opacity: 0 }} animate={{ x: 0, opacity: 1 }} transition={{ delay: i * 0.05 }}>
-                    <Link to={link.path} onClick={() => setMobileMenuOpen(false)} className={`block py-4 border-b border-black/5 transition-all ${isActive(link.path) ? 'text-nova-red' : 'text-nova-black'}`}>
-                      <span className="text-3xl font-black uppercase tracking-tighter">{link.name}</span>
+                  <motion.div key={link.path} initial={{ x: -20, opacity: 0 }} animate={{ x: 0, opacity: 1 }} transition={{ delay: i * 0.05 }}>
+                    <Link to={link.path} onClick={() => setMobileMenuOpen(false)} className={`block py-5 border-b border-black/5 transition-all ${isActive(link.path) ? 'text-nova-red' : 'text-nova-black'}`}>
+                      <span className="text-2xl font-black uppercase tracking-tighter">{link.name}</span>
                     </Link>
                   </motion.div>
                 ))}
               </nav>
-              <div className="mt-auto mb-20">
+              <div className="mt-12 space-y-4">
                 <Button size="lg" variant="accent" className="w-full" onClick={() => { setMobileMenuOpen(false); navigate(isLoggedIn ? '/dashboard' : '/participate'); }}>
-                  {isLoggedIn ? 'Mon Espace' : 'Postuler 2026'}
+                  {isLoggedIn ? 'Mon Dashboard' : 'Postuler 2026'}
                 </Button>
+                {isLoggedIn && (
+                  <Button variant="outline" size="lg" className="w-full" onClick={() => {
+                     localStorage.removeItem('tnc_user_name');
+                     setIsLoggedIn(false);
+                     setMobileMenuOpen(false);
+                     navigate('/');
+                  }}>Déconnexion</Button>
+                )}
               </div>
             </div>
           </motion.div>

@@ -10,6 +10,7 @@ interface VotingTeam {
   members: string;
   image: string;
   votes: number;
+  type: 'public' | 'winners';
 }
 
 const CountdownTimer: React.FC<{ targetDate: string }> = ({ targetDate }) => {
@@ -20,7 +21,6 @@ const CountdownTimer: React.FC<{ targetDate: string }> = ({ targetDate }) => {
     const interval = setInterval(() => {
       const now = new Date().getTime();
       const distance = new Date(targetDate).getTime() - now;
-
       if (distance < 0) {
         clearInterval(interval);
         setTimeLeft({ days: 0, hours: 0, minutes: 0, seconds: 0 });
@@ -74,14 +74,15 @@ const WinnersVoting: React.FC = () => {
       setTargetDate(config.winnersVoteEndDate || '');
 
       if (saved) {
+        // FILTRAGE : Uniquement les binômes de type 'winners'
         const parsed: VotingTeam[] = JSON.parse(saved);
-        const sorted = parsed.sort((a, b) => b.votes - a.votes);
+        const filtered = parsed.filter(t => t.type === 'winners');
+        const sorted = filtered.sort((a, b) => b.votes - a.votes);
         
         if (teams.length > 0 && sorted[0].id !== teams[0].id && sorted[0].votes > 0) {
           setLeaderMessage(`${sorted[0].name} PREND LA TÊTE DU SCRUTIN FINAL !`);
           setTimeout(() => setLeaderMessage(null), 6000);
         }
-        
         setTeams(sorted);
       }
     };
@@ -101,7 +102,6 @@ const WinnersVoting: React.FC = () => {
 
   return (
     <div className="bg-nova-black min-h-screen pt-40 pb-32 px-6 overflow-hidden relative">
-      {/* Background Effect */}
       <div className="absolute top-0 left-0 w-full h-full bg-[radial-gradient(circle_at_50%_50%,#7C3AED20,transparent_70%)] pointer-events-none" />
       
       <div className="container mx-auto max-w-6xl relative z-10">
@@ -114,7 +114,6 @@ const WinnersVoting: React.FC = () => {
           </h1>
         </header>
 
-        {/* Countdown Area */}
         <div className="mb-40 text-center space-y-20">
             <div className="inline-flex items-center gap-4 px-8 py-3 bg-white/5 border border-white/10 rounded-full text-white/40 text-[10px] font-black uppercase tracking-[0.4em]">
                <Activity className="text-nova-violet animate-pulse" size={16} /> Clôture Définitive du Scrutin 2026
@@ -136,29 +135,21 @@ const WinnersVoting: React.FC = () => {
                 transition={{ type: "spring", stiffness: 200, damping: 25 }}
                 className="bg-white/5 border border-white/10 p-10 md:p-14 rounded-[4rem] flex flex-col md:flex-row items-center gap-12 group relative overflow-hidden hover:bg-white/[0.08] transition-all duration-700"
               >
-                 {/* Rank Background */}
-                 <div className="text-9xl font-black text-white/[0.03] group-hover:text-nova-violet/[0.1] transition-all duration-700 absolute -left-6 top-1/2 -translate-y-1/2 select-none italic">
-                    #{i + 1}
-                 </div>
-
+                 <div className="text-9xl font-black text-white/[0.03] absolute -left-6 top-1/2 -translate-y-1/2 select-none italic">#{i + 1}</div>
                  {i === 0 && team.votes > 0 && (
-                   <div className="absolute top-0 right-0 px-10 py-3 bg-nova-violet text-white text-[9px] font-black uppercase tracking-[0.4em] rounded-bl-[2.5rem] flex items-center gap-3 shadow-2xl">
+                   <div className="absolute top-0 right-0 px-10 py-3 bg-nova-violet text-white text-[9px] font-black uppercase tracking-[0.4em] rounded-bl-[2.5rem] flex items-center gap-3">
                      <Crown size={16} fill="white" /> LEADER SUPRÊME
                    </div>
                  )}
-
                  <div className="w-40 h-40 rounded-[2.5rem] overflow-hidden border-2 border-white/10 flex-shrink-0 relative z-10 shadow-2xl group-hover:border-nova-violet transition-colors">
                     <img src={team.image} className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-1000" alt={team.name} />
                  </div>
-
                  <div className="flex-grow relative z-10 text-center md:text-left">
                     <h3 className="text-3xl md:text-5xl font-black text-white uppercase tracking-tighter mb-3 leading-none">{team.name}</h3>
                     <p className="text-gray-500 text-[10px] font-black uppercase tracking-[0.4em]">{team.members}</p>
                  </div>
-
                  <div className="text-center md:text-right relative z-10 space-y-4">
                     <div className="flex flex-col gap-2">
-                       <span className="text-[10px] font-black uppercase text-nova-violet tracking-[0.5em] mb-1">Score Actuel</span>
                        <span className="text-6xl font-black text-white leading-none tracking-tighter">{team.votes.toLocaleString()}</span>
                     </div>
                     <div className="space-y-3">
@@ -174,7 +165,6 @@ const WinnersVoting: React.FC = () => {
         </div>
       </div>
 
-      {/* Modal Vote (Dark Theme) */}
       <AnimatePresence>
         {selectedTeam && (
           <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className="fixed inset-0 z-[1000] flex items-center justify-center bg-black/95 backdrop-blur-3xl p-4" onClick={() => setSelectedTeam(null)}>
@@ -193,10 +183,9 @@ const WinnersVoting: React.FC = () => {
                       </div>
                    </div>
                    <div className="bg-white/5 p-10 rounded-[2.5rem] text-center border border-white/10">
-                      <span className="text-[10px] font-black uppercase text-nova-violet tracking-[0.5em] block mb-2">Contribution Excellence</span>
                       <span className="text-4xl font-black text-white">{voteCount * 500} FCFA</span>
                    </div>
-                   <Button className="w-full py-7" size="lg" onClick={handleVote}>Valider mon Vote Gagnant <ChevronRight size={20} className="ml-2" /></Button>
+                   <Button className="w-full py-7" size="lg" onClick={handleVote}>Valider mon Vote <ChevronRight size={20} className="ml-2" /></Button>
                 </div>
              </motion.div>
           </motion.div>

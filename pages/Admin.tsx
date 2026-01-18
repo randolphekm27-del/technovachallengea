@@ -21,6 +21,7 @@ interface VotingTeam {
   members: string;
   image: string;
   votes: number;
+  type: 'public' | 'winners';
 }
 
 interface Partner {
@@ -68,6 +69,7 @@ const Admin: React.FC = () => {
   const [vtName, setVtName] = useState('');
   const [vtMembers, setVtMembers] = useState('');
   const [vtImage, setVtImage] = useState<string | null>(null);
+  const [vtType, setVtType] = useState<'public' | 'winners' | null>(null);
 
   // Live Phase Form States
   const [lpTitle, setLpTitle] = useState('');
@@ -116,24 +118,14 @@ const Admin: React.FC = () => {
     alert("Colis expédié avec succès !");
   };
 
-  const handleAddPartner = () => {
-    if (!pName || !pLogo) return;
-    const newP: Partner = { id: Date.now().toString(), name: pName, logo: pLogo, category: pCat };
-    const updated = [...partners, newP];
-    setPartners(updated);
-    localStorage.setItem('tnc_partners', JSON.stringify(updated));
-    setPName(''); setPLogo(null);
-    alert("Partenaire ajouté !");
-  };
-
   const handleAddVotingTeam = () => {
-    if (!vtName || !vtImage) return;
-    const newVt: VotingTeam = { id: Date.now().toString(), name: vtName, members: vtMembers, image: vtImage, votes: 0 };
+    if (!vtName || !vtImage || !vtType) return;
+    const newVt: VotingTeam = { id: Date.now().toString(), name: vtName, members: vtMembers, image: vtImage, votes: 0, type: vtType };
     const updated = [...votingTeams, newVt];
     setVotingTeams(updated);
     localStorage.setItem('tnc_voting_teams', JSON.stringify(updated));
     setVtName(''); setVtMembers(''); setVtImage(null);
-    alert("Équipe de vote ajoutée !");
+    alert(`Binôme ajouté au ${vtType === 'public' ? 'Vote Public' : 'Vote des Gagnants'} !`);
   };
 
   const handleAddLivePhase = () => {
@@ -147,7 +139,7 @@ const Admin: React.FC = () => {
   };
 
   const deleteItem = (id: string, key: string, stateSetter: any) => {
-    if (window.confirm("Êtes-vous sûr de vouloir supprimer cet élément ?")) {
+    if (window.confirm("Supprimer cet élément ?")) {
       const current = JSON.parse(localStorage.getItem(key) || '[]');
       const updated = current.filter((i: any) => i.id !== id);
       stateSetter(updated);
@@ -193,184 +185,98 @@ const Admin: React.FC = () => {
         </header>
 
         <AnimatePresence mode="wait">
-          {activeAdminTab === 'site' && (
-            <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} className="grid md:grid-cols-2 gap-12">
-               <div className="bg-white/5 border border-white/10 p-10 rounded-[3rem] space-y-10">
-                  <h3 className="text-xl font-black uppercase flex items-center gap-3"><Clock size={20} className="text-nova-violet" /> Échéances des Scrutins</h3>
-                  <div className="space-y-6">
-                    <div>
-                      <label className="text-[10px] font-black uppercase tracking-widest text-gray-500 block mb-2">Fin du Vote Public</label>
-                      <input type="datetime-local" value={publicVoteEndDate} onChange={(e) => updateConfig(hiddenPages, isReorganized, e.target.value, winnersVoteEndDate)} className="w-full bg-white/5 border border-white/10 rounded-xl p-4 text-white outline-none focus:border-nova-violet" />
-                    </div>
-                    <div>
-                      <label className="text-[10px] font-black uppercase tracking-widest text-gray-500 block mb-2">Fin du Vote Gagnants</label>
-                      <input type="datetime-local" value={winnersVoteEndDate} onChange={(e) => updateConfig(hiddenPages, isReorganized, publicVoteEndDate, e.target.value)} className="w-full bg-white/5 border border-white/10 rounded-xl p-4 text-white outline-none focus:border-nova-violet" />
-                    </div>
-                  </div>
-               </div>
-               <div className="bg-white/5 border border-white/10 p-10 rounded-[3rem]">
-                  <h3 className="text-xl font-black uppercase mb-8 flex items-center gap-3"><Eye size={20} /> Visibilité des Pages</h3>
-                  <div className="space-y-3">
-                    {[
-                      { name: 'Vote du Public', path: '/vote' },
-                      { name: 'Vote des Gagnants', path: '/vote-gagnants' },
-                      { name: 'Déroulement 2026', path: '/deroulement' },
-                      { name: 'Live Étapes', path: '/etapes-en-cours' },
-                    ].map(page => (
-                      <div key={page.path} className="flex items-center justify-between p-4 bg-white/5 rounded-2xl hover:bg-white/10 transition-all">
-                         <span className="text-[10px] font-black uppercase tracking-widest">{page.name}</span>
-                         <button onClick={() => {
-                            const newHidden = hiddenPages.includes(page.path) ? hiddenPages.filter(p => p !== page.path) : [...hiddenPages, page.path];
-                            updateConfig(newHidden, isReorganized, publicVoteEndDate, winnersVoteEndDate);
-                         }} className={`p-2 rounded-xl transition-all ${hiddenPages.includes(page.path) ? 'bg-nova-red text-white' : 'bg-green-500/20 text-green-500'}`}>
-                            {hiddenPages.includes(page.path) ? <EyeOff size={16} /> : <Eye size={16} />}
-                         </button>
-                      </div>
-                    ))}
-                  </div>
-               </div>
-            </motion.div>
-          )}
-
-          {activeAdminTab === 'colis' && (
+          {activeAdminTab === 'votes' && (
             <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="grid lg:grid-cols-2 gap-12">
-               <div className="bg-white/5 p-10 rounded-[3rem] border border-white/10 h-fit">
-                  <h3 className="text-xs font-black uppercase tracking-widest text-nova-violet mb-8 flex items-center gap-2"><Send size={16} /> Expédier un Colis</h3>
-                  <div className="space-y-6">
-                     <div className="flex gap-2 p-1 bg-white/5 rounded-xl">
-                        {(['message', 'critical'] as const).map(t => (
-                          <button key={t} onClick={() => setCType(t)} className={`flex-1 py-3 rounded-lg text-[8px] font-black uppercase transition-all ${cType === t ? 'bg-nova-violet text-white shadow-lg' : 'text-gray-500'}`}>
-                            {t === 'critical' ? 'Urgent' : 'Message'}
-                          </button>
+               <div className="bg-white/5 p-10 rounded-[3rem] border border-white/10 h-fit space-y-10">
+                  <h3 className="text-xs font-black uppercase tracking-widest text-nova-violet">Nouveau Binôme de Vote</h3>
+                  <div className="space-y-4">
+                     <label className="text-[10px] font-black uppercase tracking-widest text-gray-500">1. Sélectionner la phase de vote</label>
+                     <div className="flex gap-4">
+                        <button onClick={() => setVtType('public')} className={`flex-1 py-4 rounded-2xl border transition-all text-[9px] font-black uppercase tracking-widest ${vtType === 'public' ? 'bg-nova-violet border-nova-violet text-white shadow-xl shadow-nova-violet/30' : 'border-white/10 text-gray-500 hover:border-white/30'}`}>
+                           Vote du Public
+                        </button>
+                        <button onClick={() => setVtType('winners')} className={`flex-1 py-4 rounded-2xl border transition-all text-[9px] font-black uppercase tracking-widest ${vtType === 'winners' ? 'bg-nova-red border-nova-red text-white shadow-xl shadow-nova-red/30' : 'border-white/10 text-gray-500 hover:border-white/30'}`}>
+                           Vote des Gagnants
+                        </button>
+                     </div>
+                  </div>
+                  <AnimatePresence>
+                    {vtType && (
+                      <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} className="space-y-6">
+                         <label className="text-[10px] font-black uppercase tracking-widest text-gray-500">2. Détails du binôme</label>
+                         <input value={vtName} onChange={e => setVtName(e.target.value)} placeholder="Nom de l'équipe" className="w-full bg-white/5 border border-white/10 rounded-2xl px-6 py-4 outline-none focus:border-nova-violet text-sm font-bold" />
+                         <input value={vtMembers} onChange={e => setVtMembers(e.target.value)} placeholder="Membres (ex: Jean & Marc)" className="w-full bg-white/5 border border-white/10 rounded-2xl px-6 py-4 outline-none focus:border-nova-violet text-sm font-bold" />
+                         <label className="flex flex-col items-center justify-center w-full h-40 border-2 border-dashed border-white/10 rounded-2xl cursor-pointer hover:bg-white/5 transition-all overflow-hidden">
+                            {vtImage ? <img src={vtImage} className="w-full h-full object-cover" /> : <div className="text-center"><ImageIcon className="mx-auto mb-2 text-gray-500" /> <span className="text-[10px] uppercase font-black text-gray-500">Photo du Binôme</span></div>}
+                            <input type="file" className="hidden" accept="image/*" onChange={e => handleImageUpload(e, setVtImage)} />
+                         </label>
+                         <Button className="w-full" onClick={handleAddVotingTeam} disabled={!vtName || !vtImage}>Publier au Scrutin {vtType === 'public' ? 'Public' : 'Gagnants'}</Button>
+                      </motion.div>
+                    )}
+                  </AnimatePresence>
+               </div>
+               <div className="space-y-12">
+                  <div className="space-y-4">
+                     <h3 className="text-xs font-black uppercase tracking-widest text-nova-violet flex items-center gap-2"><Users size={16}/> Binômes Publics</h3>
+                     <div className="space-y-2">
+                        {votingTeams.filter(t => t.type === 'public').map(v => (
+                          <div key={v.id} className="bg-white/5 p-4 rounded-2xl flex items-center justify-between border border-white/10 group">
+                             <div className="flex items-center gap-4">
+                                <img src={v.image} className="w-12 h-12 object-cover rounded-lg" />
+                                <span className="text-xs font-black uppercase">{v.name} <span className="text-[8px] text-gray-600 ml-2">({v.votes} pts)</span></span>
+                             </div>
+                             <button onClick={() => deleteItem(v.id, 'tnc_voting_teams', setVotingTeams)} className="p-3 text-gray-600 hover:text-nova-red opacity-0 group-hover:opacity-100 transition-all"><Trash2 size={16}/></button>
+                          </div>
                         ))}
                      </div>
-                     <input value={cTitle} onChange={e => setCTitle(e.target.value)} placeholder="Objet de l'expédition" className="w-full bg-white/5 border border-white/10 rounded-2xl px-6 py-4 outline-none focus:border-nova-violet text-sm font-bold" />
-                     <textarea value={cContent} onChange={e => setCContent(e.target.value)} placeholder="Contenu informatif..." className="w-full bg-white/5 border border-white/10 rounded-2xl px-6 py-4 outline-none focus:border-nova-violet text-sm h-32" />
-                     <label className="flex flex-col items-center justify-center w-full h-32 border-2 border-dashed border-white/10 rounded-2xl cursor-pointer hover:bg-white/5 transition-all">
-                        {cFile ? <div className="text-nova-violet text-xs font-bold">{cFile.name}</div> : <div className="text-center"><FileUp className="mx-auto mb-2 text-gray-500" /> <span className="text-[10px] uppercase font-black text-gray-500">Joindre Fichier (PDF/IMG)</span></div>}
-                        <input type="file" className="hidden" onChange={(e) => {
-                           const file = e.target.files?.[0];
-                           if(file) {
-                             const reader = new FileReader();
-                             reader.onload = (ev) => setCFile({ name: file.name, data: ev.target?.result as string });
-                             reader.readAsDataURL(file);
-                           }
-                        }} />
-                     </label>
-                     <Button className="w-full" onClick={handleSendColis} disabled={!cTitle || !cContent}>Expédier aux Binômes</Button>
                   </div>
-               </div>
-               <div className="space-y-4">
-                  <h3 className="text-xs font-black uppercase tracking-widest text-gray-500 mb-6">Colis en Circulation</h3>
-                  {broadcasts.map(b => (
-                    <div key={b.id} className="bg-white/5 p-6 rounded-2xl border border-white/10 flex items-center justify-between group">
-                       <div className="flex flex-col">
-                          <span className="text-xs font-black uppercase">{b.title}</span>
-                          <span className="text-[9px] text-gray-500 uppercase tracking-widest">{new Date(b.timestamp).toLocaleDateString()}</span>
-                       </div>
-                       <button onClick={() => deleteItem(b.id, 'tnc_broadcasts', setBroadcasts)} className="p-3 text-gray-600 hover:text-nova-red opacity-0 group-hover:opacity-100 transition-all"><Trash2 size={16}/></button>
-                    </div>
-                  ))}
+                  <div className="space-y-4">
+                     <h3 className="text-xs font-black uppercase tracking-widest text-nova-red flex items-center gap-2"><Trophy size={16}/> Binômes Gagnants</h3>
+                     <div className="space-y-2">
+                        {votingTeams.filter(t => t.type === 'winners').map(v => (
+                          <div key={v.id} className="bg-white/5 p-4 rounded-2xl flex items-center justify-between border border-white/10 group">
+                             <div className="flex items-center gap-4">
+                                <img src={v.image} className="w-12 h-12 object-cover rounded-lg" />
+                                <span className="text-xs font-black uppercase">{v.name} <span className="text-[8px] text-gray-600 ml-2">({v.votes} pts)</span></span>
+                             </div>
+                             <button onClick={() => deleteItem(v.id, 'tnc_voting_teams', setVotingTeams)} className="p-3 text-gray-600 hover:text-nova-red opacity-0 group-hover:opacity-100 transition-all"><Trash2 size={16}/></button>
+                          </div>
+                        ))}
+                     </div>
+                  </div>
                </div>
             </motion.div>
           )}
 
           {activeAdminTab === 'live' && (
             <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="grid lg:grid-cols-2 gap-12">
-               <div className="bg-white/5 p-10 rounded-[3rem] border border-white/10 h-fit">
-                  <h3 className="text-xs font-black uppercase tracking-widest text-nova-violet mb-8 flex items-center gap-2"><ListTodo size={16} /> Ajouter une Étape au Direct</h3>
-                  <div className="space-y-6">
-                     <input value={lpTitle} onChange={e => setLpTitle(e.target.value)} placeholder="Titre de l'étape" className="w-full bg-white/5 border border-white/10 rounded-2xl px-6 py-4 outline-none focus:border-nova-violet text-sm font-bold" />
-                     <textarea value={lpDesc} onChange={e => setLpDesc(e.target.value)} placeholder="Description détaillée..." className="w-full bg-white/5 border border-white/10 rounded-2xl px-6 py-4 outline-none focus:border-nova-violet text-sm h-24" />
-                     <select value={lpStatus} onChange={e => setLpStatus(e.target.value as any)} className="w-full bg-white/5 border border-white/10 rounded-2xl px-6 py-4 outline-none focus:border-nova-violet text-sm font-bold text-white">
-                        <option value="upcoming" className="bg-nova-black">Prochainement</option>
-                        <option value="active" className="bg-nova-black">En cours</option>
-                        <option value="completed" className="bg-nova-black">Terminé</option>
-                     </select>
-                     <label className="flex flex-col items-center justify-center w-full h-32 border-2 border-dashed border-white/10 rounded-2xl cursor-pointer hover:bg-white/5 transition-all">
-                        {lpImage ? <img src={lpImage} className="h-24 w-full object-cover rounded-xl" /> : <div className="text-center"><ImageIcon className="mx-auto mb-2 text-gray-500" /> <span className="text-[10px] uppercase font-black text-gray-500">Photo Illustrative</span></div>}
-                        <input type="file" className="hidden" accept="image/*" onChange={e => handleImageUpload(e, setLpImage)} />
-                     </label>
-                     <Button className="w-full" onClick={handleAddLivePhase} disabled={!lpTitle || !lpImage}>Publier la Phase</Button>
-                  </div>
+               <div className="bg-white/5 p-10 rounded-[3rem] border border-white/10 h-fit space-y-8">
+                  <h3 className="text-xs font-black uppercase tracking-widest text-nova-violet flex items-center gap-2"><ListTodo size={16} /> Étape Live</h3>
+                  <input value={lpTitle} onChange={e => setLpTitle(e.target.value)} placeholder="Titre de l'étape" className="w-full bg-white/5 border border-white/10 rounded-2xl px-6 py-4 outline-none focus:border-nova-violet text-sm font-bold" />
+                  <textarea value={lpDesc} onChange={e => setLpDesc(e.target.value)} placeholder="Description..." className="w-full bg-white/5 border border-white/10 rounded-2xl px-6 py-4 outline-none focus:border-nova-violet text-sm h-24" />
+                  <select value={lpStatus} onChange={e => setLpStatus(e.target.value as any)} className="w-full bg-white/5 border border-white/10 rounded-2xl px-6 py-4 outline-none focus:border-nova-violet text-sm font-bold text-white">
+                    <option value="upcoming" className="bg-nova-black">À venir</option>
+                    <option value="active" className="bg-nova-black">En cours</option>
+                    <option value="completed" className="bg-nova-black">Terminé</option>
+                  </select>
+                  <label className="flex flex-col items-center justify-center w-full h-32 border-2 border-dashed border-white/10 rounded-2xl cursor-pointer hover:bg-white/5 transition-all">
+                    {lpImage ? <img src={lpImage} className="h-24 w-full object-cover rounded-xl" /> : <div className="text-center"><ImageIcon className="mx-auto mb-2 text-gray-500" /> <span className="text-[10px] uppercase font-black text-gray-500">Image de la phase</span></div>}
+                    <input type="file" className="hidden" accept="image/*" onChange={e => handleImageUpload(e, setLpImage)} />
+                  </label>
+                  <Button className="w-full" onClick={handleAddLivePhase} disabled={!lpTitle || !lpImage}>Publier Phase Live</Button>
                </div>
                <div className="space-y-4">
-                  <h3 className="text-xs font-black uppercase tracking-widest text-gray-500 mb-6">Phases Dynamiques</h3>
+                  <h3 className="text-xs font-black uppercase tracking-widest text-gray-500 mb-6">Phases Actives</h3>
                   {livePhases.map(lp => (
                     <div key={lp.id} className="bg-white/5 p-4 rounded-2xl flex items-center justify-between border border-white/10 group">
                        <div className="flex items-center gap-4">
                           <img src={lp.image} className="w-16 h-12 object-cover rounded-lg" />
                           <div className="flex flex-col">
                              <span className="text-xs font-black uppercase">{lp.title}</span>
-                             <span className={`text-[8px] font-black uppercase tracking-widest ${lp.status === 'active' ? 'text-nova-violet' : lp.status === 'completed' ? 'text-green-500' : 'text-gray-500'}`}>{lp.status}</span>
+                             <span className={`text-[8px] font-black uppercase ${lp.status === 'active' ? 'text-nova-violet' : lp.status === 'completed' ? 'text-green-500' : 'text-gray-500'}`}>{lp.status}</span>
                           </div>
                        </div>
                        <button onClick={() => deleteItem(lp.id, 'tnc_live_phases', setLivePhases)} className="p-3 text-gray-600 hover:text-nova-red opacity-0 group-hover:opacity-100 transition-all"><Trash2 size={16}/></button>
-                    </div>
-                  ))}
-               </div>
-            </motion.div>
-          )}
-
-          {activeAdminTab === 'partners' && (
-            <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="grid lg:grid-cols-2 gap-12">
-               <div className="bg-white/5 p-10 rounded-[3rem] border border-white/10 h-fit">
-                  <h3 className="text-xs font-black uppercase tracking-widest text-nova-violet mb-8">Nouveau Partenaire</h3>
-                  <div className="space-y-6">
-                     <input value={pName} onChange={e => setPName(e.target.value)} placeholder="Nom institutionnel" className="w-full bg-white/5 border border-white/10 rounded-2xl px-6 py-4 outline-none focus:border-nova-violet text-sm font-bold" />
-                     <select value={pCat} onChange={e => setPCat(e.target.value as any)} className="w-full bg-white/5 border border-white/10 rounded-2xl px-6 py-4 outline-none focus:border-nova-violet text-sm font-bold text-white">
-                        <option value="enterprise" className="bg-nova-black">Entreprise</option>
-                        <option value="institution" className="bg-nova-black">Institution / École</option>
-                        <option value="media" className="bg-nova-black">Média / Presse</option>
-                     </select>
-                     <label className="flex flex-col items-center justify-center w-full h-32 border-2 border-dashed border-white/10 rounded-2xl cursor-pointer hover:bg-white/5 transition-all">
-                        {pLogo ? <img src={pLogo} className="h-20 object-contain" /> : <div className="text-center"><ImageIcon className="mx-auto mb-2 text-gray-500" /> <span className="text-[10px] uppercase font-black text-gray-500">Logo Partenaire</span></div>}
-                        <input type="file" className="hidden" accept="image/*" onChange={e => handleImageUpload(e, setPLogo)} />
-                     </label>
-                     <Button className="w-full" onClick={handleAddPartner} disabled={!pName || !pLogo}>Ajouter au Réseau</Button>
-                  </div>
-               </div>
-               <div className="space-y-4">
-                  <h3 className="text-xs font-black uppercase tracking-widest text-gray-500 mb-6">Membres Actuels</h3>
-                  {partners.map(p => (
-                    <div key={p.id} className="bg-white/5 p-4 rounded-2xl flex items-center justify-between border border-white/10 group">
-                       <div className="flex items-center gap-4">
-                          <img src={p.logo} className="w-12 h-12 object-contain bg-white rounded-lg p-2" />
-                          <span className="text-xs font-black uppercase">{p.name}</span>
-                       </div>
-                       <button onClick={() => deleteItem(p.id, 'tnc_partners', setPartners)} className="p-3 text-gray-600 hover:text-nova-red opacity-0 group-hover:opacity-100 transition-all"><Trash2 size={16}/></button>
-                    </div>
-                  ))}
-               </div>
-            </motion.div>
-          )}
-
-          {activeAdminTab === 'votes' && (
-            <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="grid lg:grid-cols-2 gap-12">
-               <div className="bg-white/5 p-10 rounded-[3rem] border border-white/10 h-fit">
-                  <h3 className="text-xs font-black uppercase tracking-widest text-nova-violet mb-8">Nouveau Binôme de Vote</h3>
-                  <div className="space-y-6">
-                     <input value={vtName} onChange={e => setVtName(e.target.value)} placeholder="Nom de l'équipe" className="w-full bg-white/5 border border-white/10 rounded-2xl px-6 py-4 outline-none focus:border-nova-violet text-sm font-bold" />
-                     <input value={vtMembers} onChange={e => setVtMembers(e.target.value)} placeholder="Noms des membres" className="w-full bg-white/5 border border-white/10 rounded-2xl px-6 py-4 outline-none focus:border-nova-violet text-sm font-bold" />
-                     <label className="flex flex-col items-center justify-center w-full h-40 border-2 border-dashed border-white/10 rounded-2xl cursor-pointer hover:bg-white/5 transition-all overflow-hidden">
-                        {vtImage ? <img src={vtImage} className="w-full h-full object-cover" /> : <div className="text-center"><ImageIcon className="mx-auto mb-2 text-gray-500" /> <span className="text-[10px] uppercase font-black text-gray-500">Photo du Binôme</span></div>}
-                        <input type="file" className="hidden" accept="image/*" onChange={e => handleImageUpload(e, setVtImage)} />
-                     </label>
-                     <Button className="w-full" onClick={handleAddVotingTeam} disabled={!vtName || !vtImage}>Publier au Scrutin</Button>
-                  </div>
-               </div>
-               <div className="space-y-4">
-                  <h3 className="text-xs font-black uppercase tracking-widest text-gray-500 mb-6">Liste des Binômes</h3>
-                  {votingTeams.map(v => (
-                    <div key={v.id} className="bg-white/5 p-4 rounded-2xl flex items-center justify-between border border-white/10 group">
-                       <div className="flex items-center gap-4">
-                          <img src={v.image} className="w-12 h-12 object-cover rounded-lg" />
-                          <div className="flex flex-col">
-                             <span className="text-xs font-black uppercase">{v.name}</span>
-                             <span className="text-[8px] text-gray-500 uppercase font-black">{v.votes} Votes</span>
-                          </div>
-                       </div>
-                       <button onClick={() => deleteItem(v.id, 'tnc_voting_teams', setVotingTeams)} className="p-3 text-gray-600 hover:text-nova-red opacity-0 group-hover:opacity-100 transition-all"><Trash2 size={16}/></button>
                     </div>
                   ))}
                </div>
@@ -383,7 +289,7 @@ const Admin: React.FC = () => {
                   <div className="bg-white/5 p-10 rounded-[3.5rem] border border-white/10">
                      <span className="text-[10px] font-black text-nova-violet uppercase tracking-[0.4em] block mb-8">Pondération Public (30%) — Seuil 1000</span>
                      <div className="space-y-10">
-                        {votingTeams.map(t => (
+                        {votingTeams.filter(t => t.type === 'public').map(t => (
                           <div key={t.id} className="space-y-3">
                              <div className="flex justify-between items-end">
                                 <span className="text-xs font-black uppercase">{t.name}</span>
@@ -402,7 +308,7 @@ const Admin: React.FC = () => {
                   <div className="bg-white/5 p-10 rounded-[3.5rem] border border-white/10">
                      <span className="text-[10px] font-black text-nova-red uppercase tracking-[0.4em] block mb-8">Pondération Gagnants (40%) — Seuil 2000</span>
                      <div className="space-y-10">
-                        {votingTeams.map(t => (
+                        {votingTeams.filter(t => t.type === 'winners').map(t => (
                           <div key={t.id} className="space-y-3">
                              <div className="flex justify-between items-end">
                                 <span className="text-xs font-black uppercase">{t.name}</span>
@@ -417,6 +323,86 @@ const Admin: React.FC = () => {
                           </div>
                         ))}
                      </div>
+                  </div>
+               </div>
+            </motion.div>
+          )}
+
+          {activeAdminTab === 'colis' && (
+            <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="grid lg:grid-cols-2 gap-12">
+               <div className="bg-white/5 p-10 rounded-[3rem] border border-white/10 h-fit space-y-6">
+                  <h3 className="text-xs font-black uppercase tracking-widest text-nova-violet mb-8 flex items-center gap-2"><Send size={16} /> Expédier un Colis</h3>
+                  <div className="flex gap-2 p-1 bg-white/5 rounded-xl">
+                    {(['message', 'critical'] as const).map(t => (
+                      <button key={t} onClick={() => setCType(t)} className={`flex-1 py-3 rounded-lg text-[8px] font-black uppercase transition-all ${cType === t ? 'bg-nova-violet text-white shadow-lg' : 'text-gray-500'}`}>
+                        {t === 'critical' ? 'Urgent' : 'Message'}
+                      </button>
+                    ))}
+                  </div>
+                  <input value={cTitle} onChange={e => setCTitle(e.target.value)} placeholder="Objet" className="w-full bg-white/5 border border-white/10 rounded-2xl px-6 py-4 outline-none focus:border-nova-violet text-sm font-bold" />
+                  <textarea value={cContent} onChange={e => setCContent(e.target.value)} placeholder="Message..." className="w-full bg-white/5 border border-white/10 rounded-2xl px-6 py-4 outline-none focus:border-nova-violet text-sm h-32" />
+                  <label className="flex flex-col items-center justify-center w-full h-32 border-2 border-dashed border-white/10 rounded-2xl cursor-pointer hover:bg-white/5 transition-all">
+                    {cFile ? <div className="text-nova-violet text-xs font-bold">{cFile.name}</div> : <div className="text-center"><FileUp className="mx-auto mb-2 text-gray-500" /> <span className="text-[10px] uppercase font-black text-gray-500">Joindre Fichier</span></div>}
+                    <input type="file" className="hidden" onChange={(e) => {
+                      const file = e.target.files?.[0];
+                      if(file) {
+                        const reader = new FileReader();
+                        reader.onload = (ev) => setCFile({ name: file.name, data: ev.target?.result as string });
+                        reader.readAsDataURL(file);
+                      }
+                    }} />
+                  </label>
+                  <Button className="w-full" onClick={handleSendColis}>Expédier</Button>
+               </div>
+               <div className="space-y-4">
+                  <h3 className="text-xs font-black uppercase tracking-widest text-gray-500 mb-6">Historique</h3>
+                  {broadcasts.map(b => (
+                    <div key={b.id} className="bg-white/5 p-6 rounded-2xl border border-white/10 flex items-center justify-between group">
+                       <div className="flex flex-col">
+                          <span className="text-xs font-black uppercase">{b.title}</span>
+                          <span className="text-[9px] text-gray-500 uppercase tracking-widest">{new Date(b.timestamp).toLocaleDateString()}</span>
+                       </div>
+                       <button onClick={() => deleteItem(b.id, 'tnc_broadcasts', setBroadcasts)} className="p-3 text-gray-600 hover:text-nova-red opacity-0 group-hover:opacity-100 transition-all"><Trash2 size={16}/></button>
+                    </div>
+                  ))}
+               </div>
+            </motion.div>
+          )}
+
+          {activeAdminTab === 'site' && (
+            <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} className="grid md:grid-cols-2 gap-12">
+               <div className="bg-white/5 border border-white/10 p-10 rounded-[3rem] space-y-10">
+                  <h3 className="text-xl font-black uppercase flex items-center gap-3"><Clock size={20} className="text-nova-violet" /> Échéances</h3>
+                  <div className="space-y-6">
+                    <div>
+                      <label className="text-[10px] font-black uppercase tracking-widest text-gray-500 block mb-2">Fin Vote Public</label>
+                      <input type="datetime-local" value={publicVoteEndDate} onChange={(e) => updateConfig(hiddenPages, isReorganized, e.target.value, winnersVoteEndDate)} className="w-full bg-white/5 border border-white/10 rounded-xl p-4 text-white outline-none focus:border-nova-violet" />
+                    </div>
+                    <div>
+                      <label className="text-[10px] font-black uppercase tracking-widest text-gray-500 block mb-2">Fin Vote Gagnants</label>
+                      <input type="datetime-local" value={winnersVoteEndDate} onChange={(e) => updateConfig(hiddenPages, isReorganized, publicVoteEndDate, e.target.value)} className="w-full bg-white/5 border border-white/10 rounded-xl p-4 text-white outline-none focus:border-nova-violet" />
+                    </div>
+                  </div>
+               </div>
+               <div className="bg-white/5 border border-white/10 p-10 rounded-[3rem]">
+                  <h3 className="text-xl font-black uppercase mb-8 flex items-center gap-3"><Eye size={20} /> Visibilité</h3>
+                  <div className="space-y-3">
+                    {[
+                      { name: 'Vote du Public', path: '/vote' },
+                      { name: 'Vote des Gagnants', path: '/vote-gagnants' },
+                      { name: 'Déroulement 2026', path: '/deroulement' },
+                      { name: 'Live Étapes', path: '/etapes-en-cours' },
+                    ].map(page => (
+                      <div key={page.path} className="flex items-center justify-between p-4 bg-white/5 rounded-2xl hover:bg-white/10 transition-all">
+                         <span className="text-[10px] font-black uppercase tracking-widest">{page.name}</span>
+                         <button onClick={() => {
+                            const newHidden = hiddenPages.includes(page.path) ? hiddenPages.filter(p => p !== page.path) : [...hiddenPages, page.path];
+                            updateConfig(newHidden, isReorganized, publicVoteEndDate, winnersVoteEndDate);
+                         }} className={`p-2 rounded-xl transition-all ${hiddenPages.includes(page.path) ? 'bg-nova-red text-white' : 'bg-green-500/20 text-green-500'}`}>
+                            {hiddenPages.includes(page.path) ? <EyeOff size={16} /> : <Eye size={16} />}
+                         </button>
+                      </div>
+                    ))}
                   </div>
                </div>
             </motion.div>
