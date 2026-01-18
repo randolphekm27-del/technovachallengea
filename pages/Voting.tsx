@@ -20,6 +20,7 @@ const CountdownTimer: React.FC<{ targetDate: string }> = ({ targetDate }) => {
     const interval = setInterval(() => {
       const now = new Date().getTime();
       const distance = new Date(targetDate).getTime() - now;
+
       if (distance < 0) {
         clearInterval(interval);
         setTimeLeft({ days: 0, hours: 0, minutes: 0, seconds: 0 });
@@ -75,10 +76,13 @@ const Voting: React.FC = () => {
       if (saved) {
         const parsed: VotingTeam[] = JSON.parse(saved);
         const sorted = parsed.sort((a, b) => b.votes - a.votes);
+        
+        // Message dynamique si un nouveau leader émerge
         if (teams.length > 0 && sorted[0].id !== teams[0].id && sorted[0].votes > 0) {
           setLeaderMessage(`${sorted[0].name} VIENT DE PRENDRE LA TÊTE DU SCRUTIN !`);
           setTimeout(() => setLeaderMessage(null), 5000);
         }
+        
         setTeams(sorted);
       }
     };
@@ -98,32 +102,45 @@ const Voting: React.FC = () => {
 
   return (
     <div className="bg-white min-h-screen selection:bg-nova-violet selection:text-white pb-32">
+      
+      {/* Hero Vote */}
       <section className="relative h-[85vh] flex items-center justify-center bg-black overflow-hidden px-6">
         <div className="absolute inset-0">
           <img src="https://i.postimg.cc/tgyMnJq1/belle_vue_d_ensemble_des_lauréats_avec_le_dg.jpg" className="w-full h-full object-cover opacity-30 grayscale" alt="Background" />
           <div className="absolute inset-0 bg-gradient-to-t from-nova-black via-transparent to-transparent" />
         </div>
+        
         <div className="relative z-10 text-center max-w-5xl">
           <motion.div initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 1.2 }}>
-            <span className="text-nova-violet font-black tracking-[1em] uppercase text-[10px] block mb-8">Scrutin Populaire — Phase Initial</span>
+            <span className="text-nova-violet font-black tracking-[1em] uppercase text-[10px] block mb-8">Phase Initiale — Scrutin National</span>
             <h1 className="editorial-title text-[clamp(2rem,10vw,10rem)] text-white leading-[0.8]">
               VOTE DU <br /><span className="text-nova-violet italic font-light">PUBLIC.</span>
             </h1>
             <p className="mt-12 text-xl md:text-3xl text-white/80 font-black uppercase tracking-[0.3em] italic">
-              Votez pour l'équipe de votre choix !
+              L'excellence à portée de clic.
             </p>
           </motion.div>
         </div>
         <motion.div animate={{ y: [0, 10, 0] }} transition={{ duration: 2, repeat: Infinity }} className="absolute bottom-12 text-white/20"><ArrowDown size={32} /></motion.div>
       </section>
 
+      {/* Leader Toast */}
+      <AnimatePresence>
+        {leaderMessage && (
+          <motion.div initial={{ y: -100, opacity: 0 }} animate={{ y: 20, opacity: 1 }} exit={{ y: -100, opacity: 0 }} className="fixed top-32 left-1/2 -translate-x-1/2 z-[200] px-8 py-4 bg-nova-violet text-white rounded-full shadow-2xl border border-white/20 flex items-center gap-4">
+             <Crown size={20} className="text-yellow-400 animate-bounce" />
+             <span className="text-[10px] font-black uppercase tracking-widest">{leaderMessage}</span>
+          </motion.div>
+        )}
+      </AnimatePresence>
+
       <section className="py-24 md:py-48 px-6 bg-[#FAFAFB]">
         <div className="container mx-auto max-w-7xl">
            
-           {/* Countdown & Message */}
+           {/* Countdown & CTA */}
            <div className="mb-32 text-center space-y-16">
               <div className="inline-flex items-center gap-3 px-6 py-2 bg-nova-violet/5 border border-nova-violet/10 rounded-full text-nova-violet text-[10px] font-black uppercase tracking-widest">
-                 <Clock size={14} /> Temps Restant Avant Clôture
+                 <Clock size={14} /> Clôture Définitive du Scrutin Public
               </div>
               <CountdownTimer targetDate={targetDate} />
               <div className="h-px w-24 bg-gray-100 mx-auto" />
@@ -149,6 +166,7 @@ const Voting: React.FC = () => {
                         <Crown size={12} fill="white" /> LEADER ACTUEL
                       </div>
                     )}
+
                     <div className="relative aspect-[4/5] overflow-hidden">
                       <img src={team.image} className="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-110" alt={team.name} />
                       <div className="absolute inset-0 bg-gradient-to-t from-nova-black/80 via-transparent to-transparent" />
@@ -158,10 +176,11 @@ const Voting: React.FC = () => {
                          <p className="text-white/40 text-[9px] uppercase font-bold tracking-widest truncate">{team.members}</p>
                       </div>
                     </div>
+
                     <div className="p-10 flex-grow flex flex-col justify-between">
                        <div className="space-y-6 mb-10">
                           <div className="flex items-center justify-between">
-                             <span className="text-[10px] font-black uppercase text-gray-400">Objectif 1000 Votes</span>
+                             <span className="text-[10px] font-black uppercase text-gray-400">Progression</span>
                              <span className="text-xs font-black text-nova-violet">{(team.votes / LIMIT * 100).toFixed(1)}%</span>
                           </div>
                           <div className="h-2 bg-gray-50 rounded-full overflow-hidden">
@@ -200,7 +219,7 @@ const Voting: React.FC = () => {
                    <div className="bg-nova-violet/5 p-8 rounded-[2.5rem] text-center border border-nova-violet/10">
                       <span className="text-3xl font-black text-nova-black">{voteCount * 500} FCFA</span>
                    </div>
-                   <Button className="w-full py-6" size="lg" onClick={handleVote}>Valider mon Soutien <ChevronRight size={18} className="ml-2" /></Button>
+                   <Button className="w-full py-6" size="lg" onClick={handleVote}>Valider mon Vote <ChevronRight size={18} className="ml-2" /></Button>
                 </div>
              </motion.div>
           </motion.div>
