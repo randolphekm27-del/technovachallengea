@@ -260,7 +260,7 @@ const TeamMemberCard: React.FC<{ member: TeamMember }> = ({ member }) => {
       transition={{ duration: 1.2, ease: [0.16, 1, 0.3, 1] }}
       className="group flex flex-col md:flex-row bg-white border border-gray-100 rounded-[3rem] overflow-hidden shadow-sm hover:shadow-2xl transition-all duration-700 mb-12 md:mb-32"
     >
-      <div className="w-full md:w-[42%] aspect-[4/5] overflow-hidden bg-gray-50 relative">
+      <div className="w-full md:w-[42%] aspect-[4/4.5] overflow-hidden bg-gray-50 relative">
         <motion.img
           initial={{ scale: 1.1 }}
           whileInView={{ scale: 1 }}
