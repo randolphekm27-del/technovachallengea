@@ -32,7 +32,10 @@ const PageWrapper: React.FC<{ children: React.ReactNode }> = ({ children }) => (
 
 const App: React.FC = () => {
   const location = useLocation();
-  const [hiddenPages, setHiddenPages] = useState<string[]>([]);
+  const [siteConfig, setSiteConfig] = useState({
+    hiddenPages: [] as string[],
+    isReorganized: false
+  });
 
   useEffect(() => {
     window.scrollTo({ top: 0, behavior: 'smooth' });
@@ -40,8 +43,7 @@ const App: React.FC = () => {
     const checkConfig = () => {
       const configStr = localStorage.getItem('tnc_site_config');
       if (configStr) {
-        const config = JSON.parse(configStr);
-        setHiddenPages(config.hiddenPages || []);
+        setSiteConfig(JSON.parse(configStr));
       }
     };
     checkConfig();
@@ -49,7 +51,7 @@ const App: React.FC = () => {
     return () => clearInterval(interval);
   }, [location.pathname]);
 
-  const isHidden = (path: string) => hiddenPages.includes(path);
+  const isHidden = (path: string) => siteConfig.hiddenPages.includes(path);
 
   return (
     <div className="min-h-screen flex flex-col font-sans bg-white selection:bg-nova-red selection:text-white">
@@ -59,7 +61,6 @@ const App: React.FC = () => {
           <Routes location={location} key={location.pathname}>
             <Route path="/" element={<PageWrapper><Home /></PageWrapper>} />
             
-            {/* Routes conditionnelles */}
             {!isHidden('/deroulement') && <Route path="/deroulement" element={<PageWrapper><Edition2026 /></PageWrapper>} />}
             {!isHidden('/etapes-en-cours') && <Route path="/etapes-en-cours" element={<PageWrapper><LiveProgress /></PageWrapper>} />}
             {!isHidden('/laureats-2025') && <Route path="/laureats-2025" element={<PageWrapper><Winners2025 /></PageWrapper>} />}
@@ -68,7 +69,6 @@ const App: React.FC = () => {
             {!isHidden('/partenaires') && <Route path="/partenaires" element={<PageWrapper><Partners /></PageWrapper>} />}
             {!isHidden('/contact') && <Route path="/contact" element={<PageWrapper><Contact /></PageWrapper>} />}
             
-            {/* Nouvelles Routes */}
             <Route path="/archives" element={<PageWrapper><ArchivesHub /></PageWrapper>} />
             {!isHidden('/vote') && <Route path="/vote" element={<PageWrapper><Voting /></PageWrapper>} />}
             {!isHidden('/vote-gagnants') && <Route path="/vote-gagnants" element={<PageWrapper><WinnersVoting /></PageWrapper>} />}
@@ -77,7 +77,6 @@ const App: React.FC = () => {
             <Route path="/dashboard" element={<PageWrapper><Dashboard /></PageWrapper>} />
             <Route path="/admin" element={<PageWrapper><Admin /></PageWrapper>} />
             
-            {/* Fallback si masqué ou inexistant */}
             <Route path="*" element={<Navigate to="/" replace />} />
           </Routes>
         </AnimatePresence>
@@ -105,16 +104,23 @@ const App: React.FC = () => {
               <ul className="space-y-5 text-sm font-bold uppercase tracking-widest text-gray-400">
                 <li><Link to="/" className="hover:text-white transition-all duration-300">Accueil</Link></li>
                 {!isHidden('/etapes-en-cours') && <li><Link to="/etapes-en-cours" className="hover:text-nova-red transition-all duration-300">Live Étapes</Link></li>}
-                {!isHidden('/vote') && <li><Link to="/vote" className="hover:text-nova-violet transition-all duration-300">Voter</Link></li>}
+                {siteConfig.isReorganized ? (
+                   <li><Link to="/archives" className="hover:text-white transition-all duration-300">Rétrospectives</Link></li>
+                ) : (
+                   <>
+                    {!isHidden('/laureats-2025') && <li><Link to="/laureats-2025" className="hover:text-white transition-all duration-300">Lauréats 2025</Link></li>}
+                   </>
+                )}
                 {!isHidden('/partenaires') && <li><Link to="/partenaires" className="hover:text-white transition-all duration-300">Partenaires</Link></li>}
               </ul>
             </div>
             
             <div>
-              <h4 className="text-[10px] font-black uppercase tracking-[0.4em] text-nova-violet mb-10">Support</h4>
+              <h4 className="text-[10px] font-black uppercase tracking-[0.4em] text-nova-violet mb-10">Soutien</h4>
               <ul className="space-y-5 text-sm font-bold uppercase tracking-widest text-gray-400">
                 {!isHidden('/contact') && <li><Link to="/contact" className="hover:text-white transition-all duration-300">Contact</Link></li>}
                 <li><Link to="/participate" className="hover:text-white transition-all duration-300 text-nova-red">Postuler 2026</Link></li>
+                {!isHidden('/vote') && <li><Link to="/vote" className="hover:text-nova-violet transition-all duration-300">Voter</Link></li>}
               </ul>
             </div>
 

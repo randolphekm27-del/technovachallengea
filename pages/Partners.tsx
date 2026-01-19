@@ -8,13 +8,13 @@ interface Partner {
   id: string;
   name: string;
   logo: string;
-  secondLogo?: string; // Pour le cas spécial d'INGCO
+  secondLogo?: string;
   category: 'enterprise' | 'institution' | 'media';
 }
 
 const STATIC_PARTNERS: Partner[] = [
   // Entreprises
-  { id: 'st1', name: "INGCO", logo: "https://i.postimg.cc/02J6zzfD/WISSAM-INGCO.jpg", secondLogo: "https://i.postimg.cc/6qhn75My/ingco_logo_png.png", category: 'enterprise' },
+  { id: 'st1', name: "WISSAM (INGCO)", logo: "https://i.postimg.cc/02J6zzfD/WISSAM-INGCO.jpg", secondLogo: "https://i.postimg.cc/6qhn75My/ingco_logo_png.png", category: 'enterprise' },
   { id: 'st2', name: "NSIA BANQUE", logo: "https://i.postimg.cc/d0QXDLnj/NSIA_BANQUE.jpg", category: 'enterprise' },
   { id: 'st3', name: "PRO TECHNOLOGIE PLUS", logo: "https://i.postimg.cc/25HtWrXx/PRO_TECHNOLOGIE_PLUS.jpg", category: 'enterprise' },
   { id: 'st4', name: "AMBITION CONCEPT", logo: "https://i.postimg.cc/R0C8qNGV/AMBITION_CONCEPT.jpg", category: 'enterprise' },
@@ -166,7 +166,6 @@ const Partners: React.FC = () => {
                     </motion.div>
                   ))}
                   
-                  {/* Bouton Devenir Partenaire intégré à chaque fin de section pour mobile ou en fin de grille */}
                   <div 
                     onClick={() => navigate('/contact')}
                     className="border-4 border-dashed border-gray-100 rounded-[2.5rem] flex flex-col items-center justify-center cursor-pointer group hover:bg-nova-violet/5 hover:border-nova-violet/30 transition-all p-10 text-center"

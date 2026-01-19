@@ -140,7 +140,7 @@ const Home: React.FC = () => {
   const heroOpacity = useTransform(smoothProgress, [0, 0.15], [1, 0]);
 
   const partnerLogos = [
-    "https://i.postimg.cc/02J6zzfD/WISSAM_INGCO.jpg",
+    "https://i.postimg.cc/02J6zzfD/WISSAM-INGCO.jpg",
     "https://i.postimg.cc/6qhn75My/ingco_logo_png.png"
   ];
 
